@@ -1,0 +1,12 @@
+{
+  "name": "freelance-society",
+  "version": "1.0.0",
+  "author": "Peter Parker",
+  "description": "TheDarkKnight",
+  "license": "MIT",
+  "dependencies": {
+    "ethers": "^6.13.1",
+    "express": "^5.1.0",
+    "jszip": "^3.10.1"
+  }
+}
