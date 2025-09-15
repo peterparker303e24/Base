@@ -168,8 +168,6 @@ export async function binarySearchBlockchainVersions(
         });
 
         // Get the requirement version at a specific block
-        console.log(index);
-        console.log(middleBlock);
         const blockIndexVersion = Number(
             await theListContract.getRequirementVersion(
                 index,

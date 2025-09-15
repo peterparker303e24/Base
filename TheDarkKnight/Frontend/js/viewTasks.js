@@ -429,7 +429,6 @@ function updatePageResults(results) {
             + `${searchResult.taskComplete.toString().toUpperCase()}`;
         searchItem.querySelector('#view-button').id
             = `view-button-${i}`;
-	console.log("Hello");
         searchItem.querySelector(`#view-button-${i}`)
             .addEventListener("click", () => {
                 let taskRedirectPage;
