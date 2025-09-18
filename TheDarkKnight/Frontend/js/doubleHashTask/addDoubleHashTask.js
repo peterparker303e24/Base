@@ -430,10 +430,10 @@ function updateAddHashButton() {
     // Update variable values from input fields
     hashValue = hashValueInput.value;
     taskHash = taskHashInput.value;
-    secondsToDeadline = deadlineInput.value;
-    secondResponseWindowValue = secondResponseWindow.value;
-    delayValue = delay.value;
-    reward = rewardInput.value;
+    secondsToDeadline = deadlineInput.value.replace(/\s/g, "");
+    secondResponseWindowValue = secondResponseWindow.value.replace(/\s/g, "");
+    delayValue = delay.value.replace(/\s/g, "");
+    reward = rewardInput.value.replace(/\s/g, "");
 
     // Checks for validity of each task parameter
     const validHashValue = prefixHexBytes(hashValue) !== null
