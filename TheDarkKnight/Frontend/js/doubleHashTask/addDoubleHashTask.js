@@ -269,7 +269,7 @@ async function tryMatchFile(zipHash) {
 
         // Expected Task.zip data endpoint
         dataEndpoints.push(
-            `${downloadUrls[i]}/Tasks/HashTasks/`
+            `${downloadUrls[i]}/Tasks/DoubleHashTasks/`
             + `${zipHash.substring(2)}/Task.zip`
         );
 
