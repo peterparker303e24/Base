@@ -113,11 +113,11 @@ if (userAddressValue == undefined || !isAddress(userAddressValue)) {
 // Update user variables with data retrieved from the blockchain
 usersContract.usersData(userAddressValue).then((d) => {
     userNameValue = parseUserData(d).data;
-    userName.innerHTML = `User Name: ${userNameValue}`;
+    userName.textContent = `User Name: ${userNameValue}`;
 });
 usersContract.links(userAddressValue).then((l) => {
     userLinksValue = l;
-    userLinks.innerHTML = `User Links: ${userLinksValue}`;
+    userLinks.textContent = `User Links: ${userLinksValue}`;
     tryLoadUserDefinedData(userLinksValue);
 });
 usersContract.lockoutCodes(userAddressValue).then((l) => {
@@ -352,13 +352,13 @@ function updatePageResults(results) {
         const searchItem = userItemTemplate.content.cloneNode(true);
         searchItem.querySelector('#contract-type').textContent
             = `${searchResult.contractType}`;
-        searchItem.querySelector('#event-data').innerHTML
-            = `Contract Initiator Address: ${searchResult.initiatorAddress}<br>`
-            + `Block Index: ${searchResult.blockIndex}<br>`
+        searchItem.querySelector('#event-data').textContent
+            = `Contract Initiator Address: ${searchResult.initiatorAddress}\r\n`
+            + `Block Index: ${searchResult.blockIndex}\r\n`
             + `Block Timestamp (UTC): ${new Date(
                 Number(searchResult.blockTimestamp) * 1000
             ).toUTCString()}`
-            + `<br><br>${searchResult.eventName}<br>${getEventDataString(
+            + `\r\n\r\n${searchResult.eventName}\r\n${getEventDataString(
                 searchResult.eventParameterNames,
                 searchResult.eventParameterValues
             )}`;
@@ -868,7 +868,7 @@ function updateUserDefinedData(userDefinedDataJson) {
                 },
                     `Ethics Requirements Standards:`
                 );
-            ethicsRequirementsStandardsText.innerHTML = ethicsListString;
+            ethicsRequirementsStandardsText.textContent = ethicsListString;
             removeClass(ethicsRequirementsStandardsText, "hide");
             anyUserDefinedDataFound = true;
         }
@@ -884,7 +884,7 @@ function updateUserDefinedData(userDefinedDataJson) {
                 },
                     `Worker Tasks (Unverified):`
                 );
-            workerTasksText.innerHTML = tasksListString;
+            workerTasksText.textContent = tasksListString;
             removeClass(workerTasksText, "hide");
             anyUserDefinedDataFound = true;
         }
@@ -900,7 +900,7 @@ function updateUserDefinedData(userDefinedDataJson) {
                 },
                     `Manager Tasks (Unverified):`
                 );
-            managerTasksText.innerHTML = tasksListString;
+            managerTasksText.textContent = tasksListString;
             removeClass(managerTasksText, "hide");
             anyUserDefinedDataFound = true;
         }
@@ -916,7 +916,7 @@ function updateUserDefinedData(userDefinedDataJson) {
                 },
                     `Validator Tasks (Unverified):`
                 );
-            validatorTasksText.innerHTML = tasksListString;
+            validatorTasksText.textContent = tasksListString;
             removeClass(validatorTasksText, "hide");
             anyUserDefinedDataFound = true;
         }
@@ -939,7 +939,7 @@ function updateUserDefinedData(userDefinedDataJson) {
                         "Validation Requirements Whitelist:"
                     );
             }
-            validationRequirementWhitelistText.innerHTML
+            validationRequirementWhitelistText.textContent
                 = requirementsListString;
             removeClass(validationRequirementWhitelistText, "hide");
             anyUserDefinedDataFound = true;
@@ -947,8 +947,8 @@ function updateUserDefinedData(userDefinedDataJson) {
     }
     if ("availableValidationTime" in userDefinedDataJson) {
         const availableTime = userDefinedDataJson.availableValidationTime;
-        availableValidationTimeText.innerHTML = `Available Validation Time:<br>`
-            + `${availableTime.replace(/\n/g, '<br>')}`;
+        availableValidationTimeText.innerHTML = `Available Validation Time:\r\n`
+            + `${availableTime.replace(/\n/g, '\r\n')}`;
         removeClass(availableValidationTimeText, "hide");
         anyUserDefinedDataFound = true;
     }

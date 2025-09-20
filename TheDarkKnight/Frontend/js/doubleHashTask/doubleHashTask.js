@@ -634,7 +634,7 @@ async function tryDownload() {
 
     // Validate correct link response
     if (!response.ok) {
-        autoDownloadError.innerHTML = `Download failed from ${userUrl}`
+        autoDownloadError.textContent = `Download failed from ${userUrl}`
             + `/Tasks/DoubleHashTasks/${doubleHashTaskHash.substring(2)}/`
             + `Task.zip`;
         return;
@@ -755,7 +755,7 @@ async function dataHashMatchFound(zipFile) {
     }
 
     // Set zip file tree structure
-    taskFileTreeArea.innerHTML = formatFileStructure(zipFileContents);
+    taskFileTreeArea.textContent = formatFileStructure(zipFileContents);
 
     // Parse specifications json data for display
     const specificationsJson
