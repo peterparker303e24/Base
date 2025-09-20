@@ -338,3 +338,7 @@ img {
 .redirectable:hover {
     text-decoration-line: underline;
 }
+
+.text-content-return {
+    white-space: pre;
+}

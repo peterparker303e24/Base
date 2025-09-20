@@ -363,7 +363,7 @@ async function tryDownload() {
 
     // Validate correct link response
     if (!response.ok) {
-        autoDownloadError.innerHTML = `Download failed from ${userUrl}`
+        autoDownloadError.textContent = `Download failed from ${userUrl}`
             + `/TheList/${proposalHash.substring(2)}/Requirement.zip`;
         return;
     }
@@ -377,7 +377,7 @@ async function tryDownload() {
         // Parse file
         dataHashMatchFound(arrayBuffer);
     } else {
-        autoDownloadError.innerHTML = `Incorrect data hash from ${userUrl}`
+        autoDownloadError.textContent = `Incorrect data hash from ${userUrl}`
             + `/TheList/${proposalHash.substring(2)}/Requirement.zip`;
     }
 }
@@ -487,7 +487,7 @@ async function dataHashMatchFound(zipFile) {
     }
 
     // Set zip file tree structure
-    requirementFileTreeArea.innerHTML = formatFileStructure(zipFileContents);
+    requirementFileTreeArea.textContent = formatFileStructure(zipFileContents);
 
     // Parse requirement json data for display
     const requirementJson
@@ -507,7 +507,7 @@ async function dataHashMatchFound(zipFile) {
         return;
     }
     try {
-        requirementJsonArea.innerHTML = formatRequirementJson(jsonObject);
+        requirementJsonArea.textContent = formatRequirementJson(jsonObject);
     } catch (error) {
         requirementJsonArea.innerHTML
             = `[X] ERROR: Problem reading requirement.json`;
@@ -774,9 +774,9 @@ function continueSearch(searchCriteria) {
         }
 
         // Display retrieved user link
-        tryDownloadButton.innerHTML = `Try download from: `
-            + `${parseUserData(autoUserData).data}<br>Address: `
-            + `${autoUserAddress}<br>Link: ${autoUserLinks[0]}/TheList/`
+        tryDownloadButton.textContent = `Try download from: `
+            + `${parseUserData(autoUserData).data}\r\nAddress: `
+            + `${autoUserAddress}\r\nLink: ${autoUserLinks[0]}/TheList/`
             + `${proposalHash.substring(2)}/Requirement.json`;
     });
 }

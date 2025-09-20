@@ -36,9 +36,9 @@ theListContract.ethicsVersion().then((v) => {
 theListContract.getEthicsRequirements().then((l) => {
     let ethicsRequirementsListString = "";
     for (let i = 0; i < l.length; i++) {
-        ethicsRequirementsListString += `${l[i]}<br><br>`;
+        ethicsRequirementsListString += `${l[i]}\r\n\r\n`;
     }
-    ethicsRequirementsList.innerHTML = ethicsRequirementsListString;
+    ethicsRequirementsList.textContent = ethicsRequirementsListString;
 });
 
 // Redirects to view ethics requirements proposals page

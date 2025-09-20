@@ -612,9 +612,9 @@ async function searchUser() {
         // Validate the data hash matches task hash
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== validatorTaskHashValue) {
-            manualSearchError.innerHTML = `Incorrect data hash from,`
-                + `<br>User: ${userSearchValue}`
-                + `<br>At address: ${userUrl}/Tasks/ValidatorTasks/`
+            manualSearchError.textContent = `Incorrect data hash from,`
+                + `\r\nUser: ${userSearchValue}`
+                + `\r\nAt address: ${userUrl}/Tasks/ValidatorTasks/`
                 + `${validatorTaskHashValue.substring(2)}/Task.zip`;
             continue;
         }
@@ -649,7 +649,7 @@ async function tryDownload() {
 
     // Validate correct link response
     if (!response.ok) {
-        autoDownloadError.innerHTML = `Download failed from ${userUrl}`
+        autoDownloadError.textContent = `Download failed from ${userUrl}`
             + `/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}/`
             + `Task.zip`;
         return;
@@ -664,7 +664,7 @@ async function tryDownload() {
         // Parse file
         dataHashMatchFound(arrayBuffer);
     } else {
-        autoDownloadError.innerHTML = `Incorrect data hash from ${userUrl}`
+        autoDownloadError.textContent = `Incorrect data hash from ${userUrl}`
             + `/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}/`
             + `Task.zip`;
     }
@@ -692,9 +692,9 @@ function skipLink() {
     }
 
     // Update download from link button
-    tryDownloadButton.innerHTML = `Try download from: `
-        + `${parseUserData(autoUserData).data}<br>Address: `
-        + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
+    tryDownloadButton.textContent = `Try download from: `
+        + `${parseUserData(autoUserData).data}\r\nAddress: `
+        + `${autoUserAddress}\r\nLink: ${autoUserLinks[autoUserLinksIndex]}`
         + `/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}`
         + `/Task.zip`;
 }
@@ -771,7 +771,7 @@ async function dataHashMatchFound(zipFile) {
     }
 
     // Set zip file tree structure
-    taskFileTreeArea.innerHTML = formatFileStructure(zipFileContents);
+    taskFileTreeArea.textContent = formatFileStructure(zipFileContents);
 
     // Parse specifications json data for display
     const specificationsJson

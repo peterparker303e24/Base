@@ -96,7 +96,7 @@ getProposalData().then((proposalData) => {
         ethicsRequirementsListString
             += `${proposalData.proposalEthicsRequirements[i]}<br><br>`;
     }
-    ethicsRequirementsText.innerHTML = ethicsRequirementsListString;
+    ethicsRequirementsText.textContent = ethicsRequirementsListString;
 });
 
 // Redirects to view ethics requirements page

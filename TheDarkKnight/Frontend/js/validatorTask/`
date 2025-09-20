@@ -11,23 +11,33 @@ import {
     continueSearch,
     formatWei,
     getRequirementVersionData,
+    formatBlockTimestamp,
     parseUserData
 } from "../../utils/commonFunctions.js";
-import { HASH_TASK_CONTRACT_ADDRESS, THE_LIST_CONTRACT_ADDRESS, USERS_CONTRACT_ADDRESS } from "../../utils/constants.js";
+import { THE_LIST_CONTRACT_ADDRESS, USERS_CONTRACT_ADDRESS, VALIDATOR_TASK_CONTRACT_ADDRESS } from "../../utils/constants.js";
 
 // Page elements
 const taskId = document.getElementById("task-id");
-const hash = document.getElementById("hash-value");
-const taskHash = document.getElementById("task-hash");
+const validatorTaskHash = document.getElementById("task-hash");
 const managerAddress = document.getElementById("manager-address");
 const reward = document.getElementById("reward");
 const deadline = document.getElementById("deadline");
-const difficulty = document.getElementById("difficulty");
 const completed = document.getElementById("completed");
-const keyReveal = document.getElementById("key-reveal");
+const taskDefaulted = document.getElementById("task-defaulted");
+const submissionsCount = document.getElementById("submissions-count");
+const evaluatedSubmissionsCount
+    = document.getElementById("evaluated-submissions-count");
+const blockValidation
+    = document.getElementById("block-validation");
+const validationDelay = document.getElementById("validation-delay");
+const requirementsCount = document.getElementById("requirements-count");
+const validationTime = document.getElementById("validation-time");
+const nextSlotTime = document.getElementById("next-slot-time");
+const completionAddress = document.getElementById("completion-address");
+const completionIndex = document.getElementById("completion-index");
+const validatorComission = document.getElementById("validator-comission");
+const validators = document.getElementById("validators");
 const fundInput = document.getElementById("fund-input");
-const managerSection = document.getElementById("manager-key-reveal-section");
-const managerKeyRevealInput = document.getElementById("key-reveal-input");
 const fundButton = document.getElementById("fund-button");
 const withdrawFundsButton = document.getElementById("withdraw-funds-button");
 const fundError = document.getElementById("fund-error");
@@ -49,8 +59,12 @@ const uploadLocallyButton = document.getElementById("upload-locally-button");
 const uploadErrorText = document.getElementById("upload-locally-error");
 const zipInput = document.getElementById("file-input");
 const submitTaskButton = document.getElementById("submit-task-button");
-const viewHashTasksButton = document.getElementById("view-hash-tasks-button");
-const addHashTaskButton = document.getElementById("add-hash-task-button");
+const viewTaskSubmissions
+    = document.getElementById("view-task-submissions-button");
+const viewValidatorTasksButton
+    = document.getElementById("view-validator-tasks-button");
+const addValidatorTaskButton
+    = document.getElementById("add-validator-task-button");
 const taskFileTreeArea
     = document.getElementById("task-file-tree");
 
@@ -59,15 +73,15 @@ loadHeader();
 
 // Users, hash task, and The List contract addresses on the blockchain
 const usersContractAddress = USERS_CONTRACT_ADDRESS;
-const hashTaskContractAddress = HASH_TASK_CONTRACT_ADDRESS;
+const validatorTaskContractAddress = VALIDATOR_TASK_CONTRACT_ADDRESS;
 const theListContractAddress = THE_LIST_CONTRACT_ADDRESS;
 
 // Gets provider's access to contracts
 const usersAbi = await fetch('../data/abi/usersAbi.json');
-const hashTaskAbi = await fetch('../data/abi/hashTaskAbi.json');
+const validatorTaskAbi = await fetch('../data/abi/validatorTaskAbi.json');
 const theListAbi = await fetch('../data/abi/theListAbi.json');
 const usersJson = await usersAbi.json();
-const hashTaskJson = await hashTaskAbi.json();
+const validatorTaskJson = await validatorTaskAbi.json();
 const theListJson = await theListAbi.json();
 const provider = new ethers.BrowserProvider(window.ethereum);
 const usersContract = new ethers.Contract(
@@ -75,9 +89,9 @@ const usersContract = new ethers.Contract(
     usersJson.abi,
     provider
 );
-const hashTaskContract = new ethers.Contract(
-    hashTaskContractAddress,
-    hashTaskJson.abi,
+const validatorTaskContract = new ethers.Contract(
+    validatorTaskContractAddress,
+    validatorTaskJson.abi,
     provider
 );
 const theListContract = new ethers.Contract(
@@ -86,29 +100,29 @@ const theListContract = new ethers.Contract(
     provider
 );
 
-// Gets the URL parameters and defaults to 0.1
+// Gets the URL parameters
 const url = new URL(window.location.href);
 const params = Object.fromEntries(url.searchParams.entries());
 
-// Redirect to hash task search if url hash task id param invalid
-let validHashTaskId = false;
-let hashTaskIndex;
+// Redirect to validator task search if url hash task id param invalid
+let validValidatorTaskId = false;
+let validatorTaskIndex;
 if (typeof (params.id) === "string") {
     const urlId = params.id;
     const taskIdSplit = urlId.indexOf("-");
     if (taskIdSplit > 0) {
         const taskType = urlId.substring(0, taskIdSplit);
-        if (taskType === "h" && urlId.length > taskIdSplit + 1) {
+        if (taskType === "v" && urlId.length > taskIdSplit + 1) {
             const taskIndex = Number(urlId.substring(taskIdSplit + 1));
             if (taskIndex >= 0) {
-                hashTaskIndex = taskIndex;
-                validHashTaskId = true;
+                validatorTaskIndex = taskIndex;
+                validValidatorTaskId = true;
             }
         }
     }
 }
-if (!validHashTaskId) {
-    window.location.href = "pages/viewTasks.html?search=h";
+if (!validValidatorTaskId) {
+    window.location.href = "pages/viewTasks.html?search=v";
 }
 
 // Page interaction variables
@@ -126,128 +140,200 @@ let canFundTask;
 let canWithdrawFunds;
 let isBeforeDeadline;
 let isTaskComplete;
+let taskDefaultedValue;
 let signer;
-let hashTaskSigner;
+let validatorTaskSigner;
 let taskManagerAddress;
 let isKeyReveal;
+let nextSlotTimeValue;
 let userAddress;
-let taskHashValue;
-let hashTaskHash;
+let validatorTaskHashValue;
+let submissionsCountValue;
+let evaluatedSubmissionsCountValue;
+let requirementsCountValue;
+let validationTimeValue;
+let blockValidationValue;
+let validationDelayValue;
+let completionAddressValue;
+let validatorComissionValue;
+let validatorsValue;
+let submissionCompletionIndex;
 const emptyHash
     = "0x0000000000000000000000000000000000000000000000000000000000000000";
-const hashTaskIndexValue = Number(hashTaskIndex);
+const emptyAddress
+    = "0x0000000000000000000000000000000000000000";
+const validatorTaskIndexValue = Number(validatorTaskIndex);
 
 // Updates the text of the task ID
-taskId.innerHTML = `Task ID: h-${hashTaskIndex}`;
+taskId.innerHTML = `Task ID: v-${validatorTaskIndex}`;
 
 // Update hash task variables with data retrieved from the blockchain
-hashTaskContract.getHashTaskHash(hashTaskIndexValue).then(h => {
-    taskHashValue = h;
-    hash.innerHTML = `Hash Value:<br>${taskHashValue}`;
+validatorTaskContract
+    .getTaskHash(validatorTaskIndexValue)
+    .then(h => {
+        validatorTaskHashValue = h;
+        validatorTaskHash.innerHTML = `Task Hash:<br>${validatorTaskHashValue}`;
 
-    // Allow the user to withdraw funds if available and diplay manager key
-    // reveal section if necessary
-    updateWithdrawFundsAndKeyRevealSection();
-});
-hashTaskContract.getHashTaskTaskHash(hashTaskIndexValue).then(h => {
-    hashTaskHash = h;
-    taskHash.innerHTML = `Task Hash:<br>${hashTaskHash}`;
-});
-hashTaskContract.getHashTaskManagerAddress(hashTaskIndexValue).then(a => {
-    taskManagerAddress = a;
-    managerAddress.innerHTML = `Manager Address:<br>${taskManagerAddress}`;
+        // Allow the user to withdraw funds if available
+        updateWithdrawFundsSection();
+    });
+validatorTaskContract
+    .getManagerAddress(validatorTaskIndexValue)
+    .then(a => {
+        taskManagerAddress = a;
+        managerAddress.innerHTML = `Manager Address:<br>${taskManagerAddress}`;
 
-    // Allow the user to withdraw funds if available and diplay manager key
-    // reveal section if necessary
-    updateWithdrawFundsAndKeyRevealSection();
-});
-hashTaskContract.getHashTaskTotalWei(hashTaskIndexValue).then(w => {
-    reward.innerHTML
-        = `Reward (Wei): ${formatWei(w)}`;
-});
-hashTaskContract.getHashTaskDeadline(hashTaskIndexValue).then(d => {
-    deadline.innerHTML
-        = `Deadline (UTC): ${new Date(Number(d) * 1000).toUTCString()}`;
+        // Allow the user to withdraw funds if available
+        updateWithdrawFundsSection();
+    });
+validatorTaskContract
+    .getContributionTotalWei(validatorTaskIndexValue)
+    .then(w => {
+        reward.innerHTML
+            = `Reward (Wei): ${formatWei(w)}`;
+    });
+validatorTaskContract
+    .getDeadline(validatorTaskIndexValue)
+    .then(d => {
+        deadline.innerHTML
+            = `Deadline (UTC): ${new Date(Number(d) * 1000).toUTCString()}`;
 
-    // Allow the user to fund the task if the task deadline has not arrived
-    isBeforeDeadline = Math.floor(Date.now() / 1000) <= Number(d);
-    if (isBeforeDeadline) {
-        canFundTask = true;
-        replaceClass(fundButton, "inactive-payable-button", "payable-button");
-    }
+        // Allow the user to fund the task if the task deadline has not arrived
+        isBeforeDeadline = Math.floor(Date.now() / 1000) <= Number(d);
+        if (isBeforeDeadline) {
+            canFundTask = true;
+            replaceClass(
+                fundButton,
+                "inactive-payable-button",
+                "payable-button"
+            );
+        }
 
-    // Allow the user to withdraw funds if available and diplay manager key
-    // reveal section if necessary
-    updateWithdrawFundsAndKeyRevealSection();
-});
-hashTaskContract.getHashTaskDifficulty(hashTaskIndexValue).then(d => {
-    difficulty.innerHTML = `Difficulty: ${d}`;
-});
-hashTaskContract.getHashTaskComplete(hashTaskIndexValue).then(c => {
-    isTaskComplete = c;
-    completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
+        // Allow the user to withdraw funds if available
+        updateWithdrawFundsSection();
+    });
+validatorTaskContract
+    .getTaskComplete(validatorTaskIndexValue)
+    .then(c => {
+        isTaskComplete = c;
+        completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
 
-    // Allow the user to withdraw funds if available and diplay manager key
-    // reveal section if necessary
-    updateWithdrawFundsAndKeyRevealSection();
-});
-hashTaskContract.getHashTaskKeyReveal(hashTaskIndexValue).then(k => {
-    isKeyReveal = k;
-    keyReveal.innerHTML = `Key Reveal: ${isKeyReveal ? "TRUE" : "FALSE"}`;
+        validatorTaskContract
+            .getCompletionSubmissionIndex(validatorTaskIndexValue)
+            .then(s => {
+                submissionCompletionIndex = s;
+                if (isTaskComplete) {
+                    completionIndex.innerHTML
+                        = `Completion Index: ${submissionCompletionIndex}`;
+                    validatorTaskContract
+                        .getSubmissionWorkerAddress(
+                            validatorTaskIndexValue,
+                            submissionCompletionIndex
+                        ).then(c => {
+                            completionAddressValue = c;
+                            completionAddress.innerHTML = `Completion Address:`
+                                + `<br>${completionAddressValue}`;
+                        });
+                } else {
+                    completionIndex.innerHTML
+                        = `Completion Index: X`;
+                    completionAddress.innerHTML
+                        = `Completion Address: X`;
+                }
 
-    // Allow the user to withdraw funds if available and diplay manager key
-    // reveal section if necessary
-    updateWithdrawFundsAndKeyRevealSection();
-});
+            });
+
+        // Allow the user to withdraw funds if available
+        updateWithdrawFundsSection();
+    });
+validatorTaskContract
+    .taskDefaulted(validatorTaskIndexValue)
+    .then(d => {
+        taskDefaultedValue = d;
+        taskDefaulted.innerHTML
+            = `Task Defaulted: ${taskDefaultedValue ? "TRUE" : "FALSE"}`;
+
+        // Allow the user to withdraw funds if available
+        updateWithdrawFundsSection();
+    });
+validatorTaskContract
+    .getSubmissionsCount(validatorTaskIndexValue)
+    .then(s => {
+        submissionsCountValue = Number(s);
+        submissionsCount.innerHTML
+            = `Submissions Count: ${submissionsCountValue}`;
+    });
+validatorTaskContract
+    .getEvaluatedSubmissionsCount(validatorTaskIndexValue)
+    .then(e => {
+        evaluatedSubmissionsCountValue = Number(e);
+        evaluatedSubmissionsCount.innerHTML
+            = `Evaluated Submissions Count: ${evaluatedSubmissionsCountValue}`;
+    });
+validatorTaskContract
+    .getBlockValidationSchedule(validatorTaskIndexValue)
+    .then(b => {
+        blockValidationValue = b;
+        blockValidation.innerHTML
+            = `Block Validation: ${blockValidationValue ? "TRUE" : "FALSE"}`;
+    });
+validatorTaskContract
+    .getValidationDelay(validatorTaskIndexValue)
+    .then(d => {
+        validationDelayValue = d;
+        validationDelay.innerHTML
+            = `Validation Delay (Seconds): ${validationDelayValue}`;
+    });
+validatorTaskContract
+    .getRequirementsCount(validatorTaskIndexValue)
+    .then(r => {
+        requirementsCountValue = Number(r);
+        requirementsCount.innerHTML
+            = `Specifications Count: ${requirementsCountValue}`;
+    });
+validatorTaskContract
+    .getValidationTime(validatorTaskIndexValue)
+    .then(t => {
+        validationTimeValue = Number(t);
+        validationTime.innerHTML
+            = `Validation Time (Seconds): ${validationTimeValue}`;
+    });
+validatorTaskContract
+    .getNextSlotTime(validatorTaskIndexValue)
+    .then(n => {
+        nextSlotTimeValue = Number(n);
+        if (nextSlotTimeValue === 0
+            || new Date(nextSlotTimeValue * 1000) < new Date()
+        ) {
+            nextSlotTime.innerHTML = `Next Slot Time (UTC): Now - `
+                + `${new Date().toUTCString()}`;
+        } else {
+            nextSlotTime.innerHTML = `Next Slot Time (UTC): `
+                + `${formatBlockTimestamp(nextSlotTimeValue)}`;
+        }
+    });
+validatorTaskContract
+    .getValidatorComission(validatorTaskIndexValue)
+    .then(c => {
+        validatorComissionValue = c;
+        validatorComission.innerHTML = `Validator Comission (Wei): `
+            + `${formatWei(validatorComissionValue)}`;
+
+    });
+validatorTaskContract
+    .getValidators(validatorTaskIndexValue)
+    .then(v => {
+        validatorsValue = v;
+        let validatorsListString = "";
+        for (let i = 0; i < validatorsValue.length; i++) {
+            validatorsListString += `${validatorsValue[i]}<br>`;
+        }
+        validators.innerHTML = `Validators:<br>${validatorsListString}`;
+    });
 
 // Validates reward numerical input
 fundInput.addEventListener("input", () => {
     updateInputNumberToGroupedDigits(fundInput);
-});
-
-// Update the manager key reveal input and only allow the manager to withdraw
-// funds if the key matches the expected hash value
-managerKeyRevealInput.addEventListener("input", () => {
-
-    // Retrieve and format the manager key reveal input
-    const hexString = prefixHexBytes(managerKeyRevealInput.value);
-
-    // Validate the user input hex string
-    if (hexString === null || hexString.length !== 66) {
-        canWithdrawFunds = false;
-        replaceClass(
-            withdrawFundsButton,
-            "payable-button",
-            "inactive-payable-button"
-        );
-        return;
-    }
-
-    // Validate the manager key reveal hash, and only allow the funds to be
-    // withdrawn if the key matches the expected hash value
-    const keyHash = keccak256(
-        ethers.getBytes(hexString)
-    );
-    canWithdrawFunds = !isBeforeDeadline
-        && isKeyReveal
-        && !isTaskComplete
-        && userAddress === taskManagerAddress
-        && keyHash === taskHashValue;
-
-    // Update the widthdraw funds availablility display
-    if (canWithdrawFunds) {
-        replaceClass(
-            withdrawFundsButton,
-            "inactive-payable-button",
-            "payable-button"
-        );
-    } else {
-        replaceClass(
-            withdrawFundsButton,
-            "payable-button",
-            "inactive-payable-button"
-        );
-    }
 });
 
 // Create a transaction that funds the hash task if it is possible
@@ -258,16 +344,17 @@ fundButton.addEventListener("click", async () => {
 
         // Try to get the user hash task contract signer, and upon any problem
         // display the error
-        await getHashTaskSigner(fundError);
-        if (hashTaskSigner !== undefined) {
+        await getValidatorTaskSigner(fundError);
+        if (validatorTaskSigner !== undefined) {
 
             // Create the funding transaction
             let transactionResponse;
             try {
-                transactionResponse = await hashTaskSigner.fundHashTask(
-                    hashTaskIndex,
-                    { value: BigInt(fundInput.value.replaceAll(" ", "")) }
-                );
+                transactionResponse = await validatorTaskSigner
+                    .fundTask(
+                        validatorTaskIndex,
+                        { value: BigInt(fundInput.value.replaceAll(" ", "")) }
+                    );
             } catch (error) {
                 fundError.innerHTML
                     = `[X] ERROR: Transaction failed - ${error}`;
@@ -291,23 +378,14 @@ withdrawFundsButton.addEventListener("click", async () => {
 
         // Try to get the user hash task contract signer, and upon any problem
         // display the error
-        await getHashTaskSigner(fundError);
-        if (hashTaskSigner !== undefined) {
+        await getValidatorTaskSigner(fundError);
+        if (validatorTaskSigner !== undefined) {
 
             // Create the funding transaction
             let transactionResponse;
             try {
-                if (isKeyReveal && userAddress === taskManagerAddress) {
-                    transactionResponse = await hashTaskSigner.withdrawHashTask(
-                        hashTaskIndex,
-                        prefixHexBytes(managerKeyRevealInput.value)
-                    );
-                } else {
-                    transactionResponse = await hashTaskSigner.withdrawHashTask(
-                        hashTaskIndex,
-                        emptyHash
-                    );
-                }
+                transactionResponse = await validatorTaskSigner
+                    .withdrawTask(validatorTaskIndex);
             } catch (error) {
                 fundError.innerHTML
                     = `[X] ERROR: Transaction failed - ${error}`;
@@ -334,7 +412,8 @@ manualDiscoverButton.addEventListener("click", () => {
 // Toggles to the auto search data view
 autoDiscoverButton.addEventListener("click", () => {
 
-    if (hashTaskHash === undefined) {
+    // Task can only be discovered if the task hash is known
+    if (validatorTaskHashValue === undefined) {
         return;
     }
 
@@ -349,8 +428,8 @@ autoDiscoverButton.addEventListener("click", () => {
         skipLinkButton,
         skipAddressButton,
         tryDownloadButton,
-        (userLinks) => `${userLinks[0]}/Tasks/HashTasks/`
-            + `${hashTaskHash.substring(2)}/Task.zip`
+        (userLinks) => `${userLinks[0]}/Tasks/ValidatorTasks/`
+            + `${validatorTaskHashValue.substring(2)}/Task.zip`
 
     ).then((linkSearchData) => {
         autoUserAddress = linkSearchData.autoUserAddress;
@@ -374,20 +453,26 @@ uploadLocallyButton.addEventListener("click", () => {
 
 // Redirects to view proposal page using the task index of this page
 submitTaskButton.addEventListener("click", () => {
-    window.location.href
-        = `pages/hashTask/submitHashTask.html?index=${hashTaskIndex}`;
+    window.location.href = `pages/validatorTask/submitValidatorTask.html?`
+        + `index=${validatorTaskIndex}`;
+});
+
+// Redirects to view task submissions page using the task index of this page
+viewTaskSubmissions.addEventListener("click", () => {
+    window.location.href = `pages/validatorTask/viewValidatorTaskSubmissions`
+        + `.html?index=${validatorTaskIndex}`;
 });
 
 // Redirects to view tasks page using the task index of this page
-viewHashTasksButton.addEventListener("click", () => {
-    window.location.href = `pages/viewTasks.html?search=h`;
+viewValidatorTasksButton.addEventListener("click", () => {
+    window.location.href = `pages/viewTasks.html?search=v`;
 });
 
 // Redirects to the add task proposal page using the task index of
 // this page
-addHashTaskButton.addEventListener("click", () => {
-    window.location.href
-        = `pages/hashTask/addHashTask.html?index=${hashTaskIndex}`;
+addValidatorTaskButton.addEventListener("click", () => {
+    window.location.href = `pages/validatorTask/addValidatorTask.html?index=`
+        + `${validatorTaskIndex}`;
 });
 
 // Prompts user for upload of task zip, and displays task if valid
@@ -411,8 +496,8 @@ skipAddressButton.addEventListener("click", () => {
             skipLinkButton,
             skipAddressButton,
             tryDownloadButton,
-            (userLinks) => `${userLinks[0]}/Tasks/HashTasks/`
-                + `${hashTaskHash.substring(2)}/Task.zip`
+            (userLinks) => `${userLinks[0]}/Tasks/ValidatorTasks/`
+                + `${validatorTaskHashValue.substring(2)}/Task.zip`
         ).then((linkSearchData) => {
             autoUserAddress = linkSearchData.autoUserAddress;
             autoUserData = linkSearchData.autoUserData;
@@ -448,7 +533,8 @@ async function zipInputClicked(event) {
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip file";
+        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip "
+            + "file";
         return;
     }
 
@@ -463,7 +549,7 @@ async function zipInputClicked(event) {
 
         // Validate task hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
-        if (fileHash != hashTaskHash) {
+        if (fileHash != validatorTaskHashValue) {
             uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match task hash";
         } else {
@@ -485,8 +571,8 @@ async function zipInputClicked(event) {
  */
 async function searchUser() {
 
-    // Task can only be discovered if the task hash is known
-    if (hashTaskHash === undefined) {
+    // Task can only be retrived if the task hash is known
+    if (validatorTaskHashValue === undefined) {
         return;
     }
 
@@ -514,8 +600,8 @@ async function searchUser() {
         }
 
         // Retrieve data from link
-        const response = await fetch(`${userUrl}/Tasks/HashTasks/`
-            + `${hashTaskHash.substring(2)}/Task.zip`
+        const response = await fetch(`${userUrl}/Tasks/ValidatorTasks/`
+            + `${validatorTaskHashValue.substring(2)}/Task.zip`
         );
         if (!response.ok) {
             continue;
@@ -525,11 +611,11 @@ async function searchUser() {
 
         // Validate the data hash matches task hash
         const downloadHash = keccak256(uint8Array).toString('hex');
-        if (downloadHash !== hashTaskHash) {
-            manualSearchError.innerHTML = `Incorrect data hash from,`
-                + `<br>User: ${userSearchValue}`
-                + `<br>At address: ${userUrl}/Tasks/HashTasks/`
-                + `${hashTaskHash.substring(2)}/Task.zip`;
+        if (downloadHash !== validatorTaskHashValue) {
+            manualSearchError.textContent = `Incorrect data hash from,`
+                + `\r\nUser: ${userSearchValue}`
+                + `\r\nAt address: ${userUrl}/Tasks/ValidatorTasks/`
+                + `${validatorTaskHashValue.substring(2)}/Task.zip`;
             continue;
         }
 
@@ -557,13 +643,15 @@ async function tryDownload() {
     // Download data from current user link
     const userUrl = autoUserLinks[autoUserLinksIndex];
     const response = await fetch(
-        `${userUrl}/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`
+        `${userUrl}/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}`
+        + `/Task.zip`
     );
 
     // Validate correct link response
     if (!response.ok) {
-        autoDownloadError.innerHTML = `Download failed from ${userUrl}`
-            + `/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`;
+        autoDownloadError.textContent = `Download failed from ${userUrl}`
+            + `/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}/`
+            + `Task.zip`;
         return;
     }
 
@@ -571,13 +659,14 @@ async function tryDownload() {
     const arrayBuffer = await response.arrayBuffer();
     const uint8Array = new Uint8Array(arrayBuffer);
     const downloadHash = keccak256(uint8Array).toString('hex');
-    if (downloadHash === hashTaskHash) {
+    if (downloadHash === validatorTaskHashValue) {
 
         // Parse file
         dataHashMatchFound(arrayBuffer);
     } else {
         autoDownloadError.innerHTML = `Incorrect data hash from ${userUrl}`
-            + `/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`;
+            + `/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}/`
+            + `Task.zip`;
     }
 }
 
@@ -606,7 +695,8 @@ function skipLink() {
     tryDownloadButton.innerHTML = `Try download from: `
         + `${parseUserData(autoUserData).data}<br>Address: `
         + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
-        + `/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`;
+        + `/Tasks/ValidatorTasks/${validatorTaskHashValue.substring(2)}`
+        + `/Task.zip`;
 }
 
 /**
@@ -629,7 +719,7 @@ function unlockSaveTaskLocally() {
         const url = URL.createObjectURL(blob);
         downloadTaskAnchor.href = url;
         downloadTaskAnchor.download
-            = `Task-h-${hashTaskIndex}.zip`;
+            = `Task-v-${validatorTaskIndex}.zip`;
         downloadTaskAnchor.click();
     });
 
@@ -681,7 +771,7 @@ async function dataHashMatchFound(zipFile) {
     }
 
     // Set zip file tree structure
-    taskFileTreeArea.textContent = formatFileStructure(zipFileContents);
+    taskFileTreeArea.innerHTML = formatFileStructure(zipFileContents);
 
     // Parse specifications json data for display
     const specificationsJson
@@ -777,8 +867,8 @@ async function dataHashMatchFound(zipFile) {
             // If the parsing results in an error, then display a warning for
             // the requirement
             formatTaskJson(
-                jsonObject[i],
-                requirementJson
+                null,
+                null
             );
         }
     }
@@ -789,7 +879,7 @@ async function dataHashMatchFound(zipFile) {
  * to the given error element
  * @param {Element} errorElement Error element to output possible error
  */
-async function getHashTaskSigner(errorElement) {
+async function getValidatorTaskSigner(errorElement) {
 
     // Get the signer if not already cached
     if (signer === undefined) {
@@ -802,10 +892,10 @@ async function getHashTaskSigner(errorElement) {
     }
 
     // Get the hash task contract signer if not already cached
-    if (hashTaskSigner === undefined) {
-        hashTaskSigner = new ethers.Contract(
-            hashTaskContractAddress,
-            hashTaskJson.abi,
+    if (validatorTaskSigner === undefined) {
+        validatorTaskSigner = new ethers.Contract(
+            validatorTaskContractAddress,
+            validatorTaskJson.abi,
             signer
         );
     }
@@ -818,7 +908,7 @@ async function getHashTaskSigner(errorElement) {
  * reveal active and the current user the task manager, then display the key
  * reveal row to the task manager before they can withdraw their funds
  */
-function updateWithdrawFundsAndKeyRevealSection() {
+function updateWithdrawFundsSection() {
     if (isBeforeDeadline !== undefined
         && isKeyReveal !== undefined
         && isTaskComplete !== undefined
