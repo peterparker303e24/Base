@@ -10,7 +10,12 @@ import {
     getRequirementVersionData,
     addClass
 } from "../../utils/commonFunctions.js";
-import { THE_LIST_CONTRACT_ADDRESS, USERS_CONTRACT_ADDRESS, VALIDATOR_TASK_CONTRACT_ADDRESS } from "../../utils/constants.js";
+import {
+    THE_LIST_CONTRACT_ADDRESS,
+    USERS_CONTRACT_ADDRESS,
+    VALIDATOR_TASK_CONTRACT_ADDRESS,
+    THE_LIST_CONTRACT_MINIMUM_BLOCK
+} from "../../utils/constants.js";
 
 // Page elements
 const specificationsCount
@@ -88,7 +93,7 @@ taskHash.addEventListener("input", updateAddHashButton);
 specificationsCount.addEventListener("input", () => {
 
     // Parse only numerical characters
-    formatNumberInput(specificationsCount);
+    updateInputNumberToGroupedDigits(specificationsCount);
     updateAddHashButton();
 });
 
@@ -96,7 +101,7 @@ specificationsCount.addEventListener("input", () => {
 deadlineInput.addEventListener("input", () => {
 
     // Parse only numerical characters
-    formatNumberInput(deadlineInput);
+    updateInputNumberToGroupedDigits(deadlineInput);
     updateAddHashButton();
 });
 
@@ -114,7 +119,7 @@ blockScheduleButton.addEventListener("click", () => {
 validationTime.addEventListener("input", () => {
 
     // Parse only numerical characters
-    formatNumberInput(validationTime);
+    updateInputNumberToGroupedDigits(validationTime);
     updateAddHashButton();
 });
 
@@ -122,7 +127,7 @@ validationTime.addEventListener("input", () => {
 validationDelay.addEventListener("input", () => {
 
     // Parse only numerical characters
-    formatNumberInput(validationDelay);
+    updateInputNumberToGroupedDigits(validationDelay);
     updateAddHashButton();
 });
 
@@ -141,13 +146,13 @@ validatorAddresses.addEventListener("input", () => {
 validatorComission.addEventListener("input", () => {
 
     // Parse only numerical characters
-    formatNumberInput(validatorComission);
+    updateInputNumberToGroupedDigits(validatorComission);
     updateAddHashButton();
 });
 
 // Validates reward numerical input and update variables
 rewardInput.addEventListener("input", () => {
-    formatNumberInput(rewardInput);
+    updateInputNumberToGroupedDigits(rewardInput);
     updateAddHashButton();
 });
 
@@ -310,7 +315,7 @@ async function tryMatchFile(zipHash) {
 
         // Expected Task.zip data endpoint
         dataEndpoints.push(
-            `${downloadUrls[i]}/Tasks/HashTasks/`
+            `${downloadUrls[i]}/Tasks/ValidatorTasks/`
             + `${zipHash.substring(2)}/Task.zip`
         );
 
@@ -510,7 +515,7 @@ async function validateTaskFile(arrayBuffer) {
                 theListContract,
                 requirementIndex,
                 requirementVersionIndex,
-                0
+                THE_LIST_CONTRACT_MINIMUM_BLOCK
             );
             let requirementJson;
             const taskRequirementHash
@@ -663,17 +668,5 @@ function updateAddHashButton() {
             "payable-button",
             "inactive-payable-button"
         );
-    }
-}
-
-/**
- * Formats the input to a number with space separating the digits in groups of 3
- * digits
- * @param {Element} inputField Numerical data input field
- */
-function formatNumberInput(inputField) {
-    updateInputNumberToGroupedDigits(inputField);
-    if (inputField.value !== "") {
-        inputField.value = formatWei(Number(inputField.value));
     }
 }
