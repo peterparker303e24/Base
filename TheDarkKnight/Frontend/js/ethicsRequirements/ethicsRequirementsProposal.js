@@ -94,7 +94,7 @@ getProposalData().then((proposalData) => {
     let ethicsRequirementsListString = "";
     for (let i = 0; i < proposalData.proposalEthicsRequirements.length; i++) {
         ethicsRequirementsListString
-            += `${proposalData.proposalEthicsRequirements[i]}<br><br>`;
+            += `${proposalData.proposalEthicsRequirements[i]}\r\n\r\n`;
     }
     ethicsRequirementsText.textContent = ethicsRequirementsListString;
 });
