@@ -28,7 +28,7 @@ const theListContract = new ethers.Contract(
 
 // Update the display with the ethics requirements version when retrieved
 theListContract.ethicsVersion().then((v) => {
-    ethicsRequirementsVersionText.innerHTML
+    ethicsRequirementsVersionText.textContent
         = `Ethics Requirements Version: ${v}`;
 });
 

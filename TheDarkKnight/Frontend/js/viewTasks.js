@@ -103,10 +103,10 @@ addValidatorTaskButton.addEventListener("click", () => {
 foldTasksButton.addEventListener("click", () => {
     if (tasksFolded) {
         tasksPanel.style.display = "none";
-        foldTasksButton.innerHTML = "▶";
+        foldTasksButton.textContent = "▶";
     } else {
         tasksPanel.style.display = "grid";
-        foldTasksButton.innerHTML = "▼";
+        foldTasksButton.textContent = "▼";
     }
     tasksFolded = !tasksFolded;
 });
@@ -114,9 +114,9 @@ foldTasksButton.addEventListener("click", () => {
 // Updates checkbox check mark variable and display, then re-executes the search
 checkbox.addEventListener("click", () => {
     if (isHideCompletedTasksChecked) {
-        checkbox.innerHTML = "";
+        checkbox.textContent = "";
     } else {
-        checkbox.innerHTML = "✓";
+        checkbox.textContent = "✓";
     }
     isHideCompletedTasksChecked = !isHideCompletedTasksChecked;
     executeSearch();
@@ -125,7 +125,7 @@ checkbox.addEventListener("click", () => {
 // Updates the hash tasks count
 hashTaskContract.tasksCount().then((n) => {
     hashTasksCountValue = n;
-    hashTasksCount.innerHTML = `Hash Tasks Count: \
+    hashTasksCount.textContent = `Hash Tasks Count: \
         ${hashTasksCountValue}`;
     updateTotalTaskCount();
 });
@@ -133,7 +133,7 @@ hashTaskContract.tasksCount().then((n) => {
 // Updates the hash tasks count
 doubleHashTaskContract.tasksCount().then((n) => {
     doubleHashTasksCountValue = n;
-    doubleHashTasksCount.innerHTML = `Double Hash Tasks Count: \
+    doubleHashTasksCount.textContent = `Double Hash Tasks Count: \
         ${doubleHashTasksCountValue}`;
     updateTotalTaskCount();
 });
@@ -141,7 +141,7 @@ doubleHashTaskContract.tasksCount().then((n) => {
 // Updates the hash tasks count
 validatorTaskContract.tasksCount().then((n) => {
     validatorTasksCountValue = n;
-    validatorTasksCount.innerHTML = `Validator Tasks Count: \
+    validatorTasksCount.textContent = `Validator Tasks Count: \
         ${validatorTasksCountValue}`;
     updateTotalTaskCount();
 });
@@ -247,9 +247,9 @@ async function search(searchSettings, searchPage, searchItems) {
     // If search string empty, then search recent, otherwise search text value
     const searchText = searchInput.value;
     if (searchText === "") {
-        requirementsContainer.innerHTML = `Searching recent`;
+        requirementsContainer.textContent = `Searching recent`;
     } else {
-        requirementsContainer.innerHTML = `Searching "${searchText}"`;
+        requirementsContainer.textContent = `Searching "${searchText}"`;
     }
 
     // Array of up to 10 requirement items
@@ -410,7 +410,7 @@ async function searchPageResults(
 function updatePageResults(results) {
 
     // Reset the requirements items container then iteratively add each item
-    requirementsContainer.innerHTML = "";
+    requirementsContainer.textContent = "";
     results.forEach((searchResult, i) => {
 
         // Create requirement item with retrieved data
@@ -447,7 +447,7 @@ function updatePageResults(results) {
 
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        requirementsContainer.innerHTML = "No results match search criteria";
+        requirementsContainer.textContent = "No results match search criteria";
     }
 }
 
@@ -941,7 +941,7 @@ function updateTotalTaskCount() {
     ) {
         totalTasksCountValue = hashTasksCountValue
             + doubleHashTasksCountValue + validatorTasksCountValue;
-        totalTasksCount.innerHTML = `Total Tasks Count: `
+        totalTasksCount.textContent = `Total Tasks Count: `
             + `${totalTasksCountValue}`;
         if (pageSearch === undefined) {
             executeSearch();
@@ -955,7 +955,7 @@ function updateTotalTaskCount() {
 function updatePageItemCount() {
     const pageItemsRemainder
         = ((pageItems.items[currentPage].length - 1) % 10) + 1;
-    searchHeader.innerHTML = `Results ${currentPage * 10 + 1} - `
+    searchHeader.textContent = `Results ${currentPage * 10 + 1} - `
         + `${currentPage * 10 + pageItemsRemainder}:`;
 }
 

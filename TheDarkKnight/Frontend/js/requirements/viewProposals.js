@@ -64,15 +64,15 @@ if (fixedRequirement) {
 
     // Get the version and proposal count for the requirement, then execute a
     // search of the requirement proposals
-    index.innerHTML = `Requirement Index: ${requirementIndexValue}`;
+    index.textContent = `Requirement Index: ${requirementIndexValue}`;
     theListContract.getRequirementVersion(requirementIndexValue).then((v) => {
         requirementVersionsValue = v;
-        requirementVersions.innerHTML
+        requirementVersions.textContent
             = `Requirement Versions: ${requirementVersionsValue}`;
     });
     theListContract.getRequirementProposals(requirementIndexValue).then((p) => {
         requirementProposalsValue = p;
-        proposalsNumber.innerHTML
+        proposalsNumber.textContent
             = `Requirement Proposals: ${requirementProposalsValue}`;
         executeSearch();
     });
@@ -86,7 +86,7 @@ if (fixedRequirement) {
     // proposals
     theListContract.requirementCount().then(async (n) => {
         requirementsNumberValue = Number(n);
-        requirementsNumber.innerHTML
+        requirementsNumber.textContent
             = `Requirements Count: ${requirementsNumberValue}`;
         executeSearch();
     });
@@ -198,9 +198,9 @@ async function search(searchSettings, searchPage, searchItems, newSearchPage) {
 
     // Search recent if empty, otherwise search the given text
     if (searchText === "") {
-        proposalsContainer.innerHTML = `Searching recent`;
+        proposalsContainer.textContent = `Searching recent`;
     } else {
-        proposalsContainer.innerHTML = `Searching "${searchText}"`;
+        proposalsContainer.textContent = `Searching "${searchText}"`;
     }
 
     // Array of up to 10 proposal items
@@ -341,7 +341,7 @@ async function searchPageResults(
 function updatePageResults(results) {
 
     // Reset page items
-    proposalsContainer.innerHTML = "";
+    proposalsContainer.textContent = "";
 
     // Add each of the retrieved proposal items
     results.forEach((searchResult, i) => {
@@ -366,7 +366,7 @@ function updatePageResults(results) {
 
     // Display message if no more results found
     if (results.length === 0) {
-        proposalsContainer.innerHTML = "No results match search criteria";
+        proposalsContainer.textContent = "No results match search criteria";
     }
 }
 
@@ -871,6 +871,6 @@ async function executeSearch() {
 function updatePageItemCount() {
     const pageItemsRemainder
         = ((pageItems.items[currentPage].length - 1) % 10) + 1;
-    searchHeader.innerHTML = `Results ${currentPage * 10 + 1} - `
+    searchHeader.textContent = `Results ${currentPage * 10 + 1} - `
         + `${currentPage * 10 + pageItemsRemainder}:`;
 }

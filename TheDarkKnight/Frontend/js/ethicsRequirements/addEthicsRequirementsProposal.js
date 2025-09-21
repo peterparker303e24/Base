@@ -51,14 +51,14 @@ checkRequirementValidity();
 // Get the ethics requirements version and update the display
 theListContract.ethicsVersion().then((v) => {
     ethicsVersions = v;
-    ethicsRequirementsVersionText.innerHTML
+    ethicsRequirementsVersionText.textContent
         = `Ethics Requirements Version: ${ethicsVersions}`;
 });
 
 // Get the ethics requirements version and update the display
 theListContract.ethicsProposalsCount().then((p) => {
     ethicsProposals = p;
-    ethicsRequirementsProposalsText.innerHTML
+    ethicsRequirementsProposalsText.textContent
         = `Ethics Requirements Proposals: ${ethicsProposals}`;
 });
 
@@ -75,7 +75,7 @@ addRequirementButton.addEventListener("click", async () => {
     try {
         await provider.send("eth_requestAccounts", []);
     } catch {
-        errorText.innerHTML = "[X] ERROR: No wallet found";
+        errorText.textContent = "[X] ERROR: No wallet found";
         return;
     }
     const signer = await provider.getSigner();
@@ -89,7 +89,7 @@ addRequirementButton.addEventListener("click", async () => {
     // Validate user is activated
     const userActivated = await usersContract.activeUsers(address);
     if (!userActivated) {
-        errorText.innerHTML = "[X] ERROR: User inactivated";
+        errorText.textContent = "[X] ERROR: User inactivated";
         return;
     }
 
@@ -129,7 +129,7 @@ function checkRequirementValidity() {
     // Reset 
     validWrittenEthicsRequirements = false;
     let writtenJson;
-    writeError.innerHTML = `---`;
+    writeError.textContent = `---`;
     replaceClass(
         addRequirementButton,
         "payable-button",
@@ -144,14 +144,14 @@ function checkRequirementValidity() {
 
         // Validate text input is an array
         if (writtenJson === null || !Array.isArray(writtenJson)) {
-            writeError.innerHTML = `[X] ERROR: Input is not an array`;
+            writeError.textContent = `[X] ERROR: Input is not an array`;
             return;
         }
 
         // Validate each array element is a string
         for (let i = 0; i < writtenJson.length; i++) {
             if (typeof writtenJson[i] !== "string") {
-                writeError.innerHTML
+                writeError.textContent
                     = `[X] ERROR: All elements of array must be of type string`;
                 return;
             }
@@ -159,7 +159,7 @@ function checkRequirementValidity() {
     } catch (error) {
 
         // Display error if problem parsing user input
-        writeError.innerHTML = `[X] ERROR: Invalid input`;
+        writeError.textContent = `[X] ERROR: Invalid input`;
         return;
     }
 

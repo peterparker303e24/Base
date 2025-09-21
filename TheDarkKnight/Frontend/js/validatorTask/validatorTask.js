@@ -165,14 +165,14 @@ const emptyAddress
 const validatorTaskIndexValue = Number(validatorTaskIndex);
 
 // Updates the text of the task ID
-taskId.innerHTML = `Task ID: v-${validatorTaskIndex}`;
+taskId.textContent = `Task ID: v-${validatorTaskIndex}`;
 
 // Update hash task variables with data retrieved from the blockchain
 validatorTaskContract
     .getTaskHash(validatorTaskIndexValue)
     .then(h => {
         validatorTaskHashValue = h;
-        validatorTaskHash.innerHTML = `Task Hash:<br>${validatorTaskHashValue}`;
+        validatorTaskHash.textContent = `Task Hash:<br>${validatorTaskHashValue}`;
 
         // Allow the user to withdraw funds if available
         updateWithdrawFundsSection();
@@ -181,7 +181,7 @@ validatorTaskContract
     .getManagerAddress(validatorTaskIndexValue)
     .then(a => {
         taskManagerAddress = a;
-        managerAddress.innerHTML = `Manager Address:<br>${taskManagerAddress}`;
+        managerAddress.textContent = `Manager Address:<br>${taskManagerAddress}`;
 
         // Allow the user to withdraw funds if available
         updateWithdrawFundsSection();
@@ -189,13 +189,13 @@ validatorTaskContract
 validatorTaskContract
     .getContributionTotalWei(validatorTaskIndexValue)
     .then(w => {
-        reward.innerHTML
+        reward.textContent
             = `Reward (Wei): ${formatWei(w)}`;
     });
 validatorTaskContract
     .getDeadline(validatorTaskIndexValue)
     .then(d => {
-        deadline.innerHTML
+        deadline.textContent
             = `Deadline (UTC): ${new Date(Number(d) * 1000).toUTCString()}`;
 
         // Allow the user to fund the task if the task deadline has not arrived
@@ -216,14 +216,14 @@ validatorTaskContract
     .getTaskComplete(validatorTaskIndexValue)
     .then(c => {
         isTaskComplete = c;
-        completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
+        completed.textContent = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
 
         validatorTaskContract
             .getCompletionSubmissionIndex(validatorTaskIndexValue)
             .then(s => {
                 submissionCompletionIndex = s;
                 if (isTaskComplete) {
-                    completionIndex.innerHTML
+                    completionIndex.textContent
                         = `Completion Index: ${submissionCompletionIndex}`;
                     validatorTaskContract
                         .getSubmissionWorkerAddress(
@@ -231,13 +231,13 @@ validatorTaskContract
                             submissionCompletionIndex
                         ).then(c => {
                             completionAddressValue = c;
-                            completionAddress.innerHTML = `Completion Address:`
+                            completionAddress.textContent = `Completion Address:`
                                 + `<br>${completionAddressValue}`;
                         });
                 } else {
-                    completionIndex.innerHTML
+                    completionIndex.textContent
                         = `Completion Index: X`;
-                    completionAddress.innerHTML
+                    completionAddress.textContent
                         = `Completion Address: X`;
                 }
 
@@ -250,7 +250,7 @@ validatorTaskContract
     .taskDefaulted(validatorTaskIndexValue)
     .then(d => {
         taskDefaultedValue = d;
-        taskDefaulted.innerHTML
+        taskDefaulted.textContent
             = `Task Defaulted: ${taskDefaultedValue ? "TRUE" : "FALSE"}`;
 
         // Allow the user to withdraw funds if available
@@ -260,42 +260,42 @@ validatorTaskContract
     .getSubmissionsCount(validatorTaskIndexValue)
     .then(s => {
         submissionsCountValue = Number(s);
-        submissionsCount.innerHTML
+        submissionsCount.textContent
             = `Submissions Count: ${submissionsCountValue}`;
     });
 validatorTaskContract
     .getEvaluatedSubmissionsCount(validatorTaskIndexValue)
     .then(e => {
         evaluatedSubmissionsCountValue = Number(e);
-        evaluatedSubmissionsCount.innerHTML
+        evaluatedSubmissionsCount.textContent
             = `Evaluated Submissions Count: ${evaluatedSubmissionsCountValue}`;
     });
 validatorTaskContract
     .getBlockValidationSchedule(validatorTaskIndexValue)
     .then(b => {
         blockValidationValue = b;
-        blockValidation.innerHTML
+        blockValidation.textContent
             = `Block Validation: ${blockValidationValue ? "TRUE" : "FALSE"}`;
     });
 validatorTaskContract
     .getValidationDelay(validatorTaskIndexValue)
     .then(d => {
         validationDelayValue = d;
-        validationDelay.innerHTML
+        validationDelay.textContent
             = `Validation Delay (Seconds): ${validationDelayValue}`;
     });
 validatorTaskContract
     .getRequirementsCount(validatorTaskIndexValue)
     .then(r => {
         requirementsCountValue = Number(r);
-        requirementsCount.innerHTML
+        requirementsCount.textContent
             = `Specifications Count: ${requirementsCountValue}`;
     });
 validatorTaskContract
     .getValidationTime(validatorTaskIndexValue)
     .then(t => {
         validationTimeValue = Number(t);
-        validationTime.innerHTML
+        validationTime.textContent
             = `Validation Time (Seconds): ${validationTimeValue}`;
     });
 validatorTaskContract
@@ -305,10 +305,10 @@ validatorTaskContract
         if (nextSlotTimeValue === 0
             || new Date(nextSlotTimeValue * 1000) < new Date()
         ) {
-            nextSlotTime.innerHTML = `Next Slot Time (UTC): Now - `
+            nextSlotTime.textContent = `Next Slot Time (UTC): Now - `
                 + `${new Date().toUTCString()}`;
         } else {
-            nextSlotTime.innerHTML = `Next Slot Time (UTC): `
+            nextSlotTime.textContent = `Next Slot Time (UTC): `
                 + `${formatBlockTimestamp(nextSlotTimeValue)}`;
         }
     });
@@ -316,7 +316,7 @@ validatorTaskContract
     .getValidatorComission(validatorTaskIndexValue)
     .then(c => {
         validatorComissionValue = c;
-        validatorComission.innerHTML = `Validator Comission (Wei): `
+        validatorComission.textContent = `Validator Comission (Wei): `
             + `${formatWei(validatorComissionValue)}`;
 
     });
@@ -328,7 +328,7 @@ validatorTaskContract
         for (let i = 0; i < validatorsValue.length; i++) {
             validatorsListString += `${validatorsValue[i]}<br>`;
         }
-        validators.innerHTML = `Validators:<br>${validatorsListString}`;
+        validators.textContent = `Validators:<br>${validatorsListString}`;
     });
 
 // Validates reward numerical input
@@ -356,7 +356,7 @@ fundButton.addEventListener("click", async () => {
                         { value: BigInt(fundInput.value.replaceAll(" ", "")) }
                     );
             } catch (error) {
-                fundError.innerHTML
+                fundError.textContent
                     = `[X] ERROR: Transaction failed - ${error}`;
                 return;
             }
@@ -366,7 +366,7 @@ fundButton.addEventListener("click", async () => {
                 window.location.reload();
             });
         } else {
-            fundError.innerHTML
+            fundError.textContent
                 = "[X] ERROR: Failed to get hash task contract signer";
         }
     }
@@ -387,7 +387,7 @@ withdrawFundsButton.addEventListener("click", async () => {
                 transactionResponse = await validatorTaskSigner
                     .withdrawTask(validatorTaskIndex);
             } catch (error) {
-                fundError.innerHTML
+                fundError.textContent
                     = `[X] ERROR: Transaction failed - ${error}`;
                 return;
             }
@@ -397,7 +397,7 @@ withdrawFundsButton.addEventListener("click", async () => {
                 window.location.reload();
             });
         } else {
-            fundError.innerHTML
+            fundError.textContent
                 = "[X] ERROR: Failed to get hash task contract signer";
         }
     }
@@ -528,12 +528,12 @@ skipLinkButton.addEventListener("click", skipLink);
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip "
+        uploadErrorText.textContent = "[X] ERROR: File uploaded is not a zip "
             + "file";
         return;
     }
@@ -550,7 +550,7 @@ async function zipInputClicked(event) {
         // Validate task hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != validatorTaskHashValue) {
-            uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
+            uploadErrorText.textContent = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match task hash";
         } else {
 
@@ -561,7 +561,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -620,13 +620,13 @@ async function searchUser() {
         }
 
         // Data found so reset manual search error and parse file
-        manualSearchError.innerHTML = "";
+        manualSearchError.textContent = "";
         dataHashMatchFound(arrayBuffer);
         return;
     }
 
     // Display error if data not found from user
-    manualSearchError.innerHTML = `[X] ERROR: Task data not found from `
+    manualSearchError.textContent = `[X] ERROR: Task data not found from `
         + `user: ${userSearchValue}`;
 }
 
@@ -766,7 +766,7 @@ async function dataHashMatchFound(zipFile) {
             }
         });
     } catch (error) {
-        taskFileTreeArea.innerHTML = `Error parsing .zip file`;
+        taskFileTreeArea.textContent = `Error parsing .zip file`;
         return;
     }
 
@@ -777,7 +777,7 @@ async function dataHashMatchFound(zipFile) {
     const specificationsJson
         = zipContents.file(`${outerFolderName}/specifications.json`);
     if (!specificationsJson) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: specifications.json not found under directory path`;
         return;
     }
@@ -786,13 +786,13 @@ async function dataHashMatchFound(zipFile) {
         const content = await specificationsJson.async("string");
         jsonObject = JSON.parse(content);
     } catch (error) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: Problem parsing specifications.json`;
         return;
     }
 
     // Task content header
-    taskJsonArea.innerHTML = "<h1>Task Requirements</h1>";
+    taskJsonArea.textContent = "<h1>Task Requirements</h1>";
 
     // Iterate over each requirement listed in the specifications, and for each
     // one parse the corresponding requirement in the requirements folder to
@@ -886,7 +886,7 @@ async function getValidatorTaskSigner(errorElement) {
         try {
             signer = await provider.getSigner();
         } catch (error) {
-            errorElement.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+            errorElement.textContent = `[X] ERROR: Get signer failed - ${error}`;
             return;
         }
     }

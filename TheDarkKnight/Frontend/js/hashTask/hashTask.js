@@ -138,12 +138,12 @@ const emptyHash
 const hashTaskIndexValue = Number(hashTaskIndex);
 
 // Updates the text of the task ID
-taskId.innerHTML = `Task ID: h-${hashTaskIndex}`;
+taskId.textContent = `Task ID: h-${hashTaskIndex}`;
 
 // Update hash task variables with data retrieved from the blockchain
 hashTaskContract.getHashTaskHash(hashTaskIndexValue).then(h => {
     taskHashValue = h;
-    hash.innerHTML = `Hash Value:<br>${taskHashValue}`;
+    hash.textContent = `Hash Value:<br>${taskHashValue}`;
 
     // Allow the user to withdraw funds if available and diplay manager key
     // reveal section if necessary
@@ -151,22 +151,22 @@ hashTaskContract.getHashTaskHash(hashTaskIndexValue).then(h => {
 });
 hashTaskContract.getHashTaskTaskHash(hashTaskIndexValue).then(h => {
     hashTaskHash = h;
-    taskHash.innerHTML = `Task Hash:<br>${hashTaskHash}`;
+    taskHash.textContent = `Task Hash:<br>${hashTaskHash}`;
 });
 hashTaskContract.getHashTaskManagerAddress(hashTaskIndexValue).then(a => {
     taskManagerAddress = a;
-    managerAddress.innerHTML = `Manager Address:<br>${taskManagerAddress}`;
+    managerAddress.textContent = `Manager Address:<br>${taskManagerAddress}`;
 
     // Allow the user to withdraw funds if available and diplay manager key
     // reveal section if necessary
     updateWithdrawFundsAndKeyRevealSection();
 });
 hashTaskContract.getHashTaskTotalWei(hashTaskIndexValue).then(w => {
-    reward.innerHTML
+    reward.textContent
         = `Reward (Wei): ${formatWei(w)}`;
 });
 hashTaskContract.getHashTaskDeadline(hashTaskIndexValue).then(d => {
-    deadline.innerHTML
+    deadline.textContent
         = `Deadline (UTC): ${new Date(Number(d) * 1000).toUTCString()}`;
 
     // Allow the user to fund the task if the task deadline has not arrived
@@ -181,11 +181,11 @@ hashTaskContract.getHashTaskDeadline(hashTaskIndexValue).then(d => {
     updateWithdrawFundsAndKeyRevealSection();
 });
 hashTaskContract.getHashTaskDifficulty(hashTaskIndexValue).then(d => {
-    difficulty.innerHTML = `Difficulty: ${d}`;
+    difficulty.textContent = `Difficulty: ${d}`;
 });
 hashTaskContract.getHashTaskComplete(hashTaskIndexValue).then(c => {
     isTaskComplete = c;
-    completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
+    completed.textContent = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
 
     // Allow the user to withdraw funds if available and diplay manager key
     // reveal section if necessary
@@ -193,7 +193,7 @@ hashTaskContract.getHashTaskComplete(hashTaskIndexValue).then(c => {
 });
 hashTaskContract.getHashTaskKeyReveal(hashTaskIndexValue).then(k => {
     isKeyReveal = k;
-    keyReveal.innerHTML = `Key Reveal: ${isKeyReveal ? "TRUE" : "FALSE"}`;
+    keyReveal.textContent = `Key Reveal: ${isKeyReveal ? "TRUE" : "FALSE"}`;
 
     // Allow the user to withdraw funds if available and diplay manager key
     // reveal section if necessary
@@ -269,7 +269,7 @@ fundButton.addEventListener("click", async () => {
                     { value: BigInt(fundInput.value.replaceAll(" ", "")) }
                 );
             } catch (error) {
-                fundError.innerHTML
+                fundError.textContent
                     = `[X] ERROR: Transaction failed - ${error}`;
                 return;
             }
@@ -279,7 +279,7 @@ fundButton.addEventListener("click", async () => {
                 window.location.reload();
             });
         } else {
-            fundError.innerHTML
+            fundError.textContent
                 = "[X] ERROR: Failed to get hash task contract signer";
         }
     }
@@ -309,7 +309,7 @@ withdrawFundsButton.addEventListener("click", async () => {
                     );
                 }
             } catch (error) {
-                fundError.innerHTML
+                fundError.textContent
                     = `[X] ERROR: Transaction failed - ${error}`;
                 return;
             }
@@ -319,7 +319,7 @@ withdrawFundsButton.addEventListener("click", async () => {
                 window.location.reload();
             });
         } else {
-            fundError.innerHTML
+            fundError.textContent
                 = "[X] ERROR: Failed to get hash task contract signer";
         }
     }
@@ -443,12 +443,12 @@ skipLinkButton.addEventListener("click", skipLink);
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip file";
+        uploadErrorText.textContent = "[X] ERROR: File uploaded is not a zip file";
         return;
     }
 
@@ -464,7 +464,7 @@ async function zipInputClicked(event) {
         // Validate task hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != hashTaskHash) {
-            uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
+            uploadErrorText.textContent = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match task hash";
         } else {
 
@@ -475,7 +475,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -526,7 +526,7 @@ async function searchUser() {
         // Validate the data hash matches task hash
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== hashTaskHash) {
-            manualSearchError.innerHTML = `Incorrect data hash from,`
+            manualSearchError.textContent = `Incorrect data hash from,`
                 + `<br>User: ${userSearchValue}`
                 + `<br>At address: ${userUrl}/Tasks/HashTasks/`
                 + `${hashTaskHash.substring(2)}/Task.zip`;
@@ -534,13 +534,13 @@ async function searchUser() {
         }
 
         // Data found so reset manual search error and parse file
-        manualSearchError.innerHTML = "";
+        manualSearchError.textContent = "";
         dataHashMatchFound(arrayBuffer);
         return;
     }
 
     // Display error if data not found from user
-    manualSearchError.innerHTML = `[X] ERROR: Task data not found from `
+    manualSearchError.textContent = `[X] ERROR: Task data not found from `
         + `user: ${userSearchValue}`;
 }
 
@@ -562,7 +562,7 @@ async function tryDownload() {
 
     // Validate correct link response
     if (!response.ok) {
-        autoDownloadError.innerHTML = `Download failed from ${userUrl}`
+        autoDownloadError.textContent = `Download failed from ${userUrl}`
             + `/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`;
         return;
     }
@@ -576,7 +576,7 @@ async function tryDownload() {
         // Parse file
         dataHashMatchFound(arrayBuffer);
     } else {
-        autoDownloadError.innerHTML = `Incorrect data hash from ${userUrl}`
+        autoDownloadError.textContent = `Incorrect data hash from ${userUrl}`
             + `/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`;
     }
 }
@@ -603,7 +603,7 @@ function skipLink() {
     }
 
     // Update download from link button
-    tryDownloadButton.innerHTML = `Try download from: `
+    tryDownloadButton.textContent = `Try download from: `
         + `${parseUserData(autoUserData).data}<br>Address: `
         + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
         + `/Tasks/HashTasks/${hashTaskHash.substring(2)}/Task.zip`;
@@ -676,7 +676,7 @@ async function dataHashMatchFound(zipFile) {
             }
         });
     } catch (error) {
-        taskFileTreeArea.innerHTML = `Error parsing .zip file`;
+        taskFileTreeArea.textContent = `Error parsing .zip file`;
         return;
     }
 
@@ -687,7 +687,7 @@ async function dataHashMatchFound(zipFile) {
     const specificationsJson
         = zipContents.file(`${outerFolderName}/specifications.json`);
     if (!specificationsJson) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: specifications.json not found under directory path`;
         return;
     }
@@ -696,13 +696,13 @@ async function dataHashMatchFound(zipFile) {
         const content = await specificationsJson.async("string");
         jsonObject = JSON.parse(content);
     } catch (error) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: Problem parsing specifications.json`;
         return;
     }
 
     // Task content header
-    taskJsonArea.innerHTML = "<h1>Task Requirements</h1>";
+    taskJsonArea.textContent = "<h1>Task Requirements</h1>";
 
     // Iterate over each requirement listed in the specifications, and for each
     // one parse the corresponding requirement in the requirements folder to
@@ -796,7 +796,7 @@ async function getHashTaskSigner(errorElement) {
         try {
             signer = await provider.getSigner();
         } catch (error) {
-            errorElement.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+            errorElement.textContent = `[X] ERROR: Get signer failed - ${error}`;
             return;
         }
     }

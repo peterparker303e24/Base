@@ -49,7 +49,7 @@ const url = new URL(window.location.href);
 const params = Object.fromEntries(url.searchParams.entries());
 validatorTaskIndex = Number(params.index);
 if (!Number.isNaN(validatorTaskIndex)) {
-    taskId.innerHTML = `Task ID: v-${validatorTaskIndex}`;
+    taskId.textContent = `Task ID: v-${validatorTaskIndex}`;
 }
 
 // Redirects to submit validator task page
@@ -69,28 +69,28 @@ viewTaskButton.addEventListener("click", () => {
 validatorTaskContract.getTaskComplete(validatorTaskIndex)
     .then((c) => {
         isTaskComplete = c;
-        taskComplete.innerHTML
+        taskComplete.textContent
             = `Task Complete: ${isTaskComplete ? "TRUE" : "FALSE"}`;
         updateSubmissionData();
     });
 validatorTaskContract.taskDefaulted(validatorTaskIndex)
     .then((d) => {
         isTaskDefaulted = d;
-        taskDefaulted.innerHTML
+        taskDefaulted.textContent
             = `Task Defaulted: ${isTaskDefaulted ? "TRUE" : "FALSE"}`;
         updateSubmissionData();
     });
 validatorTaskContract.getSubmissionsCount(validatorTaskIndex)
     .then((s) => {
         submissionsCountValue = Number(s);
-        submissionsCount.innerHTML
+        submissionsCount.textContent
             = `Submissions Count: ${submissionsCountValue}`;
         updateSubmissionData();
     });
 validatorTaskContract.getEvaluatedSubmissionsCount(validatorTaskIndex)
     .then((e) => {
         evaluatedSubmissionsCountValue = Number(e);
-        evaluatedSubmissionsCount.innerHTML
+        evaluatedSubmissionsCount.textContent
             = `Evaluated Submissions Count: ${evaluatedSubmissionsCountValue}`;
         updateSubmissionData();
     });
@@ -131,7 +131,7 @@ async function updateSubmissionData() {
     }
 
     // Display text for the start of the search
-    submissionsContainer.innerHTML = "Loading validator task submissions...";
+    submissionsContainer.textContent = "Loading validator task submissions...";
 
     // Iterate over all task submissions in reverse order to display the most
     // recent submissions on top, and retrieve validator task submission data in
@@ -184,7 +184,7 @@ async function updateSubmissionData() {
 function updatePageResults(results) {
 
     // Reset the submission items container then iteratively add each item
-    submissionsContainer.innerHTML = "";
+    submissionsContainer.textContent = "";
     results.forEach((submissionItem, i) => {
 
         // Create submission item with retrieved data
@@ -218,6 +218,6 @@ function updatePageResults(results) {
 
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        submissionsContainer.innerHTML = "No submissions yet";
+        submissionsContainer.textContent = "No submissions yet";
     }
 }

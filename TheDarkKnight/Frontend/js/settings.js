@@ -17,13 +17,13 @@ let isLightMode = darkMode === "disabled";
 if (isLightMode) {
     document.body.classList.remove("dark-mode");
     modeButtonSvg.setAttribute("src", "assets/icons/LightMode.svg");
-    modeButtonText.innerHTML = "Light Mode";
-    toggleButton.innerHTML = "Toggle: Light Mode";
+    modeButtonText.textContent = "Light Mode";
+    toggleButton.textContent = "Toggle: Light Mode";
 } else {
     document.body.classList.add("dark-mode");
     modeButtonSvg.setAttribute("src", "assets/icons/DarkMode.svg");
-    modeButtonText.innerHTML = "Dark Mode";
-    toggleButton.innerHTML = "Toggle: Dark Mode";
+    modeButtonText.textContent = "Dark Mode";
+    toggleButton.textContent = "Toggle: Dark Mode";
 }
 
 // Dark/light mode icon button toggles between dark and light theme
@@ -42,14 +42,14 @@ function changeVariableAndIcon() {
         document.body.classList.add("dark-mode");
         localStorage.setItem("darkMode", "enabled");
         modeButtonSvg.setAttribute("src", "assets/icons/DarkMode.svg");
-        modeButtonText.innerHTML = "Dark Mode";
-        toggleButton.innerHTML = "Toggle: Dark Mode";
+        modeButtonText.textContent = "Dark Mode";
+        toggleButton.textContent = "Toggle: Dark Mode";
     } else {
         isLightMode = true;
         document.body.classList.remove("dark-mode");
         localStorage.setItem("darkMode", "disabled");
         modeButtonSvg.setAttribute("src", "assets/icons/LightMode.svg");
-        modeButtonText.innerHTML = "Light Mode";
-        toggleButton.innerHTML = "Toggle: Light Mode";
+        modeButtonText.textContent = "Light Mode";
+        toggleButton.textContent = "Toggle: Light Mode";
     }
 }

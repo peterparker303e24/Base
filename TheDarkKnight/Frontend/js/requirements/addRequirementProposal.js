@@ -92,14 +92,14 @@ if (fixedRequirement) {
 
     // Get the requirement versions and number of proposals, and updates the
     // display
-    requirementIdText.innerHTML = `Requirement Index: ${requirementIndex}`;
+    requirementIdText.textContent = `Requirement Index: ${requirementIndex}`;
     theListContract.getRequirementVersion(requirementIndex).then((versions) => {
-        requirementVersionsTextFixed.innerHTML
+        requirementVersionsTextFixed.textContent
             = `Requirement Versions: ${versions}`;
     });
     theListContract.getRequirementProposals(requirementIndex)
         .then((proposals) => {
-            requirementProposalsTextFixed.innerHTML
+            requirementProposalsTextFixed.textContent
                 = `Requirement Proposals: ${proposals}`;
         });
     theListContract.requirementCount().then((n) => {
@@ -117,7 +117,7 @@ if (fixedRequirement) {
     // Get the total number of requirements, and updates the display
     theListContract.requirementCount().then((n) => {
         requirementsNumberValue = Number(n);
-        requirementsNumber.innerHTML
+        requirementsNumber.textContent
             = `Requirements Count: ${requirementsNumberValue}`;
         updateRequirementInput();
     });
@@ -190,7 +190,7 @@ async function loadUser() {
     try {
         await provider.send("eth_requestAccounts", []);
     } catch {
-        errorText.innerHTML = "[X] ERROR: no wallet found";
+        errorText.textContent = "[X] ERROR: no wallet found";
         return;
     }
 
@@ -206,7 +206,7 @@ async function loadUser() {
     // Validate the user is activated
     const userActivated = await usersContract.activeUsers(address);
     if (!userActivated) {
-        errorText.innerHTML = "[X] ERROR: User inactivated";
+        errorText.textContent = "[X] ERROR: User inactivated";
         return;
     }
 }
@@ -220,12 +220,12 @@ async function zipInputUpload(event) {
 
     // Requirement cross checked variable and error text are reset
     requirementCrossChecked = false;
-    errorText.innerHTML = "";
+    errorText.textContent = "";
 
     // Validates zip file upload
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        errorText.innerHTML = "[X] ERROR: File uploaded is not a zip file";
+        errorText.textContent = "[X] ERROR: File uploaded is not a zip file";
         return;
     }
 
@@ -242,13 +242,13 @@ async function zipInputUpload(event) {
         const arrayBuffer = event.target.result;
         const fileBytes = new Uint8Array(arrayBuffer);
         fileHash = keccak256(fileBytes).toString('hex');
-        fileName.innerHTML = `Name: ${file.name}\nKeccak256 Hash: ${fileHash}`;
+        fileName.textContent = `Name: ${file.name}\nKeccak256 Hash: ${fileHash}`;
         await tryMatchFile(fileHash);
     };
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        errorText.innerHTML = "[X] ERROR: Problem reading zip file";
+        errorText.textContent = "[X] ERROR: Problem reading zip file";
     };
 }
 
@@ -275,7 +275,7 @@ async function tryMatchFile(zipHash) {
 
     // If no valid links, then display error
     if (downloadUrls.length === 0) {
-        errorText.innerHTML = "[X] ERROR: No link found for current user";
+        errorText.textContent = "[X] ERROR: No link found for current user";
         return;
     }
 
@@ -307,7 +307,7 @@ async function tryMatchFile(zipHash) {
                 || requirementsNumberValue === undefined
                 || requirementIndex >= requirementsNumberValue
             ) {
-                errorText.innerHTML = "[X] ERROR: Invalid requirement index";
+                errorText.textContent = "[X] ERROR: Invalid requirement index";
                 return;
             }
             replaceClass(
@@ -320,7 +320,7 @@ async function tryMatchFile(zipHash) {
     }
 
     // Display requirement host error
-    errorText.innerHTML = `[X] ERROR: Requirement.zip file not found at any `
+    errorText.textContent = `[X] ERROR: Requirement.zip file not found at any `
         + `user endpoint: ${dataEndpoints}`;
 }
 
@@ -331,7 +331,7 @@ function checkRequirementValidity() {
 
     // Reset variables
     validWrittenCondition = false;
-    writeError.innerHTML = ``;
+    writeError.textContent = ``;
     replaceClass(
         downloadWrittenButton,
         "border-button",
@@ -347,26 +347,26 @@ function checkRequirementValidity() {
 
         // Validate json text is a single object
         if (typeof writtenJson !== 'object' || writtenJson === null) {
-            writeError.innerHTML = `(!) json must be an object`;
+            writeError.textContent = `(!) json must be an object`;
             return;
         }
 
         // Validate the necessary condition property for the requirement
         if (!("condition" in writtenJson)) {
-            writeError.innerHTML
+            writeError.textContent
                 = `(!) json must have array attribute "condition"`;
             return;
         }
 
         // Validate the condition is an array of strings
         if (!Array.isArray(writtenJson.condition)) {
-            writeError.innerHTML
+            writeError.textContent
                 = `(!) "condition" attribute must be an array`;
             return;
         }
         for (let i = 0; i < writtenJson.condition.length; i++) {
             if (typeof writtenJson.condition[i] !== "string") {
-                writeError.innerHTML = `(!) json attribute "condition" `
+                writeError.textContent = `(!) json attribute "condition" `
                     + `must be an array of all strings`;
                 return;
             }
@@ -374,20 +374,20 @@ function checkRequirementValidity() {
 
         // Validate the necessary labeled variables property for the requirement
         if (!("labeledVariables" in writtenJson)) {
-            writeError.innerHTML
+            writeError.textContent
                 = `(!) json must have array attribute "labeledVariables"`;
             return;
         }
 
         // Validate the labeled variables is an array of strings
         if (!Array.isArray(writtenJson.labeledVariables)) {
-            writeError.innerHTML
+            writeError.textContent
                 = `(!) "labeledVariables" attribute must be an array`;
             return;
         }
         for (let i = 0; i < writtenJson.labeledVariables.length; i++) {
             if (typeof writtenJson.labeledVariables[i] !== "string") {
-                writeError.innerHTML = `(!) json attribute `
+                writeError.textContent = `(!) json attribute `
                     + `"labeledVariables" must be an array of all strings`;
                 return;
             }
@@ -402,7 +402,7 @@ function checkRequirementValidity() {
             "border-button"
         )
     } catch (error) {
-        writeError.innerHTML = `(!) Invalid json`;
+        writeError.textContent = `(!) Invalid json`;
     }
 }
 
@@ -436,12 +436,12 @@ async function updateRequirementInput() {
     if (userIndex < requirementsNumberValue) {
         theListContract.getRequirementVersion(requirementIndex)
             .then((versions) => {
-                requirementVersionsTextDynamic.innerHTML
+                requirementVersionsTextDynamic.textContent
                     = `Requirement Versions: ${versions}`;
             });
         theListContract.getRequirementProposals(requirementIndex)
             .then((proposals) => {
-                requirementProposalsTextDynamic.innerHTML
+                requirementProposalsTextDynamic.textContent
                     = `Requirement Proposals: ${proposals}`;
             });
 
@@ -452,15 +452,15 @@ async function updateRequirementInput() {
                 "payable-button"
             );
         }
-        errorText.innerHTML = "";
+        errorText.textContent = "";
     } else {
-        requirementVersionsTextDynamic.innerHTML = `Requirement Versions: -`;
-        requirementProposalsTextDynamic.innerHTML = `Requirement Proposals: -`;
+        requirementVersionsTextDynamic.textContent = `Requirement Versions: -`;
+        requirementProposalsTextDynamic.textContent = `Requirement Proposals: -`;
         replaceClass(
             addProposalButton,
             "payable-button",
             "inactive-payable-button"
         );
-        errorText.innerHTML = "[X] ERROR: Invalid requirement index";
+        errorText.textContent = "[X] ERROR: Invalid requirement index";
     }
 }

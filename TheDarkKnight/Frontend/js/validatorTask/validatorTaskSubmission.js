@@ -212,10 +212,10 @@ const validatorTaskIndexValue = Number(validatorTaskIndex);
 const submissionIndexValue = Number(validatorSubmissionIndex);
 
 // Updates the text of the task ID
-taskId.innerHTML = `Task ID: v-${validatorTaskIndex}`;
+taskId.textContent = `Task ID: v-${validatorTaskIndex}`;
 
 // Updates the text of the submission ID
-submissionId.innerHTML
+submissionId.textContent
     = `Submission ID: v-${validatorTaskIndex}-${validatorSubmissionIndex}`;
 
 // Update hash task and submission variables with data retrieved from the
@@ -229,7 +229,7 @@ validatorTaskContract
 validatorTaskContract
     .getContributionTotalWei(validatorTaskIndexValue)
     .then(w => {
-        reward.innerHTML
+        reward.textContent
             = `Reward (Wei): ${formatWei(w)}`;
         updateSections();
     });
@@ -237,7 +237,7 @@ validatorTaskContract
     .getTaskComplete(validatorTaskIndexValue)
     .then(c => {
         isTaskComplete = c;
-        completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
+        completed.textContent = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
 
         // Update submission status if all dependent data collected
         updateSubmissionStatus();
@@ -247,7 +247,7 @@ validatorTaskContract
     .taskDefaulted(validatorTaskIndexValue)
     .then(d => {
         taskDefaultedValue = d;
-        taskDefaulted.innerHTML
+        taskDefaulted.textContent
             = `Task Defaulted: ${taskDefaultedValue ? "TRUE" : "FALSE"}`;
 
         // Update submission status if all dependent data collected
@@ -258,7 +258,7 @@ validatorTaskContract
     .getSubmissionsCount(validatorTaskIndexValue)
     .then(s => {
         submissionsCountValue = Number(s);
-        submissionsCount.innerHTML
+        submissionsCount.textContent
             = `Submissions Count: ${submissionsCountValue}`;
         updateSections();
     });
@@ -266,7 +266,7 @@ validatorTaskContract
     .getEvaluatedSubmissionsCount(validatorTaskIndexValue)
     .then(e => {
         evaluatedSubmissionsCountValue = Number(e);
-        evaluatedSubmissionsCount.innerHTML
+        evaluatedSubmissionsCount.textContent
             = `Evaluated Submissions Count: ${evaluatedSubmissionsCountValue}`;
         updateSubmissionStatus();
         updateSections();
@@ -275,7 +275,7 @@ validatorTaskContract
     .getRequirementsCount(validatorTaskIndexValue)
     .then(r => {
         requirementsCountValue = Number(r);
-        requirementsCount.innerHTML
+        requirementsCount.textContent
             = `Requirements Count: ${requirementsCountValue}`;
         updateSections();
     });
@@ -283,7 +283,7 @@ validatorTaskContract
     .getValidatorComission(validatorTaskIndexValue)
     .then(c => {
         validatorComissionValue = c;
-        validatorComission.innerHTML = `Validator Comission (Wei): `
+        validatorComission.textContent = `Validator Comission (Wei): `
             + `${formatWei(validatorComissionValue)}`;
     });
 validatorTaskContract
@@ -294,7 +294,7 @@ validatorTaskContract
         for (let i = 0; i < validatorsValue.length; i++) {
             validatorsListString += `${validatorsValue[i]}<br>`;
         }
-        validators.innerHTML = `Validators:<br>${validatorsListString}`;
+        validators.textContent = `Validators:<br>${validatorsListString}`;
         updateSections();
     });
 validatorTaskContract
@@ -303,7 +303,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(w => {
         workerAddressValue = w;
-        workerAddress.innerHTML = `Worker Address:<br>${workerAddressValue}`;
+        workerAddress.textContent = `Worker Address:<br>${workerAddressValue}`;
         updateSections();
     });
 validatorTaskContract
@@ -312,7 +312,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(s => {
         submissionHashValue = s;
-        submissionHash.innerHTML = `Submission Hash:<br>${submissionHashValue}`;
+        submissionHash.textContent = `Submission Hash:<br>${submissionHashValue}`;
     });
 validatorTaskContract
     .getSubmissionValidationStart(
@@ -320,7 +320,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(async (v) => {
         validationStartTimeValue = Number(v);
-        validationStartTime.innerHTML = `Validation Start Time (UTC): `
+        validationStartTime.textContent = `Validation Start Time (UTC): `
             + `${new Date(
                 Number(validationStartTimeValue) * 1000
             ).toUTCString()}`;
@@ -335,7 +335,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(v => {
         validationEndTimeValue = Number(v);
-        validationEndTime.innerHTML = `Validation End Time (UTC): `
+        validationEndTime.textContent = `Validation End Time (UTC): `
             + `${new Date(
                 validationEndTimeValue * 1000
             ).toUTCString()}`;
@@ -350,7 +350,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(w => {
         submissionWithdrawnValue = w;
-        submissionWithdrawn.innerHTML = `Submission Withdrawn: `
+        submissionWithdrawn.textContent = `Submission Withdrawn: `
             + `${submissionWithdrawnValue ? "TRUE" : "FALSE"}`;
         updateSections();
     });
@@ -363,9 +363,9 @@ validatorTaskContract
     });
 
 // Displays a counting timer that updates every second
-currentTime.innerHTML = `Current Time (UTC): ${new Date().toUTCString()}`;
+currentTime.textContent = `Current Time (UTC): ${new Date().toUTCString()}`;
 setInterval(() => {
-    currentTime.innerHTML = `Current Time (UTC): ${new Date().toUTCString()}`;
+    currentTime.textContent = `Current Time (UTC): ${new Date().toUTCString()}`;
 }, 1_000);
 
 // Withdraw task completion by either evaluation accepted or task defaulted,
@@ -393,7 +393,7 @@ withdrawSubmissionComplete.addEventListener("click", async () => {
                 submissionIndexValue
             );
     } catch (error) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
@@ -431,7 +431,7 @@ withdrawSubmissionUnevaluated.addEventListener("click", async () => {
                 submissionIndexValue
             );
     } catch (error) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
@@ -519,9 +519,9 @@ downloadSubmissionButton.addEventListener("click", async () => {
 ethicsRequirementsCheck.addEventListener("click", () => {
     ethicsRequirementsChecked = !ethicsRequirementsChecked;
     if (ethicsRequirementsChecked) {
-        ethicsRequirementsCheck.innerHTML = "✓";
+        ethicsRequirementsCheck.textContent = "✓";
     } else {
-        ethicsRequirementsCheck.innerHTML = "";
+        ethicsRequirementsCheck.textContent = "";
     }
 
     // Update the submit evaluation button accept/reject text
@@ -580,7 +580,7 @@ submitEvaluationButton.addEventListener("click", async () => {
                 uint256Array
             );
     } catch (error) {
-        submitEvaluationError.innerHTML
+        submitEvaluationError.textContent
             = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
@@ -716,12 +716,12 @@ skipLinkButton.addEventListener("click", skipLink);
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip "
+        uploadErrorText.textContent = "[X] ERROR: File uploaded is not a zip "
             + "file";
         return;
     }
@@ -738,7 +738,7 @@ async function zipInputClicked(event) {
         // Validate task hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != validatorTaskHashValue) {
-            uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
+            uploadErrorText.textContent = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match task hash";
         } else {
 
@@ -749,7 +749,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -808,13 +808,13 @@ async function searchUser() {
         }
 
         // Data found so reset manual search error and parse file
-        manualSearchError.innerHTML = "";
+        manualSearchError.textContent = "";
         dataHashMatchFound(arrayBuffer);
         return;
     }
 
     // Display error if data not found from user
-    manualSearchError.innerHTML = `[X] ERROR: Task data not found from `
+    manualSearchError.textContent = `[X] ERROR: Task data not found from `
         + `user: ${userSearchValue}`;
 }
 
@@ -954,7 +954,7 @@ async function dataHashMatchFound(zipFile) {
             }
         });
     } catch (error) {
-        taskFileTreeArea.innerHTML = `Error parsing .zip file`;
+        taskFileTreeArea.textContent = `Error parsing .zip file`;
         return;
     }
 
@@ -965,7 +965,7 @@ async function dataHashMatchFound(zipFile) {
     const specificationsJson
         = zipContents.file(`${outerFolderName}/specifications.json`);
     if (!specificationsJson) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: specifications.json not found under directory path`;
         return;
     }
@@ -974,13 +974,13 @@ async function dataHashMatchFound(zipFile) {
         const content = await specificationsJson.async("string");
         jsonObject = JSON.parse(content);
     } catch (error) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: Problem parsing specifications.json`;
         return;
     }
 
     // Task content header
-    taskJsonArea.innerHTML = "<h1>Task Requirements</h1>";
+    taskJsonArea.textContent = "<h1>Task Requirements</h1>";
 
     // Iterate over each requirement listed in the specifications, and for each
     // one parse the corresponding requirement in the requirements folder to
@@ -1074,7 +1074,7 @@ async function getValidatorTaskSigner(errorElement) {
         try {
             signer = await provider.getSigner();
         } catch (error) {
-            errorElement.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+            errorElement.textContent = `[X] ERROR: Get signer failed - ${error}`;
             return;
         }
     }
@@ -1117,7 +1117,7 @@ async function updateSections() {
         try {
             await provider.send("eth_requestAccounts", []);
         } catch {
-            errorText.innerHTML = "[X] ERROR: no wallet found";
+            errorText.textContent = "[X] ERROR: no wallet found";
             return;
         }
 
@@ -1159,15 +1159,15 @@ async function updateSections() {
         checkboxClone.addEventListener("click", () => {
             requirementChecks[i] = !requirementChecks[i];
             if (requirementChecks[i]) {
-                checkboxClone.innerHTML = "✓";
+                checkboxClone.textContent = "✓";
             } else {
-                checkboxClone.innerHTML = "";
+                checkboxClone.textContent = "";
             }
 
             // Update the submit evaluation button accept/reject text
             updateEvaluationButtonText();
         });
-        templateClone.querySelector("#requirement-text").innerHTML
+        templateClone.querySelector("#requirement-text").textContent
             = `Requirement ${i + 1}`;
         requirementsContainer.appendChild(templateClone);
     }
@@ -1210,7 +1210,7 @@ function updateSubmissionStatus() {
     );
 
     // Update the UI with the submission status
-    submissionStatus.innerHTML = `Submission Status: ${submissionStatusValue}`;
+    submissionStatus.textContent = `Submission Status: ${submissionStatusValue}`;
 
     // Update the submit evaluation button UI
     canSubmitEvaluation();
@@ -1231,7 +1231,7 @@ function canSubmitEvaluation() {
         "payable-button",
         "inactive-payable-button"
     );
-    submitEvaluationButton.innerHTML = "Submit Evaluation";
+    submitEvaluationButton.textContent = "Submit Evaluation";
 
     // Validate the user is a validator and the evaluation section is showing
     if (!showingEvaluationSection) {
@@ -1250,29 +1250,29 @@ function canSubmitEvaluation() {
     }
 
     // Validate the submission can be evaluated
-    submitEvaluationError.innerHTML = "";
+    submitEvaluationError.textContent = "";
     if (new Date() <= new Date(validationStartTimeValue * 1000)) {
-        submitEvaluationError.innerHTML
+        submitEvaluationError.textContent
             = "(!) Waiting for submission evaluation timespan";
         return false;
     }
     if (new Date() > new Date(validationEndTimeValue * 1000)) {
-        submitEvaluationError.innerHTML
+        submitEvaluationError.textContent
             = "[X] ERROR: Submission evaluation timespan has passed";
         return false;
     }
     if (taskDefaultedValue) {
-        submitEvaluationError.innerHTML
+        submitEvaluationError.textContent
             = "[X] ERROR: Task has defaulted, evaluation not available";
         return false;
     }
     if (isTaskComplete) {
-        submitEvaluationError.innerHTML = "[X] ERROR: Task has already been "
+        submitEvaluationError.textContent = "[X] ERROR: Task has already been "
             + "completed, evaluation not available";
         return false;
     }
     if (evaluatedSubmissionsCountValue > submissionIndexValue) {
-        submitEvaluationError.innerHTML
+        submitEvaluationError.textContent
             = "[X] ERROR: Submission has already been evaluated";
         return false;
     }
@@ -1317,42 +1317,42 @@ function canWithdrawCompletion() {
 
     // Validate the user can withdraw the submission reward
     if (submissionWithdrawnValue) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) Submission already withdrawn";
         return false;
     }
     if (!isTaskComplete && !taskDefaultedValue) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) Submission not complete";
         return false;
     }
     if (workerAddressValue !== userAddress) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) User does not match worker address";
         return false;
     }
     if (isTaskComplete
         && submissionCompletionIndex < submissionIndexValue
     ) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) Submission incomplete unevaluated";
         return false;
     } else if (isTaskComplete
         && submissionCompletionIndex > submissionIndexValue
     ) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) Submission rejected";
         return false;
     } else if (taskDefaultedValue
         && evaluatedSubmissionsCountValue > submissionIndexValue
     ) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) Submission rejected";
         return false;
     } else if (taskDefaultedValue
         && evaluatedSubmissionsCountValue > submissionIndexValue
     ) {
-        withdrawSubmissionCompleteError.innerHTML
+        withdrawSubmissionCompleteError.textContent
             = "(!) Submission incomplete unevaluated";
         return false;
     }
@@ -1363,7 +1363,7 @@ function canWithdrawCompletion() {
         "inactive-payable-button",
         "payable-button"
     );
-    withdrawSubmissionCompleteError.innerHTML = "";
+    withdrawSubmissionCompleteError.textContent = "";
     return true;
 }
 
@@ -1394,42 +1394,42 @@ function canWithdrawUnevaluated() {
 
     // Validate the user can withdraw the submission reward
     if (submissionWithdrawnValue) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = "(!) Submission already withdrawn";
         return false;
     }
     if (!isTaskComplete && !taskDefaultedValue) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = "(!) Submission not unevaluated";
         return false;
     }
     if (workerAddressValue !== userAddress) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = "(!) User does not match worker address";
         return false;
     }
     if (isTaskComplete
         && submissionCompletionIndex === submissionIndexValue
     ) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = `(!) Use "Withdraw Submission Completion" button`;
         return false;
     } else if (isTaskComplete
         && submissionCompletionIndex > submissionIndexValue
     ) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = "(!) Submission rejected";
         return false;
     } else if (taskDefaultedValue
         && evaluatedSubmissionsCountValue === submissionIndexValue
     ) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = `(!) Use "Withdraw Submission Completion" button`;
         return false;
     } else if (taskDefaultedValue
         && evaluatedSubmissionsCountValue > submissionIndexValue
     ) {
-        withdrawSubmissionUnevaluatedError.innerHTML
+        withdrawSubmissionUnevaluatedError.textContent
             = "(!) Submission rejected";
         return false;
     }
@@ -1440,7 +1440,7 @@ function canWithdrawUnevaluated() {
         "inactive-payable-button",
         "payable-button"
     );
-    withdrawSubmissionUnevaluatedError.innerHTML = "";
+    withdrawSubmissionUnevaluatedError.textContent = "";
     return true;
 }
 
@@ -1452,8 +1452,8 @@ function updateEvaluationButtonText() {
     if (ethicsRequirementsChecked
         && requirementChecks.reduce((acc, curr) => acc && curr, true)
     ) {
-        submitEvaluationButton.innerHTML = "Submit Evaluation: ACCEPTED";
+        submitEvaluationButton.textContent = "Submit Evaluation: ACCEPTED";
     } else {
-        submitEvaluationButton.innerHTML = "Submit Evaluation: REJECTED";
+        submitEvaluationButton.textContent = "Submit Evaluation: REJECTED";
     }
 }

@@ -106,7 +106,7 @@ if (params.search !== undefined) {
 if (userAddressValue == undefined || !isAddress(userAddressValue)) {
     window.location.href = 'pages/users/viewUsers.html';
 } else {
-    userAddress.innerHTML = `User Address:<br>${userAddressValue}`;
+    userAddress.textContent = `User Address:<br>${userAddressValue}`;
     executeSearch();
 }
 
@@ -122,20 +122,20 @@ usersContract.links(userAddressValue).then((l) => {
 });
 usersContract.lockoutCodes(userAddressValue).then((l) => {
     userLockoutCodeValue = l;
-    userLockoutCode.innerHTML = `Lockout Code: ${userLockoutCodeValue}`;
+    userLockoutCode.textContent = `Lockout Code: ${userLockoutCodeValue}`;
 });
 usersContract.activationStatus(userAddressValue).then((a) => {
     userActivationStatusValue = getActivationStatusText(Number(a));
-    userActivationStatus.innerHTML
+    userActivationStatus.textContent
         = `Activation Status: ${userActivationStatusValue}`;
 });
 
 // Toggle the button to show only calls initiated by the user
 checkbox.addEventListener("click", () => {
     if (showOnlyUserInitiatedCalls) {
-        checkbox.innerHTML = "";
+        checkbox.textContent = "";
     } else {
-        checkbox.innerHTML = "✓";
+        checkbox.textContent = "✓";
     }
     showOnlyUserInitiatedCalls = !showOnlyUserInitiatedCalls;
     executeSearch();
@@ -249,9 +249,9 @@ async function search(searchSettings, searchPage, searchItems) {
     // Search by the recent user interactions with any search filters
     const searchText = searchInput.value;
     if (searchText === "") {
-        usersContainer.innerHTML = `Searching recent`;
+        usersContainer.textContent = `Searching recent`;
     } else {
-        usersContainer.innerHTML = `Searching "${searchText}"`;
+        usersContainer.textContent = `Searching "${searchText}"`;
     }
 
     // Array of up to 10 requirement items
@@ -345,7 +345,7 @@ async function searchPageResults(
 function updatePageResults(results) {
 
     // Reset the requirements items container then iteratively add each item
-    usersContainer.innerHTML = "";
+    usersContainer.textContent = "";
     results.forEach((searchResult, i) => {
 
         // Create user item with retrieved data
@@ -388,7 +388,7 @@ function updatePageResults(results) {
 
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        usersContainer.innerHTML = "No results match search criteria";
+        usersContainer.textContent = "No results match search criteria";
     }
 }
 
@@ -688,7 +688,7 @@ async function executeSearch() {
 function updatePageItemCount() {
     const pageItemsRemainder
         = ((pageItems.items[currentPage].length - 1) % 10) + 1;
-    searchHeader.innerHTML = `Results ${currentPage * 10 + 1} - `
+    searchHeader.textContent = `Results ${currentPage * 10 + 1} - `
         + `${currentPage * 10 + pageItemsRemainder}:`;
 }
 
@@ -824,7 +824,7 @@ async function tryLoadUserDefinedData(userLinksValue) {
     if (userDefinedDataJson !== undefined) {
         updateUserDefinedData(userDefinedDataJson);
     } else {
-        userDataErrorText.innerHTML
+        userDataErrorText.textContent
             = "User data resource not found at any user links endpoints";
     }
 }
@@ -850,7 +850,7 @@ function updateUserDefinedData(userDefinedDataJson) {
         if (Number.isInteger(minimumCommissionValue)
             && minimumCommissionValue >= 0
         ) {
-            minimumCommissionText.innerHTML = `Minimum Commission: `
+            minimumCommissionText.textContent = `Minimum Commission: `
                 + `${formatWei(minimumCommissionValue)} Wei`;
             removeClass(minimumCommissionText, "hide");
             anyUserDefinedDataFound = true;
@@ -947,7 +947,7 @@ function updateUserDefinedData(userDefinedDataJson) {
     }
     if ("availableValidationTime" in userDefinedDataJson) {
         const availableTime = userDefinedDataJson.availableValidationTime;
-        availableValidationTimeText.innerHTML = `Available Validation Time:\r\n`
+        availableValidationTimeText.textContent = `Available Validation Time:\r\n`
             + `${availableTime.replace(/\n/g, '\r\n')}`;
         removeClass(availableValidationTimeText, "hide");
         anyUserDefinedDataFound = true;
@@ -956,7 +956,7 @@ function updateUserDefinedData(userDefinedDataJson) {
     // If no data has been successfully parsed from the user defined data, then
     // display message
     if (!anyUserDefinedDataFound) {
-        userDataErrorText.innerHTML
+        userDataErrorText.textContent
             = "No user defined data found at user links endpoint";
     }
 }
