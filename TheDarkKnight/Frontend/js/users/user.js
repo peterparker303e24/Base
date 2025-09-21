@@ -718,7 +718,7 @@ function getEventDataString(eventParameterNames, eventParameterValues) {
     let stringBuilder = "";
     for (let i = 0; i < eventParameterNames.length; i++) {
         stringBuilder
-            += `${eventParameterNames[i]}: ${eventParameterValues[i]}<br>`
+            += `${eventParameterNames[i]}: ${eventParameterValues[i]}\r\n`
     }
     return stringBuilder;
 }
@@ -864,7 +864,7 @@ function updateUserDefinedData(userDefinedDataJson) {
         ) {
             const ethicsListString = standardsValue
                 .reduce((acc, curr) => {
-                    return acc + "<br>" + curr;
+                    return acc + "\r\n" + curr;
                 },
                     `Ethics Requirements Standards:`
                 );
@@ -880,7 +880,7 @@ function updateUserDefinedData(userDefinedDataJson) {
         ) {
             const tasksListString = workerTasks
                 .reduce((acc, curr) => {
-                    return acc + "<br>" + curr;
+                    return acc + "\r\n" + curr;
                 },
                     `Worker Tasks (Unverified):`
                 );
@@ -896,7 +896,7 @@ function updateUserDefinedData(userDefinedDataJson) {
         ) {
             const tasksListString = managerTasks
                 .reduce((acc, curr) => {
-                    return acc + "<br>" + curr;
+                    return acc + "\r\n" + curr;
                 },
                     `Manager Tasks (Unverified):`
                 );
@@ -912,7 +912,7 @@ function updateUserDefinedData(userDefinedDataJson) {
         ) {
             const tasksListString = validatorTasks
                 .reduce((acc, curr) => {
-                    return acc + "<br>" + curr;
+                    return acc + "\r\n" + curr;
                 },
                     `Validator Tasks (Unverified):`
                 );
@@ -928,13 +928,13 @@ function updateUserDefinedData(userDefinedDataJson) {
             let requirementsListString = "";
             if (requirementsWhitelist === null) {
                 requirementsListString = "Validation Requirements Whitelist:"
-                    + "<br>Any requirement accepted";
+                    + "\r\nAny requirement accepted";
             } else if (Array.isArray(requirementsWhitelist)
                 && requirementsWhitelist.every(w => isValidRequirement(w))
             ) {
                 requirementsListString = requirementsWhitelist
                     .reduce((acc, curr) => {
-                        return acc + "<br>" + curr;
+                        return acc + "\r\n" + curr;
                     },
                         "Validation Requirements Whitelist:"
                     );
