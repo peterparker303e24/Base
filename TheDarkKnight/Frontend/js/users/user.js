@@ -106,7 +106,7 @@ if (params.search !== undefined) {
 if (userAddressValue == undefined || !isAddress(userAddressValue)) {
     window.location.href = 'pages/users/viewUsers.html';
 } else {
-    userAddress.textContent = `User Address:<br>${userAddressValue}`;
+    userAddress.textContent = `User Address:\r\n${userAddressValue}`;
     executeSearch();
 }
 
@@ -709,10 +709,12 @@ function getActivationStatusText(enumValue) {
 }
 
 /**
- * TODO
- * @param {Array<String>} eventParameterNames 
- * @param {Array<Object>} eventParameterValues 
- * @returns 
+ * 
+ * @param {Array<String>} eventParameterNames Contract event parameter names
+ * @param {Array<Object>} eventParameterValues Contract event parameter
+ * values
+ * @returns {String} Stringified display of the contract event parameter
+ * names and values
  */
 function getEventDataString(eventParameterNames, eventParameterValues) {
     let stringBuilder = "";
