@@ -9,7 +9,7 @@ class HeaderSection extends HTMLElement {
         this.attachShadow({ mode: "open" });
 
         // Define the component html and css
-        this.shadowRoot.textContent = `
+        this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="global.css">
             <div id="header-container" class="row vertically-center-row">
                 <div id="left-button" class="icon-button redirectable left medium-padding">

@@ -9,7 +9,7 @@ class LearningNavigationPanel extends HTMLElement {
         this.attachShadow({ mode: "open" });
 
         // Define the component html and css
-        this.shadowRoot.textContent = `
+        this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="./global.css">
             <link rel="stylesheet" href="./css/learning.css">
             <div id="panel">
