@@ -453,17 +453,17 @@ export function formatTaskJson(
     const requirementToggle = document.createElement("div");
     requirementToggle.classList.add("large-text");
     requirementToggle.id = "requirement-toggle";
-    requirementToggle.innerHTML = "▼";
+    requirementToggle.textContent = "▼";
     requirementToggle.classList.add(
         "border-button", "square", "padding", "left-align", "large-text"
     );
     requirementToggle.addEventListener("click", () => {
         if (content.style.display === "none") {
             content.style.display = "block";
-            requirementToggle.innerHTML = "▼";
+            requirementToggle.textContent = "▼";
         } else {
             content.style.display = "none";
-            requirementToggle.innerHTML = "▶";
+            requirementToggle.textContent = "▶";
         }
     });
     const requirementHeader = document.createElement("div");
@@ -477,17 +477,17 @@ export function formatTaskJson(
     // Validate the specification and requirement, and display a warning and
     // return if null
     if (requirementJson === null) {
-        requirementHeader.innerHTML = "(!) Task requirement is invalid";
+        requirementHeader.textContent = "(!) Task requirement is invalid";
         container.appendChild(templateRequirement);
         return;
     } else if (specificationJson === null) {
-        requirementHeader.innerHTML = "(!) Task specification invalid";
+        requirementHeader.textContent = "(!) Task specification invalid";
         container.appendChild(templateRequirement);
         return;
     }
 
     // Display the requirement ID in the requirement fold header
-    requirementHeader.innerHTML = `<h1>Requirement `
+    requirementHeader.textContent = `<h1>Requirement `
         + `${specificationJson.requirementIndex}-`
         + `${specificationJson.requirementVersionIndex}</h1>`;
 
@@ -533,7 +533,7 @@ export function formatTaskJson(
 
     // The html is inserted in the requirement fold and the fold is appended to
     // the task requirements section
-    content.innerHTML = jsonInnerHtml;
+    content.textContent = jsonInnerHtml;
     container.appendChild(templateRequirement);
 }
 
@@ -547,12 +547,12 @@ export function formatTaskJson(
 export async function zipInputClicked(event, errorText, hash) {
 
     // Reset error text
-    errorText.innerHTML = "";
+    errorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        errorText.innerHTML = "[X] ERROR: File uploaded is not a zip file";
+        errorText.textContent = "[X] ERROR: File uploaded is not a zip file";
         return;
     }
 
@@ -568,7 +568,7 @@ export async function zipInputClicked(event, errorText, hash) {
         // Validate requirement hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != hash) {
-            errorText.innerHTML = "[X] ERROR: Uploaded .zip file hash does "
+            errorText.textContent = "[X] ERROR: Uploaded .zip file hash does "
                 + "not match requirement hash";
         } else {
 
@@ -579,7 +579,7 @@ export async function zipInputClicked(event, errorText, hash) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        errorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        errorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -793,7 +793,7 @@ export function continueSearch(
 
         // If user not found, then display end of user search
         if (!("userAddress" in user)) {
-            tryDownloadButton.innerHTML = `No more users`;
+            tryDownloadButton.textContent = `No more users`;
             replaceClass(
                 skipLinkButton,
                 "border-button",
@@ -876,7 +876,7 @@ export function continueSearch(
         }
 
         // Display retrieved user link
-        tryDownloadButton.innerHTML = `Try download from: `
+        tryDownloadButton.textContent = `Try download from: `
             + `${parseUserData(autoUserData).data}<br>Address: `
             + `${autoUserAddress}<br>Link: ${link(autoUserLinks)}`;
 
