@@ -292,9 +292,9 @@ validatorTaskContract
         validatorsValue = v;
         let validatorsListString = "";
         for (let i = 0; i < validatorsValue.length; i++) {
-            validatorsListString += `${validatorsValue[i]}<br>`;
+            validatorsListString += `${validatorsValue[i]}\r\n`;
         }
-        validators.textContent = `Validators:<br>${validatorsListString}`;
+        validators.textContent = `Validators:\r\n${validatorsListString}`;
         updateSections();
     });
 validatorTaskContract
@@ -303,7 +303,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(w => {
         workerAddressValue = w;
-        workerAddress.textContent = `Worker Address:<br>${workerAddressValue}`;
+        workerAddress.textContent = `Worker Address:\r\n${workerAddressValue}`;
         updateSections();
     });
 validatorTaskContract
@@ -312,7 +312,7 @@ validatorTaskContract
         submissionIndexValue
     ).then(s => {
         submissionHashValue = s;
-        submissionHash.textContent = `Submission Hash:<br>${submissionHashValue}`;
+        submissionHash.textContent = `Submission Hash:\r\n${submissionHashValue}`;
     });
 validatorTaskContract
     .getSubmissionValidationStart(

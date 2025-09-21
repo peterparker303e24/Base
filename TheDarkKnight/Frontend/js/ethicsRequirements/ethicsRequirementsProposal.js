@@ -86,9 +86,9 @@ getProposalData().then((proposalData) => {
             "payable-button"
         );
     }
-    hashText.textContent = `Proposal Hash:<br>${proposalHash}`;
+    hashText.textContent = `Proposal Hash:\r\n${proposalHash}`;
     validatorText.textContent
-        = `Proposal Validator Address:<br>${validatorAddress}`;
+        = `Proposal Validator Address:\r\n${validatorAddress}`;
     votesForText.textContent = `Proposal Votes For: ${proposalVotesFor} `
         + `(${didVote ? "Already Voted" : "Not Yet Voted"})`;
     let ethicsRequirementsListString = "";
