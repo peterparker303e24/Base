@@ -63,30 +63,30 @@ const hashTaskContract = new ethers.Contract(
 const url = new URL(window.location.href);
 const params = Object.fromEntries(url.searchParams.entries());
 const hashTaskIndex = Number(params.index);
-hashTaskId.innerHTML = `h-${hashTaskIndex}`;
+hashTaskId.textContent = `h-${hashTaskIndex}`;
 nonce.value = "";
 
 // Automatically load user
 try {
     await provider.send("eth_requestAccounts", []);
 } catch {
-    errorText.innerHTML = "[X] ERROR: No wallet found";
+    errorText.textContent = "[X] ERROR: No wallet found";
 }
 
 // Display user address, and update it if account changed
 if (window.ethereum && window.ethereum.selectedAddress) {
     window.ethereum.on('accountsChanged', () => {
         workerAddressValue = window.ethereum.selectedAddress;
-        workerAddressText.innerHTML = workerAddressValue;
+        workerAddressText.textContent = workerAddressValue;
     });
     workerAddressValue = window.ethereum.selectedAddress;
-    workerAddressText.innerHTML = workerAddressValue;
+    workerAddressText.textContent = workerAddressValue;
 }
 
 // Gets the task preimage hash and updates the UI
 hashTaskContract.getHashTaskHash(hashTaskIndex).then((h) => {
     expectedHashValue = h;
-    expectedHash.innerHTML = expectedHashValue;
+    expectedHash.textContent = expectedHashValue;
     updateIfLoaded();
 });
 
@@ -94,11 +94,11 @@ hashTaskContract.getHashTaskHash(hashTaskIndex).then((h) => {
 hashTaskContract.getHashTaskDifficulty(hashTaskIndex).then((d) => {
     if (d === 0n) {
         expectedDifficultyValue = "0x" + "f".repeat(64);
-        expectedDifficulty.innerHTML = "N/A";
+        expectedDifficulty.textContent = "N/A";
     } else {
         expectedDifficultyValue = "0x"
             + (2n ** (256n - d)).toString(16).padStart(64, "0");
-        expectedDifficulty.innerHTML = expectedDifficultyValue.substring(2);
+        expectedDifficulty.textContent = expectedDifficultyValue.substring(2);
     }
     updateIfLoaded();
 });
@@ -106,21 +106,21 @@ hashTaskContract.getHashTaskDifficulty(hashTaskIndex).then((d) => {
 // Gets whether the task is already complete and updates the UI
 hashTaskContract.getHashTaskComplete(hashTaskIndex).then((c) => {
     taskCompleteValue = c;
-    taskComplete.innerHTML = taskCompleteValue.toString().toUpperCase();
+    taskComplete.textContent = taskCompleteValue.toString().toUpperCase();
     updateIfLoaded();
 });
 
 // Gets the task deadline and updates the UI
 hashTaskContract.getHashTaskDeadline(hashTaskIndex).then((d) => {
     deadlineValue = new Date(Number(d) * 1000);
-    deadline.innerHTML = deadlineValue.toUTCString();
+    deadline.textContent = deadlineValue.toUTCString();
     updateIfLoaded();
 });
 
 // Gets the task reward and updates the UI
 hashTaskContract.getHashTaskTotalWei(hashTaskIndex).then((r) => {
     rewardValue = r;
-    reward.innerHTML = formatWei(rewardValue);
+    reward.textContent = formatWei(rewardValue);
     updateIfLoaded();
 });
 
@@ -163,7 +163,7 @@ function tryInitiateNonceGeneration() {
         return;
     }
     if (hashResultValue !== expectedHashValue) {
-        nonceGenerationEstimation.innerHTML
+        nonceGenerationEstimation.textContent
             = "Obtain hash key before generating nonce";
         return;
     }
@@ -210,7 +210,7 @@ function updateNonceGenerationDisplay() {
     );
 
     // Display the expected generation time with format hours, minutes, seconds
-    nonceGenerationEstimation.innerHTML = `Estimated generation time: `
+    nonceGenerationEstimation.textContent = `Estimated generation time: `
         + `${formatTimeHoursMinutesSeconds(secondsForExpectedNonceGeneration)}`;
 }
 
@@ -239,7 +239,7 @@ function checkNewNonceGeneration() {
         nonceValue = generatedNonce;
         nonce.value = generatedNonce;
         updateWorkerHash();
-        nonceGenerationEstimation.innerHTML = `Nonce found`;
+        nonceGenerationEstimation.textContent = `Nonce found`;
         return;
     }
 
@@ -265,7 +265,7 @@ async function submitHashTask() {
     try {
         signer = await provider.getSigner();
     } catch (error) {
-        errorText.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+        errorText.textContent = `[X] ERROR: Get signer failed - ${error}`;
         return;
     }
     let hashTaskSigner = new ethers.Contract(
@@ -283,7 +283,7 @@ async function submitHashTask() {
             BigInt(nonceValue)
         );
     } catch (error) {
-        errorText.innerHTML
+        errorText.textContent
             = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
@@ -336,14 +336,14 @@ function updateWorkerHash() {
     // Validate the user input hash key, and update error message if invalid
     if (hashKeyValue === null || hashKeyValue.length !== 66) {
         hashResultValue = null;
-        hashResult.innerHTML = "-";
-        difficulty.innerHTML = "-";
-        errorText.innerHTML = "(!) Enter a 256 byte hex string hash key input";
+        hashResult.textContent = "-";
+        difficulty.textContent = "-";
+        errorText.textContent = "(!) Enter a 256 byte hex string hash key input";
         if (hashResultValue === expectedHashValue) {
-            nonceGenerationEstimation.innerHTML
+            nonceGenerationEstimation.textContent
                 = "Estimated generation time: -";
         } else {
-            nonceGenerationEstimation.innerHTML
+            nonceGenerationEstimation.textContent
                 = "Obtain hash key before generating nonce"
         }
         return;
@@ -352,41 +352,41 @@ function updateWorkerHash() {
     // Derive the difficulty hash value from the hash key, user address, and
     // nonce
     hashResultValue = keccak256(hashKeyValue);
-    hashResult.innerHTML = hashResultValue;
+    hashResult.textContent = hashResultValue;
     difficultyValue = getDifficultyValue(
         hashKeyValue,
         workerAddressValue,
         nonceValue
     );
-    difficulty.innerHTML = difficultyValue.substring(2);
+    difficulty.textContent = difficultyValue.substring(2);
 
     // Validate the hash key and difficulty match the expected, the task is not
     // already complete, and the deadline has not already passed
     if (hashResultValue !== expectedHashValue) {
-        errorText.innerHTML
+        errorText.textContent
             = "(!) Hash key does not match expected hash value";
         return;
     }
-    nonceGenerationEstimation.innerHTML = "Estimated generation time: -";
+    nonceGenerationEstimation.textContent = "Estimated generation time: -";
     if (difficultyValue.substring(2) >= expectedDifficultyValue.substring(2)) {
-        errorText.innerHTML
+        errorText.textContent
             = "(!) Difficulty is not less than expected task difficulty";
         return;
     }
     if (taskCompleteValue) {
-        errorText.innerHTML
+        errorText.textContent
             = "(!) Task has already been complete";
         return;
     }
     if (deadlineValue < new Date().toUTCString()) {
-        errorText.innerHTML
+        errorText.textContent
             = "(!) Task deadline has already passed";
         return;
     }
 
     // The submission is validated and the UI is updated
     validSubmit = true;
-    errorText.innerHTML = "";
+    errorText.textContent = "";
     updateSubmitButton();
 }
 
@@ -401,7 +401,7 @@ function updateWorkerHash() {
  */
 function getDifficultyValue(hashKey, workerAddress, nonceNumber) {
     keccak256(hashKey);
-    hashResult.innerHTML = hashResultValue;
+    hashResult.textContent = hashResultValue;
     const combinedBytes =
         prefixHexBytes(hashKey)
         + "0".repeat(24)

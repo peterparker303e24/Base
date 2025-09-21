@@ -41,7 +41,7 @@ const url = new URL(window.location.href);
 const params = Object.fromEntries(url.searchParams.entries());
 doubleHashTaskIndex = Number(params.index);
 if (!Number.isNaN(doubleHashTaskIndex)) {
-    taskId.innerHTML = `Task ID: dh-${doubleHashTaskIndex}`;
+    taskId.textContent = `Task ID: dh-${doubleHashTaskIndex}`;
 }
 
 // Redirects to the double hash task page
@@ -208,7 +208,7 @@ async function searchExtended() {
 function updatePageResults(results) {
 
     // Reset the submission items container then iteratively add each item
-    submissionsContainer.innerHTML = "";
+    submissionsContainer.textContent = "";
     results.forEach((searchResult, i) => {
 
         // Create submission item with retrieved data
@@ -244,7 +244,7 @@ function updatePageResults(results) {
 
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        submissionsContainer.innerHTML = "No submissions yet";
+        submissionsContainer.textContent = "No submissions yet";
     }
 }
 
@@ -484,7 +484,7 @@ function updateSubmissionCount() {
     if (isTaskComplete) {
         submissionsCountValue++;
     }
-    totalSubmissionsCount.innerHTML
+    totalSubmissionsCount.textContent
         = `Submissions Count: ${submissionsCountValue}`;
     searchBasic();
 }

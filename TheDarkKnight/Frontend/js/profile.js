@@ -54,7 +54,7 @@ let signerUsersContract;
 if (window.ethereum) {
     provider = new ethers.BrowserProvider(window.ethereum);
 } else {
-    errorText.innerHTML = "[X] ERROR: No wallet found";
+    errorText.textContent = "[X] ERROR: No wallet found";
 }
 
 // Get the User contract
@@ -81,7 +81,7 @@ if (window.ethereum && window.ethereum.selectedAddress) {
 
 // Connect wallet and load user when button clicked
 connectWallet.addEventListener("click", () => {
-    errorText.innerHTML = "";
+    errorText.textContent = "";
     connectWallet.style.display = "none";
     loadUser();
 });
@@ -97,7 +97,7 @@ createProfileButton.addEventListener("click", async () => {
     // Display error if missing required links field
     const links = linksTextbox.value;
     if (links === "") {
-        errorText.innerHTML = "[X] ERROR: Links should not be empty";
+        errorText.textContent = "[X] ERROR: Links should not be empty";
         return;
     }
 
@@ -151,9 +151,9 @@ saveProfileButton.addEventListener("click", async () => {
 
     // Execute user update transaction depending on filled in fields
     const links
-        = editLinksMode ? updateLinksTextbox.value : userLinks.innerHTML;
+        = editLinksMode ? updateLinksTextbox.value : userLinks.textContent;
     const name
-        = editNameMode ? updateNameTextbox.value : userNameText.innerHTML;
+        = editNameMode ? updateNameTextbox.value : userNameText.textContent;
     const nameBytes = ethers.toUtf8Bytes(updateNameTextbox.value);
     const userData = Uint8Array.from([0, ...nameBytes]);
     let transactionResponse;
@@ -170,7 +170,7 @@ saveProfileButton.addEventListener("click", async () => {
             "updateData(bytes)"
         ](userData);
     } else {
-        errorText.innerHTML = "[X] ERROR: No changes in values detected";
+        errorText.textContent = "[X] ERROR: No changes in values detected";
         return;
     }
 
@@ -182,7 +182,7 @@ saveProfileButton.addEventListener("click", async () => {
 
 // When edit button clicked change links button from readonly to write
 editLinksButton.addEventListener("click", () => {
-    const linksText = userLinks.innerHTML;
+    const linksText = userLinks.textContent;
     updateLinksTextbox.value = linksText;
     updateLinksTextbox.style.display = "block";
     userLinks.style.display = "none";
@@ -191,7 +191,7 @@ editLinksButton.addEventListener("click", () => {
 
 // When edit button clicked change name button from readonly to write
 editNameButton.addEventListener("click", () => {
-    const nameText = userNameText.innerHTML;
+    const nameText = userNameText.textContent;
     updateNameTextbox.value = nameText;
     updateNameTextbox.style.display = "block";
     userNameText.style.display = "none";
@@ -227,9 +227,9 @@ deleteUser.addEventListener("click", async () => {
  * @returns True if success, and false if error connecting wallet
  */
 function validateWallet() {
-    errorText.innerHTML = "";
+    errorText.textContent = "";
     if (window.ethereum === undefined) {
-        errorText.innerHTML = "[X] ERROR: Ethereum wallet not found";
+        errorText.textContent = "[X] ERROR: Ethereum wallet not found";
         return false;
     }
     return true;
@@ -241,7 +241,7 @@ function validateWallet() {
 async function updateUserDelete() {
 
     // Reset error text and delete button, and hide both if fields empty
-    deleteErrorText.innerHTML = '';
+    deleteErrorText.textContent = '';
     deleteUser.style.display = 'none';
     if (deleteAddressTextbox.value === "" && deleteKeyTextbox.value === "") {
         return;
@@ -251,11 +251,11 @@ async function updateUserDelete() {
     const cleanAddressBytes = prefixHexBytes(deleteAddressTextbox.value);
     const cleanKeyBytes = prefixHexBytes(deleteKeyTextbox.value);
     if (cleanAddressBytes === null || cleanAddressBytes.length !== 42) {
-        deleteErrorText.innerHTML = "[X] ERROR: Invalid user address";
+        deleteErrorText.textContent = "[X] ERROR: Invalid user address";
         return;
     }
     if (cleanKeyBytes === null || cleanKeyBytes.length !== 66) {
-        deleteErrorText.innerHTML = "[X] ERROR: Invalid lockout key";
+        deleteErrorText.textContent = "[X] ERROR: Invalid lockout key";
         return;
     }
 
@@ -265,7 +265,7 @@ async function updateUserDelete() {
         lockoutCodeExpected
             = await usersContract.lockoutCodes(cleanAddressBytes);
     } catch (error) {
-        deleteErrorText.innerHTML = error;
+        deleteErrorText.textContent = error;
         return;
     }
 
@@ -274,7 +274,7 @@ async function updateUserDelete() {
     if (hashValue === lockoutCodeExpected) {
         deleteUser.style.display = 'block';
     } else {
-        deleteErrorText.innerHTML = `[X] ERROR: Hash of lockout code does not `
+        deleteErrorText.textContent = `[X] ERROR: Hash of lockout code does not `
             + `match expected`;
     }
 }
@@ -288,7 +288,7 @@ async function loadUser() {
     try {
         await provider.send("eth_requestAccounts", []);
     } catch {
-        errorText.innerHTML = "[X] ERROR: No wallet found";
+        errorText.textContent = "[X] ERROR: No wallet found";
         return;
     }
 
@@ -302,7 +302,7 @@ async function loadUser() {
     );
 
     // Update user address field
-    ethereumAddress.innerHTML = `Ethereum Address: ${address}`;
+    ethereumAddress.textContent = `Ethereum Address: ${address}`;
 
     // Get user activation status where 0 === UNACTIVATED, 1 === ACTIVE, and
     // 2 === DEACTIVE
@@ -343,11 +343,11 @@ async function loadUser() {
         userLockoutCodeValue = lockoutCode;
 
         // Update user fields with retrieved data
-        userLinks.innerHTML = links;
-        userNameText.innerHTML = userName;
-        updateLinksTextbox.innerHTML = links;
-        updateNameTextbox.innerHTML = userName;
-        userLockoutCode.innerHTML = lockoutCode;
+        userLinks.textContent = links;
+        userNameText.textContent = userName;
+        updateLinksTextbox.textContent = links;
+        updateNameTextbox.textContent = userName;
+        userLockoutCode.textContent = lockoutCode;
 
         // Show active user fields
         updateProfileGrid.style.display = 'grid';

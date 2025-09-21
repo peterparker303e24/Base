@@ -76,7 +76,7 @@ const proposalIndex = Number(params.proposalIndex) ?? "0";
 try {
     await provider.send("eth_requestAccounts", []);
 } catch {
-    voteForError.innerHTML = "[X] ERROR: no wallet found";
+    voteForError.textContent = "[X] ERROR: no wallet found";
 }
 
 // Get the user signer
@@ -108,7 +108,7 @@ let canSkipAddress;
 let didVote;
 
 // Sets the requirement proposal ID from the url parameters
-idText.innerHTML
+idText.textContent
     = `Requirement Proposal ID: ${requirementIndex}_${proposalIndex}`;
 
 // Retrieves the proposal data from the blockchain, then updates the display
@@ -124,10 +124,10 @@ getProposalData().then((proposalData) => {
     didVote = proposalData.didVoteProposal;
 
     // Show proposal data
-    hashText.innerHTML = `Proposal Hash:<br>${proposalHash}`;
-    validatorText.innerHTML
+    hashText.textContent = `Proposal Hash:<br>${proposalHash}`;
+    validatorText.textContent
         = `Proposal Manager Address:<br>${validatorAddress}`;
-    votesForText.innerHTML = `Proposal Votes For: ${proposalVotesFor} `
+    votesForText.textContent = `Proposal Votes For: ${proposalVotesFor} `
         + `(${didVote ? "Already Voted" : "Not Yet Voted"})`;
 
     // Unlock vote button is user has not voted for proposal
@@ -222,12 +222,12 @@ voteForButton.addEventListener("click", voteFor);
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML
+        uploadErrorText.textContent
             = "[X] ERROR: File uploaded is not a zip file";
         return;
     }
@@ -244,7 +244,7 @@ async function zipInputClicked(event) {
         // Validate requirement hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != proposalHash) {
-            uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
+            uploadErrorText.textContent = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match requirement hash";
         } else {
 
@@ -255,7 +255,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -301,7 +301,7 @@ async function searchUser() {
         // Validate the data hash matches requirement hash
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== proposalHash) {
-            manualSearchError.innerHTML = `Incorrect data hash from,`
+            manualSearchError.textContent = `Incorrect data hash from,`
                 + `<br>User: ${userSearchValue}`
                 + `<br>At address: ${userUrl}/TheList/`
                 + `${proposalHash.substring(2)}/Requirement.zip`;
@@ -309,13 +309,13 @@ async function searchUser() {
         }
 
         // Data found so reset manual search error and parse file
-        manualSearchError.innerHTML = "";
+        manualSearchError.textContent = "";
         dataHashMatchFound(arrayBuffer);
         return;
     }
 
     // Display error if data not found from user
-    manualSearchError.innerHTML = `[X] ERROR: Requirement data not found from `
+    manualSearchError.textContent = `[X] ERROR: Requirement data not found from `
         + `user: ${userSearchValue}`;
 }
 
@@ -341,7 +341,7 @@ function skipLink() {
     }
 
     // Update download from link button
-    tryDownloadButton.innerHTML = `Try download from: `
+    tryDownloadButton.textContent = `Try download from: `
         + `${parseUserData(autoUserData).data}<br>Address: `
         + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
         + `/TheList/${proposalHash.substring(2)}/Requirement.json`;
@@ -482,7 +482,7 @@ async function dataHashMatchFound(zipFile) {
             }
         });
     } catch (error) {
-        requirementFileTreeArea.innerHTML = `Error parsing .zip file`;
+        requirementFileTreeArea.textContent = `Error parsing .zip file`;
         return;
     }
 
@@ -493,7 +493,7 @@ async function dataHashMatchFound(zipFile) {
     const requirementJson
         = zipContents.file(`${outerFolderName}/requirement.json`);
     if (!requirementJson) {
-        requirementJsonArea.innerHTML
+        requirementJsonArea.textContent
             = `[X] ERROR: requirement.json not found under directory path`;
         return;
     }
@@ -502,14 +502,14 @@ async function dataHashMatchFound(zipFile) {
         const content = await requirementJson.async("string");
         jsonObject = JSON.parse(content);
     } catch (error) {
-        requirementJsonArea.innerHTML
+        requirementJsonArea.textContent
             = `[X] ERROR: Problem parsing requirement.json`;
         return;
     }
     try {
         requirementJsonArea.textContent = formatRequirementJson(jsonObject);
     } catch (error) {
-        requirementJsonArea.innerHTML
+        requirementJsonArea.textContent
             = `[X] ERROR: Problem reading requirement.json`;
         return;
     }
@@ -660,7 +660,7 @@ async function voteFor() {
 
     // Validate user can vote for proposal
     if (!userActivated) {
-        voteForError.innerHTML = "[X] ERROR: User inactivated";
+        voteForError.textContent = "[X] ERROR: User inactivated";
         return;
     }
     if (didVote) {
@@ -681,7 +681,7 @@ async function voteFor() {
             )
         proposalVotesFor = newVotesFor;
         didVote = true;
-        votesForText.innerHTML = `Proposal Votes For: ${proposalVotesFor} `
+        votesForText.textContent = `Proposal Votes For: ${proposalVotesFor} `
             + `(${didVote ? "Already Voted" : "Not Yet Voted"})`;
         replaceClass(voteForButton, "payable-button", "inactive-payable-button")
     });
@@ -699,7 +699,7 @@ function continueSearch(searchCriteria) {
 
         // If user not found, then display end of user search
         if (!("userAddress" in user)) {
-            tryDownloadButton.innerHTML = `No more users`;
+            tryDownloadButton.textContent = `No more users`;
             canSkipLink = false;
             canSkipAddress = false;
             replaceClass(

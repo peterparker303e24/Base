@@ -148,9 +148,9 @@ async function search(searchSettings, searchPage, searchItems) {
     // If search string empty, then search recent, otherwise search text value
     const searchText = searchInput.value;
     if (searchText === "") {
-        usersContainer.innerHTML = `Searching recent`;
+        usersContainer.textContent = `Searching recent`;
     } else {
-        usersContainer.innerHTML = `Searching "${searchText}"`;
+        usersContainer.textContent = `Searching "${searchText}"`;
     }
 
     // Array of up to 10 requirement items
@@ -254,7 +254,7 @@ async function searchPageResults(
 function updatePageResults(results) {
 
     // Reset the requirements items container then iteratively add each item
-    usersContainer.innerHTML = "";
+    usersContainer.textContent = "";
     results.forEach((searchResult, i) => {
 
         // Create user item with retrieved data
@@ -280,7 +280,7 @@ function updatePageResults(results) {
 
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        usersContainer.innerHTML = "No results match search criteria";
+        usersContainer.textContent = "No results match search criteria";
     }
 }
 
@@ -712,7 +712,7 @@ async function executeSearch() {
 function updatePageItemCount() {
     const pageItemsRemainder
         = ((pageItems.items[currentPage].length - 1) % 10) + 1;
-    searchHeader.innerHTML = `Results ${currentPage * 10 + 1} - `
+    searchHeader.textContent = `Results ${currentPage * 10 + 1} - `
         + `${currentPage * 10 + pageItemsRemainder}:`;
 }
 

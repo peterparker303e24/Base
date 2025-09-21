@@ -51,7 +51,7 @@ if (pageSearch !== undefined) {
 // Updates the requirement count, then searches the most recent requirements
 theListContract.requirementCount().then((n) => {
     requirementsCountValue = n;
-    requirementsNumber.innerHTML
+    requirementsNumber.textContent
         = `Requirements Count: ${requirementsCountValue}`;
     executeSearch();
 });
@@ -161,9 +161,9 @@ async function search(searchSettings, searchPage, searchItems) {
     // If search string empty, then search recent, otherwise search text value
     const searchText = searchInput.value;
     if (searchText === "") {
-        requirementsContainer.innerHTML = `Searching recent`;
+        requirementsContainer.textContent = `Searching recent`;
     } else {
-        requirementsContainer.innerHTML = `Searching "${searchText}"`;
+        requirementsContainer.textContent = `Searching "${searchText}"`;
     }
 
     // Array of up to 10 requirement items
@@ -272,7 +272,7 @@ async function searchPageResults(
 function updatePageResults(results) {
 
     // Reset the requirements items container then iteratively add each item
-    requirementsContainer.innerHTML = "";
+    requirementsContainer.textContent = "";
     results.forEach((searchResult, i) => {
 
         // Create requirement item with retrieved data
@@ -295,7 +295,7 @@ function updatePageResults(results) {
 
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        requirementsContainer.innerHTML = "No results match search criteria";
+        requirementsContainer.textContent = "No results match search criteria";
     }
 }
 
@@ -860,6 +860,6 @@ async function executeSearch() {
 function updatePageItemCount() {
     const pageItemsRemainder
         = ((pageItems.items[currentPage].length - 1) % 10) + 1;
-    searchHeader.innerHTML = `Results ${currentPage * 10 + 1} - `
+    searchHeader.textContent = `Results ${currentPage * 10 + 1} - `
         + `${currentPage * 10 + pageItemsRemainder}:`;
 }

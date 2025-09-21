@@ -31,4 +31,4 @@ text = text
     .replace(/\n/g, '<br>');
 
 // Set the text area section with the text
-textArea.innerHTML = text;
+textArea.textContent = text;

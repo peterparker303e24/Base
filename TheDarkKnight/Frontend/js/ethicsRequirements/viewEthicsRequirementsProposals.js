@@ -50,14 +50,14 @@ if (pageSearch !== undefined) {
 
 // Update the ethics requirements version in the display
 theListContract.ethicsVersion().then((v) => {
-    ethicsRequirementsVersionText.innerHTML
+    ethicsRequirementsVersionText.textContent
         = `Ethics Requirements Version: ${v}`;
 });
 
 // Once the number of proposals have been retrieved, update the display and
 // execute the search
 theListContract.ethicsProposalsCount().then((p) => {
-    ethicsProposalsNumber.innerHTML = `Ethics Requirements Proposals: ${p}`;
+    ethicsProposalsNumber.textContent = `Ethics Requirements Proposals: ${p}`;
 });
 
 // Begin search for ethics requirements proposals
@@ -163,9 +163,9 @@ async function search(searchSettings, searchPage, searchItems) {
     // If search string empty, then search recent, otherwise search text value
     const searchText = searchInput.value;
     if (searchText === "") {
-        proposalsContainer.innerHTML = `Searching recent`;
+        proposalsContainer.textContent = `Searching recent`;
     } else {
-        proposalsContainer.innerHTML = `Searching "${searchText}"`;
+        proposalsContainer.textContent = `Searching "${searchText}"`;
     }
 
     // Array of up to 10 ethics requirements proposal items
@@ -275,7 +275,7 @@ function updatePageResults(results) {
 
     // Reset the ethics requirements proposal items container then iteratively
     // add each item
-    proposalsContainer.innerHTML = "";
+    proposalsContainer.textContent = "";
     results.forEach((searchResult, i) => {
         const searchItem = proposalItemTemplate.content.cloneNode(true);
         searchItem.querySelector('#index-version').textContent
@@ -296,7 +296,7 @@ function updatePageResults(results) {
     });
     // If there are no matching items found, then display message
     if (results.length === 0) {
-        proposalsContainer.innerHTML = "No results match search criteria";
+        proposalsContainer.textContent = "No results match search criteria";
     }
 }
 
@@ -634,6 +634,6 @@ async function executeSearch() {
 function updatePageItemCount() {
     const pageItemsRemainder
         = ((pageItems.items[currentPage].length - 1) % 10) + 1;
-    searchHeader.innerHTML = `Results ${currentPage * 10 + 1} - `
+    searchHeader.textContent = `Results ${currentPage * 10 + 1} - `
         + `${currentPage * 10 + pageItemsRemainder}:`;
 }

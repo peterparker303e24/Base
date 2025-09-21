@@ -66,13 +66,13 @@ const doubleHashTaskContract = new ethers.Contract(
 const url = new URL(window.location.href);
 const params = Object.fromEntries(url.searchParams.entries());
 const doubleHashTaskIndex = Number(params.index);
-doubleHashTaskId.innerHTML = `dh-${doubleHashTaskIndex}`;
+doubleHashTaskId.textContent = `dh-${doubleHashTaskIndex}`;
 
 // Automatically load user
 try {
     await provider.send("eth_requestAccounts", []);
 } catch {
-    errorText.innerHTML = "[X] ERROR: No wallet found";
+    errorText.textContent = "[X] ERROR: No wallet found";
 }
 
 // Gets the user address, and update it if account changed
@@ -86,7 +86,7 @@ if (window.ethereum && window.ethereum.selectedAddress) {
 // Gets the task preimage hash and updates the UI
 doubleHashTaskContract.getDoubleHashTaskHash(doubleHashTaskIndex).then((h) => {
     expectedHashValue = h;
-    expectedHash.innerHTML = expectedHashValue;
+    expectedHash.textContent = expectedHashValue;
     updateIfLoaded();
 });
 
@@ -94,28 +94,28 @@ doubleHashTaskContract.getDoubleHashTaskHash(doubleHashTaskIndex).then((h) => {
 doubleHashTaskContract
     .getDoubleHashTaskDelay(doubleHashTaskIndex).then((d) => {
         delayValue = d;
-        delay.innerHTML = delayValue;
+        delay.textContent = delayValue;
         updateIfLoaded();
     });
 
 // Gets whether the task is already complete and updates the UI
 doubleHashTaskContract.getDoubleHashTaskComplete(doubleHashTaskIndex).then((c) => {
     taskCompleteValue = c;
-    taskComplete.innerHTML = taskCompleteValue.toString().toUpperCase();
+    taskComplete.textContent = taskCompleteValue.toString().toUpperCase();
     updateIfLoaded();
 });
 
 // Gets the task deadline and updates the UI
 doubleHashTaskContract.getDoubleHashTaskDeadline(doubleHashTaskIndex).then((d) => {
     deadlineValue = new Date(Number(d) * 1000);
-    deadline.innerHTML = deadlineValue.toUTCString();
+    deadline.textContent = deadlineValue.toUTCString();
     updateIfLoaded();
 });
 
 // Gets the task reward and updates the UI
 doubleHashTaskContract.getDoubleHashTaskTotalWei(doubleHashTaskIndex).then((r) => {
     rewardValue = r;
-    reward.innerHTML = formatWei(rewardValue);
+    reward.textContent = formatWei(rewardValue);
     updateIfLoaded();
 });
 
@@ -125,7 +125,7 @@ doubleHashTaskContract
 
         // Update the retrieved submission response count
         responseCountValue = Number(r);
-        responseCount.innerHTML = responseCountValue;
+        responseCount.textContent = responseCountValue;
 
         // Get the worker address and response window timing of each double hash
         // task response
@@ -142,7 +142,7 @@ doubleHashTaskContract
                 .getDoubleHashTaskSecondResponseWindow(doubleHashTaskIndex)
                 .then((s) => {
                     secondResponseWindowValue = Number(s);
-                    secondResponseWindow.innerHTML = secondResponseWindowValue;
+                    secondResponseWindow.textContent = secondResponseWindowValue;
                     responses.push({
                         workerAddress: workerAddress,
                         responseWindowStart: new Date(
@@ -189,9 +189,9 @@ submitFirstButton.addEventListener("click", submitFirstHash);
 submitSecondButton.addEventListener("click", confirmDoubleHashTask);
 
 // Displays a counting timer that updates every second
-currentTime.innerHTML = new Date().toUTCString();
+currentTime.textContent = new Date().toUTCString();
 setInterval(() => {
-    currentTime.innerHTML = new Date().toUTCString();
+    currentTime.textContent = new Date().toUTCString();
 }, 1_000);
 
 /**
@@ -210,7 +210,7 @@ async function submitFirstHash() {
     try {
         signer = await provider.getSigner();
     } catch (error) {
-        errorText.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+        errorText.textContent = `[X] ERROR: Get signer failed - ${error}`;
         return;
     }
     let doubleHashTaskSigner = new ethers.Contract(
@@ -227,7 +227,7 @@ async function submitFirstHash() {
             firstHashValue
         );
     } catch (error) {
-        errorText.innerHTML
+        errorText.textContent
             = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
@@ -254,7 +254,7 @@ async function confirmDoubleHashTask() {
     try {
         signer = await provider.getSigner();
     } catch (error) {
-        errorText.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+        errorText.textContent = `[X] ERROR: Get signer failed - ${error}`;
         return;
     }
     let doubleHashTaskSigner = new ethers.Contract(
@@ -272,7 +272,7 @@ async function confirmDoubleHashTask() {
             hashKeyValue
         );
     } catch (error) {
-        errorText.innerHTML
+        errorText.textContent
             = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
@@ -369,41 +369,41 @@ function updateValidFirstHashSubmission() {
 
     // Validate the user input hash key, and update error message if invalid
     if (firstHashValue === null || firstHashValue.length !== 66) {
-        secondHash.innerHTML = "-";
-        firstErrorText.innerHTML
+        secondHash.textContent = "-";
+        firstErrorText.textContent
             = "(!) Enter a 256 byte hex string first hash input";
         return;
     }
     secondHashValue = keccak256(prefixHexBytes(firstHashValue));
-    secondHash.innerHTML = secondHashValue;
+    secondHash.textContent = secondHashValue;
 
     // Validate the hash key, the task is not already complete, the deadline has
     // not already passed, and display warning message if a first hash has
     // already been submitted by some user
     if (secondHashValue !== expectedHashValue) {
-        firstErrorText.innerHTML
+        firstErrorText.textContent
             = "(!) First hash result does not match expected hash value";
         return;
     }
     if (taskCompleteValue) {
-        firstErrorText.innerHTML
+        firstErrorText.textContent
             = "(!) Task has already been complete";
         return;
     }
     if (deadlineValue < new Date().toUTCString()) {
-        firstErrorText.innerHTML
+        firstErrorText.textContent
             = "(!) Task deadline has already passed";
         return;
     }
     if (responseCountValue > 0) {
-        firstErrorText.innerHTML = "(!) Task already has at least 1 response, "
+        firstErrorText.textContent = "(!) Task already has at least 1 response, "
             + "this indicates it has already been solved, submit hash key "
             + "during submission window to complete task";
     }
 
     // Hide error unless warning message is already showing
     if (responseCountValue === 0) {
-        firstErrorText.innerHTML = "";
+        firstErrorText.textContent = "";
     }
 
     // The first hash is valid and ready for submission
@@ -422,16 +422,16 @@ function updateValidHashKeyConfirmation() {
 
     // Display error message if essential data from the blockchain fails to load
     if (taskResponses === undefined) {
-        errorText.innerHTML = "[X] ERROR: Task responses not retrieved";
-        secondErrorText.innerHTML = "[X] ERROR: Task responses not retrieved, "
+        errorText.textContent = "[X] ERROR: Task responses not retrieved";
+        secondErrorText.textContent = "[X] ERROR: Task responses not retrieved, "
             + "response index and response window times are necessary to submit"
             + " hash key";
         validSubmitSecond = false;
         return;
     }
     if (workerAddressValue === undefined) {
-        errorText.innerHTML = "[X] ERROR: User address not found";
-        secondErrorText.innerHTML = "[X] ERROR: User address not found, user "
+        errorText.textContent = "[X] ERROR: User address not found";
+        secondErrorText.textContent = "[X] ERROR: User address not found, user "
             + "address necessary for response index to submit hash key";
         validSubmitSecond = false;
         return;
@@ -472,10 +472,10 @@ function updateValidHashKeyConfirmation() {
     if (responseWindowStart !== undefined && responseWindowEnd !== undefined) {
         submitWindowStartValue = responseWindowStart;
         submitWindowEndValue = responseWindowEnd;
-        submitWindowStart.innerHTML = submitWindowStartValue.toUTCString();
-        submitWindowEnd.innerHTML = submitWindowEndValue.toUTCString();
+        submitWindowStart.textContent = submitWindowStartValue.toUTCString();
+        submitWindowEnd.textContent = submitWindowEndValue.toUTCString();
     } else {
-        secondErrorText.innerHTML = "(!) Submit first hash result before "
+        secondErrorText.textContent = "(!) Submit first hash result before "
             + "confirming with the hask key input";
         validSubmitSecond = false;
         return;
@@ -487,23 +487,23 @@ function updateValidHashKeyConfirmation() {
 
     // Validate the second hash key and the task is not already complete
     if (hashKeyValue === null || hashKeyValue.length !== 66) {
-        secondErrorText.innerHTML = "(!) Enter a 256 byte hex string hash key "
+        secondErrorText.textContent = "(!) Enter a 256 byte hex string hash key "
             + "input";
         return;
     }
     if (keccak256(keccak256(hashKeyValue)) !== expectedHashValue) {
-        secondErrorText.innerHTML = "(!) Hash key input second hash does not "
+        secondErrorText.textContent = "(!) Hash key input second hash does not "
             + "match expected";
         return;
     }
     if (taskCompleteValue) {
-        secondErrorText.innerHTML = "(!) Task has already been complete";
+        secondErrorText.textContent = "(!) Task has already been complete";
         return;
     }
 
     // The second hash is valid and ready for sonfirmation submission
     validSubmitSecond = true;
-    secondErrorText.innerHTML = "";
-    errorText.innerHTML = "";
+    secondErrorText.textContent = "";
+    errorText.textContent = "";
     updateSubmitSecondButton();
 }

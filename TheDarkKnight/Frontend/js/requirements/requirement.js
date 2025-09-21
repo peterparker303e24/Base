@@ -97,15 +97,15 @@ let canSkipLink;
 let canSkipAddress;
 
 // Updates the text of the requirement index and version
-idText.innerHTML = `Requirement Id: ${requirementId}-${requirementVersion}`;
+idText.textContent = `Requirement Id: ${requirementId}-${requirementVersion}`;
 
 // Retrieves the requirement data and updates the display on the page
 getVersionData().then((versionData) => {
     if (versionData !== null) {
         versionHash = versionData.versionHash;
         validatorAddress = versionData.validatorAddress;
-        hashText.innerHTML = `Requirement Hash:<br>${versionHash}`;
-        userText.innerHTML = `Requirement Manager Address:<br>`
+        hashText.textContent = `Requirement Hash:<br>${versionHash}`;
+        userText.textContent = `Requirement Manager Address:<br>`
             + `${validatorAddress}`;
     }
 });
@@ -195,12 +195,12 @@ skipLinkButton.addEventListener("click", skipLink);
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML
+        uploadErrorText.textContent
             = "[X] ERROR: File uploaded is not a zip file";
         return;
     }
@@ -217,7 +217,7 @@ async function zipInputClicked(event) {
         // Validate requirement hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != versionHash) {
-            uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
+            uploadErrorText.textContent = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match requirement hash";
         } else {
 
@@ -228,7 +228,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -274,7 +274,7 @@ async function searchUser() {
         // Validate the data hash matches requirement hash
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== versionHash) {
-            manualSearchError.innerHTML = `Incorrect data hash from,`
+            manualSearchError.textContent = `Incorrect data hash from,`
                 + `<br>User: ${userSearchValue}`
                 + `<br>At address: ${userUrl}/TheList/`
                 + `${versionHash.substring(2)}/Requirement.zip`;
@@ -282,13 +282,13 @@ async function searchUser() {
         }
 
         // Data found so reset manual search error and parse file
-        manualSearchError.innerHTML = "";
+        manualSearchError.textContent = "";
         dataHashMatchFound(arrayBuffer);
         return;
     }
 
     // Display error if data not found from user
-    manualSearchError.innerHTML = `[X] ERROR: Requirement data not found from `
+    manualSearchError.textContent = `[X] ERROR: Requirement data not found from `
         + `user: ${userSearchValue}`;
 }
 
@@ -350,7 +350,7 @@ function skipLink() {
     }
 
     // Update download from link button
-    tryDownloadButton.innerHTML = `Try download from: `
+    tryDownloadButton.textContent = `Try download from: `
         + `${parseUserData(autoUserData).data}<br>Address: `
         + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
         + `/TheList/${versionHash.substring(2)}/Requirement.json`;
@@ -453,7 +453,7 @@ async function dataHashMatchFound(zipFile) {
             }
         });
     } catch (error) {
-        requirementFileTreeArea.innerHTML = `Error parsing .zip file`;
+        requirementFileTreeArea.textContent = `Error parsing .zip file`;
         return;
     }
 
@@ -464,7 +464,7 @@ async function dataHashMatchFound(zipFile) {
     const requirementJson
         = zipContents.file(`${outerFolderName}/requirement.json`);
     if (!requirementJson) {
-        requirementJsonArea.innerHTML
+        requirementJsonArea.textContent
             = `[X] ERROR: requirement.json not found under directory path`;
         return;
     }
@@ -473,14 +473,14 @@ async function dataHashMatchFound(zipFile) {
         const content = await requirementJson.async("string");
         jsonObject = JSON.parse(content);
     } catch (error) {
-        requirementJsonArea.innerHTML
+        requirementJsonArea.textContent
             = `[X] ERROR: Problem parsing requirement.json`;
         return;
     }
     try {
-        requirementJsonArea.innerHTML = formatRequirementJson(jsonObject);
+        requirementJsonArea.textContent = formatRequirementJson(jsonObject);
     } catch (error) {
-        requirementJsonArea.innerHTML
+        requirementJsonArea.textContent
             = `[X] ERROR: Problem reading requirement.json`;
         return;
     }
@@ -637,7 +637,7 @@ function continueSearch(searchCriteria) {
 
         // If user not found, then display end of user search
         if (!("userAddress" in user)) {
-            tryDownloadButton.innerHTML = `No more users`;
+            tryDownloadButton.textContent = `No more users`;
             canSkipLink = false;
             canSkipAddress = false;
             replaceClass(
@@ -712,7 +712,7 @@ function continueSearch(searchCriteria) {
         }
 
         // Display retrieved user link
-        tryDownloadButton.innerHTML = `Try download from: `
+        tryDownloadButton.textContent = `Try download from: `
             + `${parseUserData(autoUserData).data}<br>Address: `
             + `${autoUserAddress}<br>Link: ${autoUserLinks[0]}/TheList/`
             + `${versionHash.substring(2)}/Requirement.json`;

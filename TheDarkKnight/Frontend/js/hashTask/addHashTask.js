@@ -84,9 +84,9 @@ deadlineInput.addEventListener("input", () => {
 // Updates checkbox check mark variable and display
 keyRevealButton.addEventListener("click", () => {
     if (isKeyRevealOn) {
-        keyRevealButton.innerHTML = "OFF";
+        keyRevealButton.textContent = "OFF";
     } else {
-        keyRevealButton.innerHTML = "ON";
+        keyRevealButton.textContent = "ON";
     }
     isKeyRevealOn = !isKeyRevealOn;
 });
@@ -106,9 +106,9 @@ rewardInput.addEventListener("input", () => {
 // Updates checkbox check mark variable and display
 checkbox.addEventListener("click", () => {
     if (isEthicsChecked) {
-        checkbox.innerHTML = "";
+        checkbox.textContent = "";
     } else {
-        checkbox.innerHTML = "✓";
+        checkbox.textContent = "✓";
     }
     isEthicsChecked = !isEthicsChecked;
     updateAddHashButton();
@@ -136,7 +136,7 @@ addHashTaskButton.addEventListener("click", async () => {
             { value: reward }
         );
     } catch (error) {
-        errorText.innerHTML = `[X] ERROR: Transaction failed - ${error}`;
+        errorText.textContent = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
 
@@ -163,12 +163,12 @@ async function zipInputUpload(event) {
 
     // Requirement cross checked variable and error text are reset
     fileCrossChecked = false;
-    errorText.innerHTML = "";
+    errorText.textContent = "";
 
     // Validates zip file upload
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        fileError.innerHTML = "[X] ERROR: File uploaded is not a zip file";
+        fileError.textContent = "[X] ERROR: File uploaded is not a zip file";
         return;
     }
 
@@ -185,14 +185,14 @@ async function zipInputUpload(event) {
         const arrayBuffer = event.target.result;
         fileBytes = new Uint8Array(arrayBuffer);
         const fileHash = keccak256(fileBytes).toString('hex');
-        fileName.innerHTML = `Name: ${file.name}\nKeccak256 Hash: ${fileHash}`;
+        fileName.textContent = `Name: ${file.name}\nKeccak256 Hash: ${fileHash}`;
         taskHashInput.value = fileHash;
         await tryMatchFile(fileHash);
     };
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        fileError.innerHTML = "[X] ERROR: Problem reading zip file";
+        fileError.textContent = "[X] ERROR: Problem reading zip file";
     };
 }
 
@@ -205,7 +205,7 @@ async function loadUser() {
     try {
         await provider.send("eth_requestAccounts", []);
     } catch {
-        errorText.innerHTML = "[X] ERROR: no wallet found";
+        errorText.textContent = "[X] ERROR: no wallet found";
         return;
     }
 
@@ -221,7 +221,7 @@ async function loadUser() {
     // Validate the user is activated
     const userActivated = await usersContract.activeUsers(address);
     if (!userActivated) {
-        errorText.innerHTML = "[X] ERROR: User inactivated";
+        errorText.textContent = "[X] ERROR: User inactivated";
         return;
     }
 }
@@ -249,7 +249,7 @@ async function tryMatchFile(zipHash) {
 
     // If no valid links, then display error
     if (downloadUrls.length === 0) {
-        fileError.innerHTML = "[X] ERROR: No link found for current user";
+        fileError.textContent = "[X] ERROR: No link found for current user";
         return;
     }
 
@@ -288,7 +288,7 @@ async function tryMatchFile(zipHash) {
     }
 
     // Display requirement host error
-    errorText.innerHTML = `[X] ERROR: Requirement.zip file not found at any user `
+    errorText.textContent = `[X] ERROR: Requirement.zip file not found at any user `
         + `endpoint: ${dataEndpoints}`;
 }
 
@@ -319,13 +319,13 @@ async function validateTaskFile(arrayBuffer) {
             }
         });
     } catch (error) {
-        fileError.innerHTML = `Error parsing .zip file`;
+        fileError.textContent = `Error parsing .zip file`;
         return false;
     }
 
     // Validate specifications.json structure
     if (!zipFileContents.includes(`${outerFolderName}/specifications.json`)) {
-        fileError.innerHTML
+        fileError.textContent
             = `[X] ERROR: Missing specifications.json file in root directory`;
         return false;
     }
@@ -362,7 +362,7 @@ async function validateTaskFile(arrayBuffer) {
                 requirementVersionIndex
             );
             if (requirementData === null) {
-                fileError.innerHTML
+                fileError.textContent
                     = `[X] ERROR: Invalid specification requirement`;
                 return false;
             }
@@ -374,7 +374,7 @@ async function validateTaskFile(arrayBuffer) {
                 = requirementData.hash;
         }
     } catch (error) {
-        fileError.innerHTML = `Error parsing specifications.json file`;
+        fileError.textContent = `Error parsing specifications.json file`;
         return false;
     }
 
@@ -389,7 +389,7 @@ async function validateTaskFile(arrayBuffer) {
         const filePath
             = `${outerFolderName}/Requirements/Requirement${idArray[i]}.zip`;
         if (!zipFileContents.includes(filePath)) {
-            fileError.innerHTML
+            fileError.textContent
                 = `[X] ERROR: Missing file ${filePath}`;
             return false;
         }
@@ -400,7 +400,7 @@ async function validateTaskFile(arrayBuffer) {
         const requirementFileBytes = new Uint8Array(arrayBuffer);
         const fileHash = keccak256(requirementFileBytes).toString('hex');
         if (fileHash !== requirementsHashes[idArray[i]]) {
-            fileError.innerHTML = `[X] ERROR: Requirement${idArray[i]} `
+            fileError.textContent = `[X] ERROR: Requirement${idArray[i]} `
                 + `hash does not match expected`;
             return false;
         }
@@ -442,23 +442,23 @@ function updateAddHashButton() {
     // Display invalid variable message if any, otherwise update checksPassed
     // variable to true
     checksPassed = false;
-    errorText.innerHTML = ``;
+    errorText.textContent = ``;
     if (!fileCrossChecked) {
-        errorText.innerHTML = `Task.zip file not correctly hosted or validated`;
+        errorText.textContent = `Task.zip file not correctly hosted or validated`;
     } else if (!validHashValue) {
-        errorText.innerHTML = `Invalid 32 bytes hash value`;
+        errorText.textContent = `Invalid 32 bytes hash value`;
     } else if (!validTaskHash) {
-        errorText.innerHTML = `Invalid 32 bytes task hash`;
+        errorText.textContent = `Invalid 32 bytes task hash`;
     } else if (!validSecondsToDeadline) {
-        errorText.innerHTML
+        errorText.textContent
             = `Invalid seconds to deadline, must be positive number`;
     } else if (!validDifficulty) {
-        errorText.innerHTML
+        errorText.textContent
             = `Invalid difficulty, must be non-negative number`;
     } else if (!validReward) {
-        errorText.innerHTML = `Invalid reward, must be non-negative number`;
+        errorText.textContent = `Invalid reward, must be non-negative number`;
     } else if (!isEthicsChecked) {
-        errorText.innerHTML = `Ethics requirements statement not checked`;
+        errorText.textContent = `Ethics requirements statement not checked`;
     } else {
         checksPassed = true;
     }

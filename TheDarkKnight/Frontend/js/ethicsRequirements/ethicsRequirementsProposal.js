@@ -61,7 +61,7 @@ let requirementsArray;
 const url = new URL(window.location.href);
 const params = Object.fromEntries(url.searchParams.entries());
 const proposalIndex = Number(params.index) ?? "0";
-idText.innerHTML = `Ethics Requirements Proposal Id: #${proposalIndex}`;
+idText.textContent = `Ethics Requirements Proposal Id: #${proposalIndex}`;
 
 // Updates the display of the ethics requirements proposal
 getProposalData().then((proposalData) => {
@@ -86,10 +86,10 @@ getProposalData().then((proposalData) => {
             "payable-button"
         );
     }
-    hashText.innerHTML = `Proposal Hash:<br>${proposalHash}`;
-    validatorText.innerHTML
+    hashText.textContent = `Proposal Hash:<br>${proposalHash}`;
+    validatorText.textContent
         = `Proposal Validator Address:<br>${validatorAddress}`;
-    votesForText.innerHTML = `Proposal Votes For: ${proposalVotesFor} `
+    votesForText.textContent = `Proposal Votes For: ${proposalVotesFor} `
         + `(${didVote ? "Already Voted" : "Not Yet Voted"})`;
     let ethicsRequirementsListString = "";
     for (let i = 0; i < proposalData.proposalEthicsRequirements.length; i++) {
@@ -189,11 +189,11 @@ async function voteFor() {
 
     // Validate user can vote for the ethics requirements proposal
     if (!userActivated) {
-        voteForError.innerHTML = "(!) User inactivated";
+        voteForError.textContent = "(!) User inactivated";
         return;
     }
     if (didVote) {
-        voteForError.innerHTML = `(!) Maximum 1 vote per user`;
+        voteForError.textContent = `(!) Maximum 1 vote per user`;
         return;
     }
 
@@ -201,7 +201,7 @@ async function voteFor() {
     try {
         await provider.send("eth_requestAccounts", []);
     } catch {
-        voteForError.innerHTML = "[X] ERROR: no wallet found";
+        voteForError.textContent = "[X] ERROR: no wallet found";
     }
 
     // Tries to vote for the ethics requirements proposal through a transation
@@ -214,7 +214,7 @@ async function voteFor() {
             );
         didVote = true;
     } catch (error) {
-        voteForError.innerHTML = `[X] ERROR: Problem occurred while voting`;
+        voteForError.textContent = `[X] ERROR: Problem occurred while voting`;
         return;
     }
 
@@ -226,7 +226,7 @@ async function voteFor() {
             );
         proposalVotesFor = newVotesFor;
         didVote = true;
-        votesForText.innerHTML = `Proposal Votes For: ${proposalVotesFor} `
+        votesForText.textContent = `Proposal Votes For: ${proposalVotesFor} `
             + `(${didVote ? "Already Voted" : "Not Yet Voted"})`;
         replaceClass(
             voteForButton,

@@ -65,7 +65,7 @@ const params = Object.fromEntries(url.searchParams.entries());
 // search if url task id param invalid
 const validatorTaskIndex = Number(params.index);
 if (validatorTaskIndex !== NaN && validatorTaskIndex >= 0) {
-    taskId.innerHTML = `v-${validatorTaskIndex}`;
+    taskId.textContent = `v-${validatorTaskIndex}`;
 } else {
     window.location.href = "pages/viewTasks.html?search=v";
 }
@@ -91,19 +91,19 @@ const emptyAddress
 const validatorTaskIndexValue = Number(validatorTaskIndex);
 
 // Updates the text of the task ID
-taskId.innerHTML = `Task ID: v-${validatorTaskIndex}`;
+taskId.textContent = `Task ID: v-${validatorTaskIndex}`;
 
 // Update validator task variables with data retrieved from the blockchain
 validatorTaskContract
     .getContributionTotalWei(validatorTaskIndexValue)
     .then(w => {
-        reward.innerHTML
+        reward.textContent
             = `Reward (Wei): ${formatWei(w)}`;
     });
 validatorTaskContract
     .getDeadline(validatorTaskIndexValue)
     .then(d => {
-        deadline.innerHTML
+        deadline.textContent
             = `Deadline (UTC): ${new Date(Number(d) * 1000).toUTCString()}`;
         isBeforeDeadline = Math.floor(Date.now() / 1000) <= Number(d);
     });
@@ -111,7 +111,7 @@ validatorTaskContract
     .getTaskComplete(validatorTaskIndexValue)
     .then(c => {
         isTaskComplete = c;
-        completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
+        completed.textContent = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
 
         // Update whether the user can add the task submission based on
         // dependent variables
@@ -121,7 +121,7 @@ validatorTaskContract
     .taskDefaulted(validatorTaskIndexValue)
     .then(d => {
         taskDefaultedValue = d;
-        taskDefaulted.innerHTML
+        taskDefaulted.textContent
             = `Task Defaulted: ${taskDefaultedValue ? "TRUE" : "FALSE"}`;
 
         // Update whether the user can add the task submission based on
@@ -132,14 +132,14 @@ validatorTaskContract
     .getSubmissionsCount(validatorTaskIndexValue)
     .then(s => {
         submissionsCountValue = Number(s);
-        submissionsCount.innerHTML
+        submissionsCount.textContent
             = `Submissions Count: ${submissionsCountValue}`;
     });
 validatorTaskContract
     .getEvaluatedSubmissionsCount(validatorTaskIndexValue)
     .then(e => {
         evaluatedSubmissionsCountValue = Number(e);
-        evaluatedSubmissionsCount.innerHTML
+        evaluatedSubmissionsCount.textContent
             = `Evaluated Submissions Count: ${evaluatedSubmissionsCountValue}`;
 
         // Update whether the user can add the task submission based on
@@ -153,10 +153,10 @@ validatorTaskContract
         if (nextSlotTimeValue === 0
             || new Date(nextSlotTimeValue * 1000) < new Date()
         ) {
-            nextSlotTime.innerHTML = `Next Slot Time (UTC): Now - `
+            nextSlotTime.textContent = `Next Slot Time (UTC): Now - `
                 + `${new Date().toUTCString()}`;
         } else {
-            nextSlotTime.innerHTML = `Next Slot Time (UTC): `
+            nextSlotTime.textContent = `Next Slot Time (UTC): `
                 + `${formatBlockTimestamp(nextSlotTimeValue)}`;
         }
 
@@ -168,7 +168,7 @@ validatorTaskContract
     .getValidatorComission(validatorTaskIndexValue)
     .then(c => {
         validatorComissionValue = c;
-        validatorComission.innerHTML = `Validator Comission (Wei): `
+        validatorComission.textContent = `Validator Comission (Wei): `
             + `${formatWei(validatorComissionValue)}`;
     });
 
@@ -176,9 +176,9 @@ validatorTaskContract
 ethicsRequirementsCheckbox.addEventListener("click", () => {
     isEthicsRequirementsChecked = !isEthicsRequirementsChecked;
     if (isEthicsRequirementsChecked) {
-        ethicsRequirementsCheckbox.innerHTML = "✓";
+        ethicsRequirementsCheckbox.textContent = "✓";
     } else {
-        ethicsRequirementsCheckbox.innerHTML = "";
+        ethicsRequirementsCheckbox.textContent = "";
     }
     updateCanAddTaskButton();
 });
@@ -223,7 +223,7 @@ addTaskSubmissionButton.addEventListener("click", async () => {
         );
         console.log("C");
     } catch (error) {
-        addTaskError.innerHTML = `[X] ERROR: Transaction failed - ${error}`;
+        addTaskError.textContent = `[X] ERROR: Transaction failed - ${error}`;
         return;
     }
     console.log("D");
@@ -264,12 +264,12 @@ document.addEventListener("keydown", (event) => {
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip "
+        uploadErrorText.textContent = "[X] ERROR: File uploaded is not a zip "
             + "file";
         return;
     }
@@ -293,7 +293,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -320,7 +320,7 @@ async function tryMatchFile(zipHash) {
 
     // If no valid links, then display error
     if (downloadUrls.length === 0) {
-        uploadErrorText.innerHTML = "[X] ERROR: No link found for current user";
+        uploadErrorText.textContent = "[X] ERROR: No link found for current user";
         return;
     }
 
@@ -351,7 +351,7 @@ async function tryMatchFile(zipHash) {
         if (downloadHash === zipHash) {
             taskSubmissionHashValue = zipHash;
             fileCrossChecked = true;
-            uploadFileName.innerHTML = `Name: Submission.zip\nHash: ${zipHash}`;
+            uploadFileName.textContent = `Name: Submission.zip\nHash: ${zipHash}`;
             updateCanAddTaskButton();
             return;
         }
@@ -367,7 +367,7 @@ async function loadUser() {
     try {
         await provider.send("eth_requestAccounts", []);
     } catch {
-        uploadErrorText.innerHTML = "[X] ERROR: no wallet found";
+        uploadErrorText.textContent = "[X] ERROR: no wallet found";
         return;
     }
 
@@ -383,7 +383,7 @@ async function loadUser() {
     // Validate the user is activated
     const userActivated = await usersContract.activeUsers(userAddress);
     if (!userActivated) {
-        uploadErrorText.innerHTML = "[X] ERROR: User inactivated";
+        uploadErrorText.textContent = "[X] ERROR: User inactivated";
         return;
     }
 }
@@ -395,7 +395,7 @@ async function loadUser() {
 function updateCanAddTaskButton() {
 
     // Initialize error text to empty and add button to disabled 
-    addTaskError.innerHTML = "";
+    addTaskError.textContent = "";
     replaceClass(
         addTaskSubmissionButton,
         "payable-button",
@@ -405,27 +405,27 @@ function updateCanAddTaskButton() {
     // Check for each task submission hard validation, and display any
     // corresponding error message
     if (!fileCrossChecked) {
-        addTaskError.innerHTML
+        addTaskError.textContent
             = "[X] ERROR: Task.zip file not correctly hosted";
         return;
     }
     if (isBeforeDeadline !== undefined && !isBeforeDeadline) {
-        addTaskError.innerHTML
+        addTaskError.textContent
             = "[X] ERROR: Deadline has passed";
         return;
     }
     if (isTaskComplete !== undefined && isTaskComplete) {
-        addTaskError.innerHTML
+        addTaskError.textContent
             = "[X] ERROR: Task already complete";
         return;
     }
     if (taskDefaultedValue !== undefined && taskDefaultedValue) {
-        addTaskError.innerHTML
+        addTaskError.textContent
             = "[X] ERROR: Task already complete by default";
         return;
     }
     if (!isEthicsRequirementsChecked) {
-        addTaskError.innerHTML = "[X] ERROR: Ethics requirements not checked";
+        addTaskError.textContent = "[X] ERROR: Ethics requirements not checked";
         return;
     }
 
@@ -443,7 +443,7 @@ function updateCanAddTaskButton() {
         && submissionsCountValue !== undefined
         && evaluatedSubmissionsCountValue < submissionsCountValue
     ) {
-        addTaskError.innerHTML
+        addTaskError.textContent
             = "(!) Task submissions already exist waiting evaluation";
     }
 }

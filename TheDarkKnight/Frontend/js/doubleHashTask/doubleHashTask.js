@@ -150,14 +150,14 @@ const emptyHash
 const doubleHashTaskIndexValue = Number(doubleHashTaskIndex);
 
 // Updates the text of the task ID
-taskId.innerHTML = `Task ID: dh-${doubleHashTaskIndex}`;
+taskId.textContent = `Task ID: dh-${doubleHashTaskIndex}`;
 
 // Update hash task variables with data retrieved from the blockchain
 doubleHashTaskContract
     .getDoubleHashTaskHash(doubleHashTaskIndexValue)
     .then(h => {
         taskHashValue = h;
-        hash.innerHTML = `Hash Value:<br>${taskHashValue}`;
+        hash.textContent = `Hash Value:<br>${taskHashValue}`;
 
         // Allow the user to withdraw funds if available and diplay manager key
         // reveal section if necessary
@@ -167,13 +167,13 @@ doubleHashTaskContract
     .getDoubleHashTaskTaskHash(doubleHashTaskIndexValue)
     .then(h => {
         doubleHashTaskHash = h;
-        taskHash.innerHTML = `Task Hash:<br>${doubleHashTaskHash}`;
+        taskHash.textContent = `Task Hash:<br>${doubleHashTaskHash}`;
     });
 doubleHashTaskContract
     .getDoubleHashTaskManagerAddress(doubleHashTaskIndexValue)
     .then(a => {
         taskManagerAddress = a;
-        managerAddress.innerHTML = `Manager Address:<br>${taskManagerAddress}`;
+        managerAddress.textContent = `Manager Address:<br>${taskManagerAddress}`;
 
         // Allow the user to withdraw funds if available and diplay manager key
         // reveal section if necessary
@@ -182,13 +182,13 @@ doubleHashTaskContract
 doubleHashTaskContract
     .getDoubleHashTaskTotalWei(doubleHashTaskIndexValue)
     .then(w => {
-        reward.innerHTML
+        reward.textContent
             = `Reward (Wei): ${formatWei(w)}`;
     });
 doubleHashTaskContract
     .getDoubleHashTaskDeadline(doubleHashTaskIndexValue)
     .then(d => {
-        deadline.innerHTML
+        deadline.textContent
             = `Deadline (UTC): ${new Date(Number(d) * 1000).toUTCString()}`;
 
         // Allow the user to fund the task if the task deadline has not arrived
@@ -210,7 +210,7 @@ doubleHashTaskContract
     .getDoubleHashTaskComplete(doubleHashTaskIndexValue)
     .then(c => {
         isTaskComplete = c;
-        completed.innerHTML = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
+        completed.textContent = `Completed: ${isTaskComplete ? "TRUE" : "FALSE"}`;
 
         // Allow the user to withdraw funds if available and diplay manager key
         // reveal section if necessary
@@ -220,7 +220,7 @@ doubleHashTaskContract
     .getDoubleHashTaskKeyReveal(doubleHashTaskIndexValue)
     .then(k => {
         isKeyReveal = k;
-        keyReveal.innerHTML = `Key Reveal: ${isKeyReveal ? "TRUE" : "FALSE"}`;
+        keyReveal.textContent = `Key Reveal: ${isKeyReveal ? "TRUE" : "FALSE"}`;
 
         // Allow the user to withdraw funds if available and diplay manager key
         // reveal section if necessary
@@ -230,21 +230,21 @@ doubleHashTaskContract
     .getDoubleHashTaskSecondResponseWindow(doubleHashTaskIndexValue)
     .then(s => {
         secondResponseWindowValue = s;
-        secondResponseWindow.innerHTML
+        secondResponseWindow.textContent
             = `Second Response Window (Seconds): ${secondResponseWindowValue}`;
     });
 doubleHashTaskContract
     .getDoubleHashTaskDelay(doubleHashTaskIndexValue)
     .then(s => {
         secondResponseDelayValue = s;
-        secondResponseDelay.innerHTML
+        secondResponseDelay.textContent
             = `Second Response Delay (Seconds): ${secondResponseDelayValue}`;
     });
 doubleHashTaskContract
     .getDoubleHashTaskResponseCount(doubleHashTaskIndexValue)
     .then(r => {
         responseCountValue = r;
-        responseCount.innerHTML = `Response Count: ${responseCountValue}`;
+        responseCount.textContent = `Response Count: ${responseCountValue}`;
     });
 doubleHashTaskContract
     .getDoubleHashTaskNextSlotTime(doubleHashTaskIndexValue)
@@ -253,10 +253,10 @@ doubleHashTaskContract
         if (nextSlotTimeValue === 0n
             || new Date(Number(nextSlotTimeValue) * 1000) < new Date()
         ) {
-            nextSlotTime.innerHTML = `Next Slot Time (UTC): Now - `
+            nextSlotTime.textContent = `Next Slot Time (UTC): Now - `
                 + `${new Date().toUTCString()}`;
         } else {
-            nextSlotTime.innerHTML = `Next Slot Time (UTC): `
+            nextSlotTime.textContent = `Next Slot Time (UTC): `
                 + `${formatBlockTimestamp(nextSlotTimeValue)}`;
         }
     });
@@ -331,7 +331,7 @@ fundButton.addEventListener("click", async () => {
                         { value: BigInt(fundInput.value.replaceAll(" ", "")) }
                     );
             } catch (error) {
-                fundError.innerHTML
+                fundError.textContent
                     = `[X] ERROR: Transaction failed - ${error}`;
                 return;
             }
@@ -341,7 +341,7 @@ fundButton.addEventListener("click", async () => {
                 window.location.reload();
             });
         } else {
-            fundError.innerHTML
+            fundError.textContent
                 = "[X] ERROR: Failed to get hash task contract signer";
         }
     }
@@ -373,7 +373,7 @@ withdrawFundsButton.addEventListener("click", async () => {
                         );
                 }
             } catch (error) {
-                fundError.innerHTML
+                fundError.textContent
                     = `[X] ERROR: Transaction failed - ${error}`;
                 return;
             }
@@ -383,7 +383,7 @@ withdrawFundsButton.addEventListener("click", async () => {
                 window.location.reload();
             });
         } else {
-            fundError.innerHTML
+            fundError.textContent
                 = "[X] ERROR: Failed to get hash task contract signer";
         }
     }
@@ -513,12 +513,12 @@ skipLinkButton.addEventListener("click", skipLink);
 async function zipInputClicked(event) {
 
     // Reset error text
-    uploadErrorText.innerHTML = "";
+    uploadErrorText.textContent = "";
 
     // Validate the input is a .zip
     const inputFile = event.target.files[0];
     if (inputFile.type !== 'application/zip') {
-        uploadErrorText.innerHTML = "[X] ERROR: File uploaded is not a zip "
+        uploadErrorText.textContent = "[X] ERROR: File uploaded is not a zip "
             + "file";
         return;
     }
@@ -535,7 +535,7 @@ async function zipInputClicked(event) {
         // Validate task hash matches expected
         const fileHash = keccak256(fileBytes).toString('hex');
         if (fileHash != doubleHashTaskHash) {
-            uploadErrorText.innerHTML = "[X] ERROR: Uploaded .zip file hash "
+            uploadErrorText.textContent = "[X] ERROR: Uploaded .zip file hash "
                 + "does not match task hash";
         } else {
 
@@ -546,7 +546,7 @@ async function zipInputClicked(event) {
 
     // Display error if problem reading zip file
     reader.onerror = function () {
-        uploadErrorText.innerHTML = "[X] ERROR: Problem reading .zip file";
+        uploadErrorText.textContent = "[X] ERROR: Problem reading .zip file";
     };
 }
 
@@ -597,7 +597,7 @@ async function searchUser() {
         // Validate the data hash matches task hash
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== doubleHashTaskHash) {
-            manualSearchError.innerHTML = `Incorrect data hash from,`
+            manualSearchError.textContent = `Incorrect data hash from,`
                 + `<br>User: ${userSearchValue}`
                 + `<br>At address: ${userUrl}/Tasks/DoubleHashTasks/`
                 + `${doubleHashTaskHash.substring(2)}/Task.zip`;
@@ -605,13 +605,13 @@ async function searchUser() {
         }
 
         // Data found so reset manual search error and parse file
-        manualSearchError.innerHTML = "";
+        manualSearchError.textContent = "";
         dataHashMatchFound(arrayBuffer);
         return;
     }
 
     // Display error if data not found from user
-    manualSearchError.innerHTML = `[X] ERROR: Task data not found from `
+    manualSearchError.textContent = `[X] ERROR: Task data not found from `
         + `user: ${userSearchValue}`;
 }
 
@@ -649,7 +649,7 @@ async function tryDownload() {
         // Parse file
         dataHashMatchFound(arrayBuffer);
     } else {
-        autoDownloadError.innerHTML = `Incorrect data hash from ${userUrl}`
+        autoDownloadError.textContent = `Incorrect data hash from ${userUrl}`
             + `/Tasks/DoubleHashTasks/${doubleHashTaskHash.substring(2)}/`
             + `Task.zip`;
     }
@@ -677,7 +677,7 @@ function skipLink() {
     }
 
     // Update download from link button
-    tryDownloadButton.innerHTML = `Try download from: `
+    tryDownloadButton.textContent = `Try download from: `
         + `${parseUserData(autoUserData).data}<br>Address: `
         + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
         + `/Tasks/DoubleHashTasks/${doubleHashTaskHash.substring(2)}/Task.zip`;
@@ -750,7 +750,7 @@ async function dataHashMatchFound(zipFile) {
             }
         });
     } catch (error) {
-        taskFileTreeArea.innerHTML = `Error parsing .zip file`;
+        taskFileTreeArea.textContent = `Error parsing .zip file`;
         return;
     }
 
@@ -761,7 +761,7 @@ async function dataHashMatchFound(zipFile) {
     const specificationsJson
         = zipContents.file(`${outerFolderName}/specifications.json`);
     if (!specificationsJson) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: specifications.json not found under directory path`;
         return;
     }
@@ -770,13 +770,13 @@ async function dataHashMatchFound(zipFile) {
         const content = await specificationsJson.async("string");
         jsonObject = JSON.parse(content);
     } catch (error) {
-        taskJsonArea.innerHTML
+        taskJsonArea.textContent
             = `[X] ERROR: Problem parsing specifications.json`;
         return;
     }
 
     // Task content header
-    taskJsonArea.innerHTML = "<h1>Task Requirements</h1>";
+    taskJsonArea.textContent = "<h1>Task Requirements</h1>";
 
     // Iterate over each requirement listed in the specifications, and for each
     // one parse the corresponding requirement in the requirements folder to
@@ -870,7 +870,7 @@ async function getDoubleHashTaskSigner(errorElement) {
         try {
             signer = await provider.getSigner();
         } catch (error) {
-            errorElement.innerHTML = `[X] ERROR: Get signer failed - ${error}`;
+            errorElement.textContent = `[X] ERROR: Get signer failed - ${error}`;
             return;
         }
     }
