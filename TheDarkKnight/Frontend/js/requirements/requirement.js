@@ -104,8 +104,8 @@ getVersionData().then((versionData) => {
     if (versionData !== null) {
         versionHash = versionData.versionHash;
         validatorAddress = versionData.validatorAddress;
-        hashText.textContent = `Requirement Hash:<br>${versionHash}`;
-        userText.textContent = `Requirement Manager Address:<br>`
+        hashText.textContent = `Requirement Hash:\r\n${versionHash}`;
+        userText.textContent = `Requirement Manager Address:\r\n`
             + `${validatorAddress}`;
     }
 });
@@ -275,8 +275,8 @@ async function searchUser() {
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== versionHash) {
             manualSearchError.textContent = `Incorrect data hash from,`
-                + `<br>User: ${userSearchValue}`
-                + `<br>At address: ${userUrl}/TheList/`
+                + `\r\nUser: ${userSearchValue}`
+                + `\r\nAt address: ${userUrl}/TheList/`
                 + `${versionHash.substring(2)}/Requirement.zip`;
             continue;
         }
@@ -351,8 +351,8 @@ function skipLink() {
 
     // Update download from link button
     tryDownloadButton.textContent = `Try download from: `
-        + `${parseUserData(autoUserData).data}<br>Address: `
-        + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
+        + `${parseUserData(autoUserData).data}\r\nAddress: `
+        + `${autoUserAddress}\r\nLink: ${autoUserLinks[autoUserLinksIndex]}`
         + `/TheList/${versionHash.substring(2)}/Requirement.json`;
 }
 
@@ -713,8 +713,8 @@ function continueSearch(searchCriteria) {
 
         // Display retrieved user link
         tryDownloadButton.textContent = `Try download from: `
-            + `${parseUserData(autoUserData).data}<br>Address: `
-            + `${autoUserAddress}<br>Link: ${autoUserLinks[0]}/TheList/`
+            + `${parseUserData(autoUserData).data}\r\nAddress: `
+            + `${autoUserAddress}\r\nLink: ${autoUserLinks[0]}/TheList/`
             + `${versionHash.substring(2)}/Requirement.json`;
     });
 }

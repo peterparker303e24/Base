@@ -157,7 +157,7 @@ doubleHashTaskContract
     .getDoubleHashTaskHash(doubleHashTaskIndexValue)
     .then(h => {
         taskHashValue = h;
-        hash.textContent = `Hash Value:<br>${taskHashValue}`;
+        hash.textContent = `Hash Value:\r\n${taskHashValue}`;
 
         // Allow the user to withdraw funds if available and diplay manager key
         // reveal section if necessary
@@ -167,13 +167,13 @@ doubleHashTaskContract
     .getDoubleHashTaskTaskHash(doubleHashTaskIndexValue)
     .then(h => {
         doubleHashTaskHash = h;
-        taskHash.textContent = `Task Hash:<br>${doubleHashTaskHash}`;
+        taskHash.textContent = `Task Hash:\r\n${doubleHashTaskHash}`;
     });
 doubleHashTaskContract
     .getDoubleHashTaskManagerAddress(doubleHashTaskIndexValue)
     .then(a => {
         taskManagerAddress = a;
-        managerAddress.textContent = `Manager Address:<br>${taskManagerAddress}`;
+        managerAddress.textContent = `Manager Address:\r\n${taskManagerAddress}`;
 
         // Allow the user to withdraw funds if available and diplay manager key
         // reveal section if necessary
@@ -598,8 +598,8 @@ async function searchUser() {
         const downloadHash = keccak256(uint8Array).toString('hex');
         if (downloadHash !== doubleHashTaskHash) {
             manualSearchError.textContent = `Incorrect data hash from,`
-                + `<br>User: ${userSearchValue}`
-                + `<br>At address: ${userUrl}/Tasks/DoubleHashTasks/`
+                + `\r\nUser: ${userSearchValue}`
+                + `\r\nAt address: ${userUrl}/Tasks/DoubleHashTasks/`
                 + `${doubleHashTaskHash.substring(2)}/Task.zip`;
             continue;
         }
@@ -678,8 +678,8 @@ function skipLink() {
 
     // Update download from link button
     tryDownloadButton.textContent = `Try download from: `
-        + `${parseUserData(autoUserData).data}<br>Address: `
-        + `${autoUserAddress}<br>Link: ${autoUserLinks[autoUserLinksIndex]}`
+        + `${parseUserData(autoUserData).data}\r\nAddress: `
+        + `${autoUserAddress}\r\nLink: ${autoUserLinks[autoUserLinksIndex]}`
         + `/Tasks/DoubleHashTasks/${doubleHashTaskHash.substring(2)}/Task.zip`;
 }
 

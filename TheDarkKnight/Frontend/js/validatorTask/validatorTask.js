@@ -172,7 +172,7 @@ validatorTaskContract
     .getTaskHash(validatorTaskIndexValue)
     .then(h => {
         validatorTaskHashValue = h;
-        validatorTaskHash.textContent = `Task Hash:<br>${validatorTaskHashValue}`;
+        validatorTaskHash.textContent = `Task Hash:\r\n${validatorTaskHashValue}`;
 
         // Allow the user to withdraw funds if available
         updateWithdrawFundsSection();
@@ -181,7 +181,7 @@ validatorTaskContract
     .getManagerAddress(validatorTaskIndexValue)
     .then(a => {
         taskManagerAddress = a;
-        managerAddress.textContent = `Manager Address:<br>${taskManagerAddress}`;
+        managerAddress.textContent = `Manager Address:\r\n${taskManagerAddress}`;
 
         // Allow the user to withdraw funds if available
         updateWithdrawFundsSection();
@@ -232,7 +232,7 @@ validatorTaskContract
                         ).then(c => {
                             completionAddressValue = c;
                             completionAddress.textContent = `Completion Address:`
-                                + `<br>${completionAddressValue}`;
+                                + `\r\n${completionAddressValue}`;
                         });
                 } else {
                     completionIndex.textContent
@@ -326,9 +326,9 @@ validatorTaskContract
         validatorsValue = v;
         let validatorsListString = "";
         for (let i = 0; i < validatorsValue.length; i++) {
-            validatorsListString += `${validatorsValue[i]}<br>`;
+            validatorsListString += `${validatorsValue[i]}\r\n`;
         }
-        validators.textContent = `Validators:<br>${validatorsListString}`;
+        validators.textContent = `Validators:\r\n${validatorsListString}`;
     });
 
 // Validates reward numerical input
