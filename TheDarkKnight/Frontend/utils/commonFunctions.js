@@ -1073,6 +1073,18 @@ export async function getRequirementVersionData(
     minimumBlockNumber
 ) {
 
+    // Try to get latest data without searching blockchain history
+    const currentVersion = Number(
+	await theListContract.getRequirementVersion(index)
+    );
+    if (currentVersion === version) {
+        return {
+	    validatorAddress: await theListContract
+		.getRequirementValidatorAddress(index),
+	    versionHash: await theListContract.getRequirementHash(index)
+	}
+    }
+
     // Binary searches blockchain for requirement version
     const currentBlock = Number(await provider.getBlockNumber());
     const requirementVersionFound = await binarySearchBlockchainVersions(

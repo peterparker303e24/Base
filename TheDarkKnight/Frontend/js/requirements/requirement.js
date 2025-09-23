@@ -4,7 +4,7 @@ import {
     prefixHexBytes,
     removeClass,
     addClass,
-    binarySearchBlockchainVersions,
+    getRequirementVersionData,
     replaceClass,
     formatFileStructure,
     formatRequirementJson,
@@ -100,15 +100,22 @@ let canSkipAddress;
 idText.textContent = `Requirement Id: ${requirementId}-${requirementVersion}`;
 
 // Retrieves the requirement data and updates the display on the page
-getVersionData().then((versionData) => {
-    if (versionData !== null) {
-        versionHash = versionData.versionHash;
-        validatorAddress = versionData.validatorAddress;
-        hashText.textContent = `Requirement Hash:\r\n${versionHash}`;
-        userText.textContent = `Requirement Manager Address:\r\n`
-            + `${validatorAddress}`;
-    }
-});
+getRequirementVersionData(
+    provider,
+    theListContract,
+    requirementId,
+    requirementVersion,
+    THE_LIST_CONTRACT_MINIMUM_BLOCK
+)
+    .then((versionData) => {
+        if (versionData !== null) {
+            versionHash = versionData.versionHash;
+            validatorAddress = versionData.validatorAddress;
+            hashText.textContent = `Requirement Hash:\r\n${versionHash}`;
+            userText.textContent = `Requirement Manager Address:\r\n`
+                + `${validatorAddress}`;
+        }
+    });
 
 // Toggles to the manual search data view
 manualDiscoverButton.addEventListener("click", () => {
@@ -354,36 +361,6 @@ function skipLink() {
         + `${parseUserData(autoUserData).data}\r\nAddress: `
         + `${autoUserAddress}\r\nLink: ${autoUserLinks[autoUserLinksIndex]}`
         + `/TheList/${versionHash.substring(2)}/Requirement.json`;
-}
-
-/**
- * Gets the validator address and requirement hash of the current requirement
- * @returns {?Object} Requirement data object
- * @returns {String} return.validatorAddress Requirement validator
- * @returns {String} return.versionHash Requirement hash
- */
-async function getVersionData() {
-
-    // Binary searches blockchain for requirement version
-    const currentBlock = Number(await provider.getBlockNumber());
-    console.log(minimumBlockNumber);
-    const requirementVersionFound = await binarySearchBlockchainVersions(
-        theListContract,
-        minimumBlockNumber,
-        currentBlock,
-        requirementId,
-        requirementVersion
-    );
-
-    // If requirement version not found return null, otherwise return
-    // requirement version data
-    if (requirementVersionFound === null) {
-        return null;
-    }
-    return {
-        validatorAddress: requirementVersionFound.validator,
-        versionHash: requirementVersionFound.hash
-    };
 }
 
 /**
