@@ -38,7 +38,7 @@ loadHeader();
 // Get hash task, double hash task, and validator task contracts
 const hashTaskContractAddress = HASH_TASK_CONTRACT_ADDRESS;
 const provider = new ethers.BrowserProvider(window.ethereum);
-const hashTaskAbi = await fetch('../data/abi/hashTaskAbi.json');
+const hashTaskAbi = await fetch('./data/abi/hashTaskAbi.json');
 const hashTaskJson = await hashTaskAbi.json();
 const hashTaskContract = new ethers.Contract(
     hashTaskContractAddress,
@@ -46,7 +46,7 @@ const hashTaskContract = new ethers.Contract(
     provider
 );
 const doubleHashTaskContractAddress = DOUBLE_HASH_TASK_CONTRACT_ADDRESS;
-const doubleHashTaskAbi = await fetch('../data/abi/doubleHashTaskAbi.json');
+const doubleHashTaskAbi = await fetch('./data/abi/doubleHashTaskAbi.json');
 const doubleHashTaskJson = await doubleHashTaskAbi.json();
 const doubleHashTaskContract = new ethers.Contract(
     doubleHashTaskContractAddress,
@@ -54,7 +54,7 @@ const doubleHashTaskContract = new ethers.Contract(
     provider
 );
 const validatorTaskContractAddress = VALIDATOR_TASK_CONTRACT_ADDRESS;
-const validatorTaskAbi = await fetch('../data/abi/validatorTaskAbi.json');
+const validatorTaskAbi = await fetch('./data/abi/validatorTaskAbi.json');
 const validatorTaskJson = await validatorTaskAbi.json();
 const validatorTaskContract = new ethers.Contract(
     validatorTaskContractAddress,

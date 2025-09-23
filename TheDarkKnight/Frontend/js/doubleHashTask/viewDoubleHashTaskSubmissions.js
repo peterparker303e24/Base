@@ -21,7 +21,7 @@ loadHeader();
 // Get double hash task contract
 const doubleHashTaskContractAddress = DOUBLE_HASH_TASK_CONTRACT_ADDRESS;
 const provider = new ethers.BrowserProvider(window.ethereum);
-const doubleHashTaskAbi = await fetch('../data/abi/doubleHashTaskAbi.json');
+const doubleHashTaskAbi = await fetch('./data/abi/doubleHashTaskAbi.json');
 const doubleHashTaskJson = await doubleHashTaskAbi.json();
 const doubleHashTaskContract = new ethers.Contract(
     doubleHashTaskContractAddress,

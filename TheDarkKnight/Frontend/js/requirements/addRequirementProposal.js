@@ -63,8 +63,8 @@ let requirementsNumberValue;
 const usersContractAddress = USERS_CONTRACT_ADDRESS;
 const theListContractAddress = THE_LIST_CONTRACT_ADDRESS;
 const provider = new ethers.BrowserProvider(window.ethereum);
-const usersAbi = await fetch('../data/abi/usersAbi.json');
-const theListAbi = await fetch('../data/abi/theListAbi.json');
+const usersAbi = await fetch('./data/abi/usersAbi.json');
+const theListAbi = await fetch('./data/abi/theListAbi.json');
 const usersJson = await usersAbi.json();
 const theListJson = await theListAbi.json();
 const usersContract = new ethers.Contract(

@@ -68,9 +68,9 @@ const hashTaskContractAddress = HASH_TASK_CONTRACT_ADDRESS;
 const theListContractAddress = THE_LIST_CONTRACT_ADDRESS;
 
 // Gets provider's access to contracts
-const usersAbi = await fetch('../data/abi/usersAbi.json');
-const hashTaskAbi = await fetch('../data/abi/hashTaskAbi.json');
-const theListAbi = await fetch('../data/abi/theListAbi.json');
+const usersAbi = await fetch('./data/abi/usersAbi.json');
+const hashTaskAbi = await fetch('./data/abi/hashTaskAbi.json');
+const theListAbi = await fetch('./data/abi/theListAbi.json');
 const usersJson = await usersAbi.json();
 const hashTaskJson = await hashTaskAbi.json();
 const theListJson = await theListAbi.json();
