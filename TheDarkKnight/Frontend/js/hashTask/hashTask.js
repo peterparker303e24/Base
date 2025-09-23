@@ -13,7 +13,12 @@ import {
     getRequirementVersionData,
     parseUserData
 } from "../../utils/commonFunctions.js";
-import { HASH_TASK_CONTRACT_ADDRESS, THE_LIST_CONTRACT_ADDRESS, USERS_CONTRACT_ADDRESS } from "../../utils/constants.js";
+import {
+    HASH_TASK_CONTRACT_ADDRESS,
+    THE_LIST_CONTRACT_ADDRESS,
+    USERS_CONTRACT_ADDRESS,
+    THE_LIST_CONTRACT_MINIMUM_BLOCK
+} from "../../utils/constants.js";
 
 // Page elements
 const taskId = document.getElementById("task-id");
@@ -732,7 +737,7 @@ async function dataHashMatchFound(zipFile) {
                 theListContract,
                 requirementIndex,
                 requirementVersionIndex,
-                0
+                THE_LIST_CONTRACT_MINIMUM_BLOCK
             );
             let requirementJson;
             const taskRequirementHash
