@@ -39,8 +39,8 @@ let validWrittenCondition = false;
 
 // Get The List and users contracts from provider
 const provider = new ethers.BrowserProvider(window.ethereum);
-const usersAbi = await fetch('../data/abi/usersAbi.json');
-const theListAbi = await fetch('../data/abi/theListAbi.json');
+const usersAbi = await fetch('./data/abi/usersAbi.json');
+const theListAbi = await fetch('./data/abi/theListAbi.json');
 const usersJson = await usersAbi.json();
 const theListJson = await theListAbi.json();
 const usersContract = new ethers.Contract(

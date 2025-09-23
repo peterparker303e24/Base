@@ -51,7 +51,7 @@ loadHeader();
 // Get The List and users contracts from provider
 const hashTaskContractAddress = HASH_TASK_CONTRACT_ADDRESS;
 const provider = new ethers.BrowserProvider(window.ethereum);
-const hashTaskAbi = await fetch('../data/abi/hashTaskAbi.json');
+const hashTaskAbi = await fetch('./data/abi/hashTaskAbi.json');
 const hashTaskJson = await hashTaskAbi.json();
 const hashTaskContract = new ethers.Contract(
     hashTaskContractAddress,

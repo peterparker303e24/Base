@@ -28,7 +28,7 @@ loadHeader();
 const validatorTaskContractAddress = VALIDATOR_TASK_CONTRACT_ADDRESS;
 
 // Gets provider's access to contracts
-const validatorTaskAbi = await fetch('../data/abi/validatorTaskAbi.json');
+const validatorTaskAbi = await fetch('./data/abi/validatorTaskAbi.json');
 const validatorTaskJson = await validatorTaskAbi.json();
 const provider = new ethers.BrowserProvider(window.ethereum);
 const validatorTaskContract = new ethers.Contract(

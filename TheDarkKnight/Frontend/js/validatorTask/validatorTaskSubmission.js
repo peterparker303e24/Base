@@ -100,9 +100,9 @@ const validatorTaskContractAddress = VALIDATOR_TASK_CONTRACT_ADDRESS;
 const theListContractAddress = THE_LIST_CONTRACT_ADDRESS;
 
 // Gets provider's access to contracts
-const usersAbi = await fetch('../data/abi/usersAbi.json');
-const validatorTaskAbi = await fetch('../data/abi/validatorTaskAbi.json');
-const theListAbi = await fetch('../data/abi/theListAbi.json');
+const usersAbi = await fetch('./data/abi/usersAbi.json');
+const validatorTaskAbi = await fetch('./data/abi/validatorTaskAbi.json');
+const theListAbi = await fetch('./data/abi/theListAbi.json');
 const usersJson = await usersAbi.json();
 const validatorTaskJson = await validatorTaskAbi.json();
 const theListJson = await theListAbi.json();

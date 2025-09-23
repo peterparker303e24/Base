@@ -52,8 +52,8 @@ const theListContractAddress = THE_LIST_CONTRACT_ADDRESS;
 const minimumBlockNumber = THE_LIST_CONTRACT_MINIMUM_BLOCK;
 
 // Gets provider's access to contracts
-const usersAbi = await fetch('../data/abi/usersAbi.json');
-const theListAbi = await fetch('../data/abi/theListAbi.json');
+const usersAbi = await fetch('./data/abi/usersAbi.json');
+const theListAbi = await fetch('./data/abi/theListAbi.json');
 const usersJson = await usersAbi.json();
 const theListJson = await theListAbi.json();
 const provider = new ethers.BrowserProvider(window.ethereum);

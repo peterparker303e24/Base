@@ -28,7 +28,7 @@ loadHeader();
 
 // Get The List contract
 const provider = new ethers.BrowserProvider(window.ethereum);
-const theListAbi = await fetch('../data/abi/theListAbi.json');
+const theListAbi = await fetch('./data/abi/theListAbi.json');
 const theListJson = await theListAbi.json();
 const theListContractAddress = THE_LIST_CONTRACT_ADDRESS;
 const theListContract = new ethers.Contract(
