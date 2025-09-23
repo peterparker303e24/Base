@@ -59,7 +59,7 @@ if (window.ethereum) {
 
 // Get the User contract
 const usersContractAddress = USERS_CONTRACT_ADDRESS;
-const usersAbi = await fetch('../data/abi/usersAbi.json');
+const usersAbi = await fetch('./data/abi/usersAbi.json');
 const usersJson = await usersAbi.json();
 const usersContract = new ethers.Contract(
     usersContractAddress,
