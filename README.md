@@ -10,19 +10,19 @@ This project is currently built on the Ethereum testnet, Sepolia. This testnet d
 
 ## Table Of Contents
 
-[What Is Freelance Society](https://peterparker303e24.github.io/Base/README.md#what-is-freelance-society)
+[What Is Freelance Society](#what-is-freelance-society)
 
-[Why Use Freelance Society](https://peterparker303e24.github.io/Base/README.md#why-use-freelance-society)
+[Why Use Freelance Society](#why-use-freelance-society)
 
-[How To Setup Frontend Locally](https://peterparker303e24.github.io/Base/README.md#how-to-setup-frontend-locally)
+[How To Setup Frontend Locally](#how-to-setup-frontend-locally)
 
-[How To Setup Blockchain Locally](https://peterparker303e24.github.io/Base/README.md#how-to-setup-blockchain-locally)
+[How To Setup Blockchain Locally](#how-to-setup-blockchain-locally)
 
-[How To Connect MetaMask To Freelance Society](https://peterparker303e24.github.io/Base/README.md#how-to-connect-metamask-to-freelance-society)
+[How To Connect MetaMask To Freelance Society](#how-to-connect-metamask-to-freelance-society)
 
-[Tutorial](https://peterparker303e24.github.io/Base/README.md#tutorial)
+[Tutorial](#tutorial)
 
-[Closing Remarks](https://peterparker303e24.github.io/Base/README.md#closing-remarks)
+[Closing Remarks](#closing-remarks)
 
 ## What Is Freelance Society
 
