@@ -17,7 +17,7 @@ module.exports = {
   defaultNetwork: "localhost", 
   networks: {
     localhost: {
-      url: "http://localhost:8545"
+      url: "http://localhost:8545",
       chainId: 1337
     },
 
