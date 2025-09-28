@@ -1469,3 +1469,25 @@ export function isValidRequirement(requirementString) {
     const validVersion = Number.isInteger(version) && Number(version) >= 1;
     return validIndex && validVersion;
 }
+
+/**
+ * Gets the cookie value of the given cookie name
+ * @param {String} cookieName Name of the cookie
+ * @returns {String} Value of the cookie or undefined if the cookie does
+ * not exist
+ */
+export function getCookie(cookieName) {
+    let name = `${cookieName}=`;
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let cookieArray = decodedCookie.split(';');
+    for(let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) == 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return undefined;
+}

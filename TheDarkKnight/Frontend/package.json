@@ -4,7 +4,9 @@
   "author": "Peter Parker",
   "description": "TheDarkKnight",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "ethers": "^6.13.1",
     "express": "^5.1.0",
     "jszip": "^3.10.1"
