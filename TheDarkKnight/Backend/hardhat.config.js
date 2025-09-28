@@ -16,8 +16,7 @@ module.exports = {
   },
   defaultNetwork: "localhost", 
   networks: {
-    localhost: {
-      url: "http://localhost:8545",
+    hardhat: {
       chainId: 1337
     },
 
