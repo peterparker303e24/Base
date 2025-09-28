@@ -72,7 +72,7 @@ export const VALIDATOR_TASK_CONTRACT_ADDRESS
 // Contract block indices by blockchain environment
 export const USERS_CONTRACT_MINIMUM_BLOCK
     = usersContractMinimumBlock;
-export const THE_LIST_CONTRACT_MINIMUM_LOCK
+export const THE_LIST_CONTRACT_MINIMUM_BLOCK
     = theListContractMinimumBlock;
 export const HASH_TASK_CONTRACT_MINIMUM_BLOCK
     = hashTaskContractMinimumBlock;
