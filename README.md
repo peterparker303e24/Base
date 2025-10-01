@@ -26,6 +26,13 @@ This project is currently built on the Ethereum testnet, Sepolia. This testnet d
 
 ## What Is Freelance Society
 
+Freelance Society is a decentralized free market platform to provide efficient transactions of labor and capital.
+
+- **Decentralized**: Blockchains are a decentralized network of nodes that democratize control of transactions. This means there is no centralized authority that has the power to censor transactions, manipulate supply of currency, or invade the privacy of participants. Freelance Society adds a layer of decentralization for labor. The Ethereum blockchain technology has smart contracts that can be utilized to facilitate the transaction of capital and labor. Freelance Society aims to maintain values of existing decentralized technology by eliminating censorship of labor opportunities and respecting users' privacy. Freelance Society is decentralized because it builds upon the decentralized blockchain technology and decentralizes the market of capital providers and workers.
+- **Free Market**: A free market system of capital and labor is when capital providers and workers both have the greatest freedom to choose how to spend their resources. Freelance Society provides an improved free market because capital providers have greater opportunity to efficient labor and workers have greater freedom to work opportunities. Additionally, both capital providers and workers have greater freedom of privacy which does not exist in the labor market.
+- **Platform**: Freelance Society is a platform to connect users with capital (in search of labor) to workers (in search of capital). Freelance Society aims to connect users through an accesssible interface with tools for all users to optimize the efficiency of their interactions.
+- **Efficient Transactions**: Transactions of capital and labor are efficient when the incentive structures in place are optimized for both capital providers and workers. Existing labor markets are failing to provide efficient transactions of labor and capital because those with power are corrupting the market structures to maintain and grow their power. Freelance Society aims to provide efficient transactions by producing incentive structures that provide to users' needs, decentralize power, and outcompete the corrupted market structures. Freelance Society focuses on the transaction of digital goods and services that can be shared throughout the internet. Continue to the section [Why Use Freelance Society](#why-use-freelance-society) to learn how Freelance Society may be beneficial to you whether you are looking for capital or for work. 
+
 ## Why Use Freelance Society
 
 ## How To Setup Frontend Locally
