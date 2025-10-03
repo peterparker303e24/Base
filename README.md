@@ -35,6 +35,10 @@ Freelance Society is a decentralized free market platform to provide efficient t
 
 ## Why Use Freelance Society
 
+Whether you are a user in need of labor or a user searching for work opportunities, Freelance Society allows anyone to participate. Since anybody can participate, the labor pool is competitive, which brings great efficiency. Also, since users can be anonymous, the rewards for workers in completing tasks is based entirely on merit. Users' opportunities for work do not depend on unfair business practices such as discrimination, nepotism, or extensive interview processes. Additionally, workers are free to choose which tasks to spend their time on, choose what compensation they are willing to work towards, and choose how they want to accomplish a task.
+
+Freelance Society is unique among other freelance work platforms because it utilizes features of blockchain technology in advantageous ways. Blockchains are decentralized, so there is no central organization that takes a cut out of transactions. Blockchains are immutable, so the transaction history of all users is fully auditable which incentivizes building trust between users. Blockchains allow users to transact anonymously, so users are able to maintain their freedom of privacy. Blockchains are openly accessible to anyone with an internet connection, so anyone has the opportunity to participate in the free market.
+
 ## How To Setup Frontend Locally
 
 You should already have the following dependencies installed on your system, and if you do not already, then you can search online to find out how to install them:
