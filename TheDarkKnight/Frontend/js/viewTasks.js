@@ -1,6 +1,6 @@
 import {
     ethers
-} from "./libs/ethers.js";
+} from "./libs/ethers.min.js";
 import {
     formatBlockTimestamp,
     formatWei,

@@ -1,4 +1,4 @@
-import { ethers, getBytes } from "../js/libs/ethers.js";
+import { ethers, getBytes } from "../js/libs/ethers.min.js";
 import { TASK_SHORT_NAMES } from "./constants.js";
 
 /**

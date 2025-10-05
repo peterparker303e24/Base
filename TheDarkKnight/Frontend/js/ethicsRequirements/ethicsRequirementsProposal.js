@@ -1,4 +1,5 @@
-import { ethers, keccak256, toUtf8Bytes, concat } from "../libs/ethers.js";
+import { ethers, keccak256, toUtf8Bytes, concat } from "../libs/ethers.min.js";
+import * as JSZip from "../libs/jszip.min.js";
 import {
     loadHeader,
     replaceClass

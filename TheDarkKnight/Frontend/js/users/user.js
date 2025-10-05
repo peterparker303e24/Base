@@ -1,4 +1,5 @@
-import { ethers, isAddress } from "../libs/ethers.js"
+import { ethers, isAddress } from "../libs/ethers.min.js"
+import * as JSZip from "../libs/jszip.min.js";
 import {
     formatWei,
     getButtonRedirectFromEvent,

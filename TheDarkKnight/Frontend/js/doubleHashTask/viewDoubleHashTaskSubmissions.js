@@ -1,7 +1,7 @@
 import {
     ethers,
     keccak256
-} from "../libs/ethers.js";
+} from "../libs/ethers.min.js";
 import {
     loadHeader,
 } from "../../utils/commonFunctions.js";

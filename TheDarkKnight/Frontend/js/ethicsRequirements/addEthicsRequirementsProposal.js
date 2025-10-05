@@ -1,4 +1,5 @@
-import { ethers } from "../libs/ethers.js";
+import { ethers } from "../libs/ethers.min.js";
+import * as JSZip from "../libs/jszip.min.js";
 import {
     loadHeader,
     debounce,
