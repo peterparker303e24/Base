@@ -64,12 +64,12 @@ You should already have the following dependencies installed on your system, and
 4. Run a local server of the frontend and access the website on localhost with default port 3000 ([http://localhost:3000/](http://localhost:3000/)). The frontend will be configured to target the online Sepolia blockchain by default. Use the parameter `--local-blockchain` to configure the frontend to target a locally running blockchain.
 
 ###
-    node frontendServer.js
+    npm run start
 
 or
 
 ###
-    node frontendServer.js --local-blockchain
+    npm run start-local
 
 - If you want to connect to the Sepolia blockchain, then your frontend setup is complete and you can move on to the section [Connect MetaMask To Sepolia Blockchain](#connect-metamask-to-sepolia-blockchain).
 
