@@ -1,4 +1,4 @@
-import { ethers } from "../libs/ethers.js";
+import { ethers } from "../libs/ethers.min.js";
 import { loadHeader } from "../../utils/commonFunctions.js";
 import { THE_LIST_CONTRACT_ADDRESS } from "../../utils/constants.js";
 

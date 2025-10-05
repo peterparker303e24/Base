@@ -1,4 +1,5 @@
-import { ethers, keccak256 } from "../libs/ethers.js";
+import { ethers, keccak256 } from "../libs/ethers.min.js";
+import * from as JSZip "../libs/jszip.min.js";
 import {
     loadHeader,
     addClass,

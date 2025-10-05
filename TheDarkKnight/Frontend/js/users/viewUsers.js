@@ -1,4 +1,4 @@
-import { ethers, isAddress } from "../libs/ethers.js"
+import { ethers, isAddress } from "../libs/ethers.min.js"
 import {
     loadHeader,
     parseUserData,

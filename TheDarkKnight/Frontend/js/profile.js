@@ -1,4 +1,4 @@
-import { ethers } from "../js/libs/ethers.js";
+import { ethers } from "../js/libs/ethers.min.js";
 import {
     loadHeader,
     prefixHexBytes,
