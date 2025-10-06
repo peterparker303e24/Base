@@ -120,6 +120,50 @@ Your backend blockchain setup should now be complete. You can move on to the sec
 
 ### Connect MetaMask To Sepolia Blockchain
 
+To connect the Freelance Society website to your MetaMask wallet through the Sepolia blockchain, you must first install [MetaMask](https://metamask.io/) (or another blockchain wallet) extension to your browser and create an account. The instructions to complete this can be searched online where tutorials are widely available.
+
+1. Now, connect your wallet to the Sepolia network to allow your wallet to interact with the blockchain. Click the three horizontal lines in the top right corner to select the menu. Select "Settings", "Advanced", and scroll down to "Show test networks" and verify it is checked.
+
+![MetaMask Home Screen](Documentation/Images/MetaMaskWallet/HomeScreen.png)
+
+![MetaMask Menu](Documentation/Images/MetaMaskWallet/Menu.png)
+
+![MetaMask Settings](Documentation/Images/MetaMaskWallet/Settings.png)
+
+![MetaMask Show Test Networks](Documentation/Images/MetaMaskWallet/AdvancedShowTestNetworks.png)
+
+2. To read and write data to the Sepolia blockchain you must link you wallet to a remote procedure call (RPC) provider. To view/change your RPC provider, select the network dropdown, select the Sepolia network, and then select an RPC provider from the list. To add an RPC provider, select the network dropdown, select the three dots to the right of the Sepolia item, and select "Edit". Here you can edit the Sepolia network settings like the network display name, RPC provider, currency symbol, and blockchain explorer. Select the dropdown under "Default RPC URL", select "Add RPC URL", input the RPC URL, and select "Add URL". You can find public Sepolia RPC URLs [here](https://chainlist.org/chain/11155111).
+
+![MetaMask Home Screen](Documentation/Images/MetaMaskWallet/HomeScreen.png)
+
+![MetaMask Network Selection](Documentation/Images/MetaMaskWallet/NetworkSelection.png)
+
+![MetaMask RPC Selection](Documentation/Images/MetaMaskWallet/RpcSelection.png)
+
+![MetaMask Edit Network](Documentation/Images/MetaMaskWallet/EditNetwork.png)
+
+![MetaMask Edit Sepolia Network](Documentation/Images/MetaMaskWallet/EditSepoliaNetwork.png)
+
+3. Navigate to the [Freelance Society](https://peterparker303e24.github.io/Base/TheDarkKnight/Frontend/index.html) website and connect the website to your wallet. Select the "Profile" button to navigate to your user profile. Select "Connect" and your wallet should pop up with a notification to connect your wallet to the website. Select "Edit accounts" to choose which accounts you would like to allow the website to access and transact with, then select "Update" to confirm your account choices. Select "Permissions", then next to "See your enabled networks" select "Edit". Here you can choose which networks you would like to allow the website to access and transact with. Be aware of the mainnet options because this allows the website to transact with valuable cryptocurrency. Select "Update" to confirm your network choices. Select "Connect" to confirm the connection from your wallet to Freelance Society with your choices of accounts and networks. 
+
+![Freelance Society Home Page](Documentation/Images/FreelanceSocietyHomePage.png)
+
+![Freelance Society Profile Page](Documentation/Images/FreelanceSocietyProfilePage.png)
+
+![MetaMask Connect Website Accounts](Documentation/Images/MetaMaskWallet/ConnectWebsiteAccounts.png)
+
+![MetaMask Connect Website Edit Accounts](Documentation/Images/MetaMaskWallet/ConnectWebsiteEditAccounts.png)
+
+![MetaMask Connect Website Permissions](Documentation/Images/MetaMaskWallet/ConnectWebsitePermissions.png)
+
+![MetaMask Connect Websites Edit Networks](Documentation/Images/MetaMaskWallet/ConnectWebsiteEditNetworks.png)
+
+4. If the connection is successful, then the profile webpage content will populate. You can verify the network the website is connected to by viewing the network dropdown and by selecting the website icon to see the website domain and connected network. Continue to [Tutorial](#tutorial) to begin your participation in Freelance Society.
+
+![MetaMask Website Connected](Documentation/Images/MetaMaskWallet/WebsiteConnected.png)
+
+![MetaMask Website Connected](Documentation/Images/MetaMaskWallet/ViewConnectedNetworkSepolia.png)
+
 ### Connect MetaMask To Local Blockchain
 
 ## Tutorial
