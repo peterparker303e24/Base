@@ -118,6 +118,10 @@ Your backend blockchain setup should now be complete. You can move on to the sec
 
 ## How To Connect MetaMask To Freelance Society
 
+[Connect MetaMask To Sepolia Blockchain](#connect-metamask-to-sepolia-blockchain)
+
+[Connect MetaMask To Local Blockchain](#connect-metamask-to-local-blockchain)
+
 ### Connect MetaMask To Sepolia Blockchain
 
 To connect the Freelance Society website to your MetaMask wallet through the Sepolia blockchain, you must first install [MetaMask](https://metamask.io/) (or another blockchain wallet) extension to your browser and create an account. The instructions to complete this can be searched online where tutorials are widely available.
