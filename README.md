@@ -10,4 +10,4 @@ This project is currently built on the Ethereum testnet, Sepolia. This testnet d
 
 ## Access The Freelance Society Repository Here
 
-[Freelance Society Repository](https://github.com/peterparker303e24/FreelanceSociety/blob/main/README.md)
+[Freelance Society Repository](https://github.com/peterparker303e24/FreelanceSociety)
