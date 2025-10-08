@@ -1,3 +1,0 @@
-Settings
-
-- Alternate between light and dark mode in the website, this change will be saved in the browser
