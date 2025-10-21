@@ -6,17 +6,35 @@
     "Task or submission does not produce content of any non-consentual nudity or sexual acts.",
     "Task or submission does not produce content of an individual's information for which there is a reasonable expectation of privacy."
   ],
-  "workerTasks": [],
+  "workerTasks": [
+    "h-5",
+    "dh-2",
+    "v-1",
+    "v-2",
+    "v-3"
+  ],
   "managerTasks": [
     "h-0",
     "h-1",
     "h-2",
     "h-3",
     "h-4",
+    "h-5",
+    "h-6",
     "dh-0",
-    "dh-1"
+    "dh-1",
+    "dh-2",
+    "v-0",
+    "v-1",
+    "v-2",
+    "v-3",
+    "v-4"
   ],
-  "validatorTasks": [],
+  "validatorTasks": [
+    "v-1",
+    "v-2",
+    "v-3"
+  ],
   "validationRequirementsWhitelist": null,
-  "availableValidationTime": "Minimum 1 week validation delay for block schedule tasks.\nMinimum 2 weeks validation window for non-block schedule tasks."
+  "availableValidationTime": "Minimum 2 weeks validation window for validator tasks."
 }
